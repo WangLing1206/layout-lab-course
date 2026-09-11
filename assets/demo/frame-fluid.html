@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>流体排版 / Fluid type</title>
+<style>
+  /* 流体排版演示容器。
+     关键点：iframe 内部的 1vw = iframe 宽度的 1%，
+     所以父页面拖动宽度滑块时，这里会真实地触发 vw 的变化 —— 不是模拟。 */
+  :root {
+    --fluid: clamp(1.5rem, 4vw + 0.5rem, 3.25rem);
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+      "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    --font-serif: "Iowan Old Style", Georgia, "Songti SC", serif;
+    --font-mono: ui-monospace, Menlo, Consolas, monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    padding: 20px 24px;
+    background: #fbfaf8;
+    color: #16181d;
+    font-family: var(--font-sans);
+  }
+
+  .kicker {
+    margin: 0 0 6px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #b1593a;
+  }
+
+  h1 {
+    margin: 0 0 10px;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    /* 被父页面通过 postMessage 实时改写 */
+    font-size: var(--fluid);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    max-width: 24ch;
+    border-bottom: 3px solid #e9f1ef;
+  }
+
+  p {
+    margin: 0;
+    font-size: clamp(0.9rem, 1vw + 0.55rem, 1.05rem);
+    line-height: 1.7;
+    color: #3c4049;
+    max-width: 56ch;
+  }
+
+  .meter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 14px;
+    margin-top: 16px;
+    padding-top: 10px;
+    border-top: 1px dashed #ded9cf;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: #6d727e;
+  }
+
+  .meter b { color: #1f6b64; font-weight: 650; }
+</style>
+</head>
+<body>
+  <p class="kicker" data-k="kicker">流体排版</p>
+  <h1 data-k="h1">版式的弹性来自比例，而不是断点</h1>
+  <p data-k="body">字号用 clamp() 随视口连续变化，两端由最小值和最大值兜住。这样在 600px 到 1400px 之间就不需要为「标题该多大」反复添加断点。</p>
+  <div class="meter">
+    <span>iframe = <b id="w">0</b>px</span>
+    <span>--fluid: <b id="expr">clamp(1.5rem, 4vw + 0.5rem, 3.25rem)</b></span>
+    <span><span data-k="actual">实际字号</span> <b id="size">0</b>px</span>
+  </div>
+
+<script>
+(function () {
+  var DICT = {
+    en: {
+      kicker: "Fluid type",
+      h1: "Type scales by ratio, not by breakpoints",
+      body: "The size moves continuously with clamp(), bounded by a minimum and a maximum — so there is no need to add a breakpoint for every \"how big should the title be\" question between 600px and 1400px.",
+      actual: "computed size"
+    }
+  };
+
+  var lang = new URLSearchParams(location.search).get("lang") === "en" ? "en" : "zh";
+  if (lang === "en") {
+    document.documentElement.lang = "en";
+    document.querySelectorAll("[data-k]").forEach(function (el) {
+      var v = DICT.en[el.dataset.k];
+      if (v != null) el.textContent = v;
+    });
+  }
+
+  var h1 = document.querySelector("h1");
+  var wEl = document.getElementById("w");
+  var exprEl = document.getElementById("expr");
+  var sizeEl = document.getElementById("size");
+
+  function meter() {
+    wEl.textContent = Math.round(document.documentElement.clientWidth);
+    var size = parseFloat(getComputedStyle(h1).fontSize);
+    sizeEl.textContent = size.toFixed(1);
+  }
+
+  /* 父页面通过 postMessage 传入新的 clamp 表达式（跨源也能收到，file:// 同样可用） */
+  window.addEventListener("message", function (e) {
+    var data = e.data;
+    if (!data || data.type !== "fluid" || typeof data.value !== "string") return;
+    document.documentElement.style.setProperty("--fluid", data.value);
+    exprEl.textContent = data.value;
+    requestAnimationFrame(meter);
+  });
+
+  window.addEventListener("resize", meter);
+  meter();
+})();
+</script>
+</body>
+</html>

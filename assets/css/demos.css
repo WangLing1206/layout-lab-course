@@ -1,0 +1,1696 @@
+/* ==========================================================================
+   demos.css — 交互演示样式 / Interactive demo styles
+   --------------------------------------------------------------------------
+   每个演示都由「舞台(.demo__stage) + 控件(.demo__controls)」两部分构成。
+   这个结构本身就是一种布局模式：用 Grid 纵向排布，舞台在上、控件在下，
+   保证「先看到效果，再动手调参」的因果顺序。
+   ========================================================================== */
+
+/* ==========================================================================
+   0. 通用演示外壳与控件 / Shared demo shell & controls
+   ========================================================================== */
+.demo {
+  display: grid;
+  gap: var(--s-4);
+}
+
+.demo__stage {
+  position: relative;
+  padding: var(--s-5);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.demo__stage--flush { padding: 0; }
+.demo__stage--soft { background: var(--bg-soft); }
+
+/* 舞台被压窄时，内部演示元素统一缩小一档，避免出现横向滚动 */
+@media (max-width: 640px) {
+  .demo__stage { padding: var(--s-4); }
+}
+
+.demo__controls {
+  display: grid;
+  gap: var(--s-4);
+  padding: var(--s-4);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--bg-soft);
+}
+
+@media (min-width: 720px) {
+  .demo__controls--two {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-4) var(--s-6);
+  }
+  .demo__controls--two > .ctrlgroup--full,
+  .demo__controls--two > .demo__readout,
+  .demo__controls--two > .demo__note { grid-column: 1 / -1; }
+}
+
+.demo__note {
+  font-size: var(--step--1);
+  color: var(--muted);
+  line-height: 1.6;
+}
+.demo__note strong { color: var(--ink-2); }
+
+/* 实时代码块与提示条既可以在 .demo 内，也可以作为区块的直接子节点；
+   两种写法都要有正确的垂直间距。 */
+.block--demo > .codeblock,
+.block--demo > .demo,
+.block--demo > .demo__note { margin-top: var(--s-4); }
+
+.block--demo > .block__label + .demo { margin-top: 0; }
+
+.demo__readout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2) var(--s-4);
+  align-items: center;
+  padding: var(--s-2) var(--s-3);
+  border-radius: var(--radius-sm);
+  background: var(--bg-soft);
+  border: 1px dashed var(--line-2);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--ink-2);
+}
+.demo__readout b {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* ---------- 控件组 / Control group ---------- */
+.ctrlgroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  min-width: 0;
+}
+
+.ctrlgroup__label {
+  font-size: var(--step--1);
+  font-weight: 650;
+  color: var(--ink-2);
+  letter-spacing: 0.02em;
+}
+
+.ctrlgroup__body {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-2) var(--s-4);
+}
+
+/* ---------- 滑块 / Range slider ---------- */
+.ctrl {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 2px var(--s-3);
+  min-width: 0;
+}
+
+.ctrl__label {
+  font-size: var(--step--1);
+  color: var(--ink-2);
+}
+
+.ctrl__val {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-line);
+  border-radius: var(--radius-sm);
+  padding: 0 var(--s-2);
+  min-width: 4.5em;
+  text-align: center;
+}
+
+input[type="range"] {
+  grid-column: 1 / -1;
+  width: 100%;
+  height: 20px;
+  margin: 0;
+  background: transparent;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--line-2);
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  margin-top: -6px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--surface);
+  box-shadow: var(--shadow-1);
+  transition: transform var(--t-fast) var(--ease);
+}
+
+input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.15); }
+
+input[type="range"]::-moz-range-track {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--line-2);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--surface);
+  box-shadow: var(--shadow-1);
+}
+
+/* 滑块下方的「可读区间」标注 */
+.range-notes {
+  position: relative;
+  grid-column: 1 / -1;
+  height: 16px;
+  margin-top: -2px;
+}
+
+.range-notes__band {
+  position: absolute;
+  top: 0;
+  bottom: 6px;
+  border-radius: 2px;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-line);
+}
+
+.range-notes__text {
+  position: absolute;
+  top: 0;
+  font-size: 0.68rem;
+  color: var(--accent);
+  white-space: nowrap;
+  transform: translateX(-50%);
+  left: 50%;
+  padding-top: 1px;
+}
+
+/* ---------- 分段按钮 / Segmented control ---------- */
+.seg {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  padding: 2px;
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+}
+
+.demo__controls .seg { background: var(--surface); }
+
+.seg__btn {
+  padding: 3px var(--s-3);
+  border-radius: var(--radius-pill);
+  font-size: var(--step--1);
+  color: var(--muted);
+  white-space: nowrap;
+  transition: all var(--t-fast) var(--ease);
+}
+
+.seg__btn:hover { color: var(--ink); }
+
+.seg__btn.is-active {
+  background: var(--accent);
+  color: #fff;
+  font-weight: 650;
+}
+
+[data-theme="dark"] .seg__btn.is-active { color: #10201f; }
+
+.seg--mono .seg__btn {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  padding-inline: var(--s-2);
+}
+
+.seg--stack { flex-direction: column; align-items: stretch; }
+.seg--stack .seg__btn { text-align: center; }
+
+/* ---------- 开关 / Switch ---------- */
+.switch {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  font-size: var(--step--1);
+  color: var(--ink-2);
+  cursor: pointer;
+  user-select: none;
+}
+
+.switch input {
+  -webkit-appearance: none;
+  appearance: none;
+  position: relative;
+  flex: 0 0 auto;
+  width: 34px;
+  height: 19px;
+  margin: 0;
+  border-radius: var(--radius-pill);
+  background: var(--line-2);
+  transition: background var(--t-fast) var(--ease);
+}
+
+.switch input::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: var(--shadow-1);
+  transition: transform var(--t-fast) var(--ease);
+}
+
+.switch input:checked { background: var(--accent); }
+.switch input:checked::after { transform: translateX(15px); }
+
+/* ---------- 复选项 / Checkbox chips ---------- */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: 2px var(--s-3);
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  font-size: var(--step--1);
+  font-family: var(--font-mono);
+  cursor: pointer;
+}
+
+.chip input { accent-color: var(--accent); margin: 0; }
+.chip:has(input:checked) {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+/* ---------- 文本框 / Text input ---------- */
+.textin {
+  padding: 2px var(--s-3);
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  min-width: 12ch;
+  max-width: 100%;
+}
+
+/* ==========================================================================
+   1. 演示：对齐 / Demo: alignment
+   ========================================================================== */
+.alignbox {
+  position: relative;
+  display: grid;
+  gap: var(--s-4);
+  padding: var(--s-5);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  transition: gap var(--t-base) var(--ease), padding var(--t-base) var(--ease);
+}
+
+.alignbox__head {
+  display: flex;
+  align-items: var(--head-align, center);
+  gap: var(--s-3);
+  transition: all var(--t-base) var(--ease);
+}
+
+.alignbox__avatar {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--font-serif);
+}
+
+.alignbox__meta { min-width: 0; }
+
+.alignbox__name {
+  font-weight: 650;
+  font-size: var(--step-1);
+  line-height: 1.3;
+}
+
+.alignbox__sub {
+  font-size: var(--step--1);
+  color: var(--muted);
+}
+
+.alignbox__tag {
+  margin-left: auto; /* Flex 里用 auto margin 把标签推到最右，不需要额外容器 */
+  padding: 1px var(--s-2);
+  border: 1px solid var(--accent-line);
+  border-radius: var(--radius-pill);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 0.72rem;
+  font-family: var(--font-mono);
+}
+
+.alignbox__text {
+  font-size: var(--step--1);
+  color: var(--ink-2);
+  line-height: 1.7;
+}
+
+.alignbox__foot {
+  display: flex;
+  align-items: baseline; /* 不同字号的文字按基线对齐，视觉上才「坐得稳」 */
+  gap: var(--s-3);
+  padding-top: var(--s-3);
+  border-top: 1px solid var(--line);
+}
+
+.alignbox__big {
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  line-height: 1;
+  color: var(--accent-2);
+}
+
+.alignbox__small {
+  font-size: var(--step--1);
+  color: var(--muted);
+}
+
+.alignbox__cta {
+  margin-left: auto;
+}
+
+/* 文本对齐方式 */
+.alignbox[data-text="left"] .alignbox__text,
+.alignbox[data-text="left"] .alignbox__name,
+.alignbox[data-text="left"] .alignbox__sub { text-align: left; }
+.alignbox[data-text="center"] .alignbox__text { text-align: center; }
+.alignbox[data-text="center"] .alignbox__meta { text-align: center; }
+.alignbox[data-text="center"] .alignbox__head { justify-content: center; }
+.alignbox[data-text="center"] .alignbox__foot { justify-content: center; }
+.alignbox[data-text="right"] .alignbox__text { text-align: right; }
+.alignbox[data-text="right"] .alignbox__meta { text-align: right; }
+.alignbox[data-text="right"] .alignbox__head { flex-direction: row-reverse; justify-content: flex-start; }
+.alignbox[data-text="right"] .alignbox__tag { margin-left: 0; margin-right: auto; }
+.alignbox[data-text="right"] .alignbox__foot { flex-direction: row-reverse; justify-content: flex-end; }
+.alignbox[data-text="right"] .alignbox__cta { margin-left: 0; margin-right: auto; }
+
+/* 元素对齐方式（交叉轴） */
+.alignbox[data-items="start"] { --head-align: flex-start; }
+.alignbox[data-items="center"] { --head-align: center; }
+.alignbox[data-items="baseline"] { --head-align: baseline; }
+.alignbox[data-items="stretch"] { --head-align: stretch; }
+
+.alignbox[data-items="stretch"] .alignbox__meta {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* 「关闭对齐」：故意引入错位，与对齐状态形成对照 */
+.alignbox[data-align="off"] { gap: var(--s-3); }
+.alignbox[data-align="off"] .alignbox__head { gap: 11px; padding-left: 6px; }
+.alignbox[data-align="off"] .alignbox__name { padding-left: 5px; }
+.alignbox[data-align="off"] .alignbox__tag { margin-right: 7px; }
+.alignbox[data-align="off"] .alignbox__foot {
+  align-items: flex-start;
+  padding-left: 3px;
+}
+.alignbox[data-align="off"] .alignbox__cta { margin-right: 9px; }
+.alignbox[data-align="off"] .alignbox__text { padding-left: 5px; }
+
+/* 参考线 */
+.alignbox__guides {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.alignbox__guides > * {
+  position: absolute;
+  inset: var(--s-5);
+  opacity: 0;
+  transition: opacity var(--t-base) var(--ease);
+}
+
+.alignbox[data-guides~="cols"] .g-cols { opacity: 1; }
+.alignbox[data-guides~="base"] .g-base { opacity: 1; }
+
+.g-cols {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--s-3);
+}
+
+.g-cols i {
+  background: var(--grid-guide);
+  border-inline: 1px solid var(--grid-guide-strong);
+}
+
+.g-base {
+  background-image: repeating-linear-gradient(
+    180deg,
+    transparent 0 calc(1.7em - 1px),
+    var(--grid-guide-strong) calc(1.7em - 1px) 1.7em
+  );
+  opacity: 0;
+}
+
+/* ==========================================================================
+   2. 演示：留白 / Demo: whitespace
+   ========================================================================== */
+.spacedemo {
+  --space: 16px;
+  display: grid;
+  /* 组间间距 > 组内间距 → 视觉上自然分组（接近性原则） */
+  gap: calc(var(--space) * 1.9);
+  padding: calc(var(--space) * 1.2);
+  border: 1px dashed var(--line-2);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+}
+
+.spacedemo[data-group="off"] {
+  gap: calc(var(--space) * 1.1);
+}
+
+.spacedemo[data-group="off"] .spaceitem { gap: calc(var(--space) * 1.6); }
+
+.spaceitem {
+  display: grid;
+  gap: var(--space);
+  padding: var(--space);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  transition: gap var(--t-base) var(--ease), padding var(--t-base) var(--ease);
+}
+
+.spaceitem__top {
+  display: flex;
+  align-items: center;
+  gap: var(--space);
+}
+
+.spaceitem__thumb {
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  opacity: 0.85;
+}
+
+.spaceitem__title {
+  font-weight: 650;
+  font-size: var(--step-0);
+}
+
+.spaceitem__text {
+  font-size: var(--step--1);
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.spaceitem__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+  font-size: 0.72rem;
+  color: var(--muted);
+  font-family: var(--font-mono);
+}
+
+/* 留白可视化：把 margin / padding 涂成半透明色块 */
+.spacedemo[data-paint="on"] .spaceitem {
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+}
+
+.spacedemo[data-paint="on"] .spaceitem > * {
+  background: var(--surface);
+  border-radius: 4px;
+  box-shadow: 0 0 0 100px transparent;
+}
+
+/* ==========================================================================
+   3. 演示：视觉层次 / Demo: visual hierarchy
+   ========================================================================== */
+.hier {
+  --ratio: 1.25;
+  --w-title: 700;
+  --mute: 0.55;
+  padding: var(--s-5);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  max-width: 46ch;
+  margin-inline: auto;
+}
+
+.hier__kicker {
+  font-size: var(--step--1);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-2);
+  margin-bottom: var(--s-2);
+}
+
+.hier__title {
+  font-weight: var(--w-title);
+  line-height: 1.15;
+  margin-bottom: var(--s-3);
+  transition: font-size var(--t-base) var(--ease);
+}
+
+.hier__sub {
+  font-size: calc(var(--step-0) * var(--ratio));
+  color: var(--ink-2);
+  line-height: 1.5;
+  margin-bottom: var(--s-4);
+  transition: font-size var(--t-base) var(--ease);
+}
+
+.hier__body {
+  font-size: var(--step-0);
+  line-height: 1.7;
+  color: var(--ink-2);
+  margin-bottom: var(--s-4);
+}
+
+.hier__meta {
+  font-size: calc(var(--step-0) / var(--ratio));
+  color: var(--muted);
+  opacity: var(--mute);
+  font-family: var(--font-mono);
+  transition: opacity var(--t-base) var(--ease);
+}
+
+/* 层级标注 */
+.hier__title,
+.hier__sub,
+.hier__body,
+.hier__meta {
+  position: relative;
+}
+
+.hier[data-labels="on"] .hier__title::after,
+.hier[data-labels="on"] .hier__sub::after,
+.hier[data-labels="on"] .hier__body::after,
+.hier[data-labels="on"] .hier__meta::after {
+  content: attr(data-level);
+  position: absolute;
+  top: 0;
+  right: 100%;
+  margin-right: var(--s-3);
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  line-height: 1.6;
+  padding: 0 4px;
+  border-radius: 3px;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-line);
+  color: var(--accent);
+  opacity: 0.9;
+  white-space: nowrap;
+}
+
+.hier[data-labels="on"] {
+  outline: 1px dashed var(--accent-line);
+  outline-offset: 8px;
+}
+
+/* ==========================================================================
+   4. 演示：栅格系统 / Demo: grid system
+   ========================================================================== */
+.gridstage {
+  position: relative;
+  max-width: var(--mw, 100%);
+  margin-inline: auto;
+  transition: max-width var(--t-base) var(--ease);
+}
+
+.gridstage__grid {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 12), minmax(0, 1fr));
+  gap: var(--gut, 16px);
+  transition: gap var(--t-base) var(--ease);
+}
+
+.gridstage__guides {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 12), minmax(0, 1fr));
+  gap: var(--gut, 16px);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--t-base) var(--ease), gap var(--t-base) var(--ease);
+}
+
+.gridstage[data-guides="on"] .gridstage__guides { opacity: 1; }
+
+.gridstage__guides i {
+  background: var(--grid-guide);
+  border-inline: 1px solid var(--grid-guide-strong);
+  border-radius: 2px;
+}
+
+.gcell {
+  padding: var(--s-4);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  font-size: var(--step--1);
+  color: var(--muted);
+  min-width: 0;
+}
+
+.gcell--hero {
+  min-height: 74px;
+  display: grid;
+  place-items: center;
+  background: var(--accent-soft);
+  border-color: var(--accent-line);
+  color: var(--accent);
+  font-family: var(--font-mono);
+}
+
+.gcell--strong { color: var(--ink-2); }
+
+/* ==========================================================================
+   5. 演示：行宽 / Demo: measure
+   ========================================================================== */
+.measure {
+  max-width: var(--mw, 640px);
+  margin-inline: auto;
+  padding: var(--s-4) 0;
+  border-inline: 1px dashed var(--accent-line);
+  background: var(--surface);
+  transition: max-width var(--t-base) var(--ease);
+}
+
+.measure__text {
+  font-size: 17px;
+  line-height: 1.75;
+  padding-inline: var(--s-3);
+  color: var(--ink-2);
+}
+
+.measure__text + .measure__text {
+  margin-top: var(--s-3);
+  color: var(--muted);
+  font-size: 15px;
+}
+
+/* ==========================================================================
+   6. 演示：布局模式切换 / Demo: layout patterns
+   ========================================================================== */
+.layoutswap {
+  display: grid;
+  gap: var(--s-2);
+  padding: var(--s-3);
+  background: var(--bg-soft);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+}
+
+.ls__head,
+.ls__foot,
+.ls__left,
+.ls__main,
+.ls__right {
+  display: grid;
+  place-items: center;
+  padding: var(--s-3) var(--s-2);
+  border-radius: var(--radius-sm);
+  font-size: 0.74rem;
+  font-family: var(--font-mono);
+  text-align: center;
+  min-width: 0;
+  min-height: 46px;
+  transition: background var(--t-base) var(--ease);
+}
+
+.ls__head,
+.ls__foot {
+  background: var(--surface);
+  border: 1px dashed var(--line-2);
+  color: var(--muted);
+}
+
+.ls__main {
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-line);
+  color: var(--accent);
+  font-weight: 650;
+  min-height: 130px;
+}
+
+.ls__left,
+.ls__right {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--ink-2);
+}
+
+.ls__body {
+  display: grid;
+  gap: var(--s-2);
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "main";
+  transition: grid-template-columns var(--t-base) var(--ease);
+}
+
+.ls__left { grid-area: left; }
+.ls__main { grid-area: main; }
+.ls__right { grid-area: right; }
+
+/* --- Grid 实现：不同模式改写 grid-template-areas --- */
+.layoutswap[data-pattern="single"] .ls__left,
+.layoutswap[data-pattern="single"] .ls__right { display: none; }
+
+.layoutswap[data-pattern="two-right"] .ls__body {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 190px);
+  grid-template-areas: "main right";
+}
+.layoutswap[data-pattern="two-right"] .ls__left { display: none; }
+
+.layoutswap[data-pattern="two-left"] .ls__body {
+  grid-template-columns: minmax(0, 180px) minmax(0, 1fr);
+  grid-template-areas: "left main";
+}
+.layoutswap[data-pattern="two-left"] .ls__right { display: none; }
+
+.layoutswap[data-pattern="three"] .ls__body,
+.layoutswap[data-pattern="holy"] .ls__body {
+  grid-template-columns: minmax(0, 140px) minmax(0, 1fr) minmax(0, 140px);
+  grid-template-areas: "left main right";
+}
+
+/* --- Flex 实现：一维排布 + order 调整视觉顺序 --- */
+.layoutswap[data-impl="flex"] .ls__body { display: flex; }
+
+.layoutswap[data-impl="flex"] .ls__left { order: 1; flex: 0 0 140px; }
+.layoutswap[data-impl="flex"] .ls__main { order: 2; flex: 1 1 0; }
+.layoutswap[data-impl="flex"] .ls__right { order: 3; flex: 0 0 140px; }
+
+.layoutswap[data-impl="flex"][data-pattern="two-right"] .ls__main { flex: 1 1 0; }
+.layoutswap[data-impl="flex"][data-pattern="two-right"] .ls__right { flex: 0 0 190px; }
+.layoutswap[data-impl="flex"][data-pattern="two-left"] .ls__left { flex: 0 0 180px; }
+
+@media (max-width: 560px) {
+  .layoutswap[data-pattern="three"] .ls__body,
+  .layoutswap[data-pattern="holy"] .ls__body {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "main" "left" "right";
+  }
+  .layoutswap[data-impl="flex"][data-pattern="three"] .ls__body,
+  .layoutswap[data-impl="flex"][data-pattern="holy"] .ls__body {
+    flex-direction: column;
+  }
+  .layoutswap[data-impl="flex"] .ls__left,
+  .layoutswap[data-impl="flex"] .ls__right { flex: 0 0 auto; }
+}
+
+/* ==========================================================================
+   7. 演示：F / Z 浏览模式 / Demo: reading patterns
+   ========================================================================== */
+.fz {
+  position: relative;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.fz__page {
+  display: grid;
+  gap: var(--s-3);
+  padding: var(--s-4);
+  min-height: 300px;
+  align-content: start;
+}
+
+.fz__bar {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding-bottom: var(--s-3);
+  border-bottom: 1px solid var(--line);
+}
+
+.fz__logo {
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-sm);
+  background: var(--accent);
+}
+
+.fz__nav {
+  display: flex;
+  gap: var(--s-2);
+  margin-left: auto;
+}
+
+.fz__nav i {
+  display: block;
+  width: 34px;
+  height: 8px;
+  border-radius: 2px;
+  background: var(--line-2);
+}
+
+.fz__hero {
+  display: grid;
+  gap: var(--s-2);
+}
+
+.fz__h1 {
+  height: 16px;
+  border-radius: 3px;
+  background: var(--ink-2);
+  opacity: 0.85;
+  width: 62%;
+}
+
+.fz__h2 {
+  height: 9px;
+  border-radius: 3px;
+  background: var(--line-2);
+  width: 44%;
+}
+
+.fz__cta {
+  width: 92px;
+  height: 26px;
+  border-radius: var(--radius-pill);
+  background: var(--accent-2);
+  margin-top: var(--s-1);
+}
+
+.fz__list {
+  display: grid;
+  gap: var(--s-3);
+  margin-top: var(--s-2);
+}
+
+.fz__row {
+  display: grid;
+  gap: var(--s-2);
+}
+
+.fz__row i {
+  display: block;
+  height: 8px;
+  border-radius: 3px;
+  background: var(--line-2);
+}
+
+.fz__row i:first-child {
+  height: 11px;
+  background: var(--ink-2);
+  opacity: 0.5;
+}
+
+/* Z 形：主视觉居中、行动按钮靠右下 */
+.fz[data-eye="z"] .fz__hero { justify-items: center; text-align: center; }
+.fz[data-eye="z"] .fz__h1 { width: 74%; }
+.fz[data-eye="z"] .fz__h2 { width: 54%; }
+.fz[data-eye="z"] .fz__list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.fz[data-eye="z"] .fz__row i:first-child { background: var(--line-2); opacity: 1; }
+.fz[data-eye="z"] .fz__cta { margin-left: auto; }
+
+.fz[data-eye="f"] .fz__row { grid-template-columns: 26px minmax(0, 1fr); }
+.fz[data-eye="f"] .fz__row i:first-child { grid-column: 2; }
+
+/* 眼动路径动画 */
+.fz__path {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.fz__line {
+  fill: none;
+  stroke: var(--accent-2);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 260;
+  stroke-dashoffset: 260;
+  vector-effect: non-scaling-stroke;
+  opacity: 0;
+}
+
+.fz__path.is-playing .fz__line {
+  animation: fz-draw 1.9s var(--ease) forwards;
+}
+
+@keyframes fz-draw {
+  0% { stroke-dashoffset: 260; opacity: 1; }
+  92% { stroke-dashoffset: 0; opacity: 1; }
+  100% { stroke-dashoffset: 0; opacity: 0.35; }
+}
+
+.fz__legend {
+  position: absolute;
+  right: var(--s-3);
+  bottom: var(--s-3);
+  padding: var(--s-1) var(--s-3);
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  border: 1px solid var(--line);
+  font-size: 0.72rem;
+  font-family: var(--font-mono);
+  color: var(--accent-2);
+  backdrop-filter: blur(6px);
+}
+
+/* ==========================================================================
+   8. 演示：Flex 试验台 / Demo: flexbox playground
+   ========================================================================== */
+.fxbox {
+  display: flex;
+  gap: var(--gap, 12px);
+  min-height: var(--fxh, 210px);
+  padding: var(--s-3);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  transition: min-height var(--t-base) var(--ease);
+}
+
+.fxbox__item {
+  padding: var(--s-4) var(--s-5);
+  border-radius: var(--radius-sm);
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-line);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.fxbox__item:nth-child(2n) {
+  background: color-mix(in srgb, var(--accent-2) 12%, var(--surface));
+  border-color: color-mix(in srgb, var(--accent-2) 35%, var(--line));
+  color: var(--accent-2);
+}
+
+.fxbox__item--tall { padding-block: var(--s-7); }
+
+/* 主轴 / 交叉轴指示 */
+.axis {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--t-base) var(--ease);
+}
+
+.fxwrap[data-axes="on"] .axis { opacity: 1; }
+
+.axis__label {
+  position: absolute;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--accent-2);
+  background: color-mix(in srgb, var(--bg) 80%, transparent);
+  padding: 0 4px;
+  border-radius: 3px;
+}
+
+.axis__main {
+  left: 50%;
+  bottom: var(--s-1);
+  transform: translateX(-50%);
+}
+
+.axis__cross {
+  top: var(--s-1);
+  left: var(--s-1);
+}
+
+.fxwrap { position: relative; }
+
+/* ==========================================================================
+   9. 演示：Grid 试验台 / Demo: grid playground
+   ========================================================================== */
+.gxbox {
+  display: grid;
+  gap: var(--gap, 12px);
+  min-height: var(--gxh, 200px);
+  padding: var(--s-3);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+}
+
+.gxbox__item {
+  padding: var(--s-4);
+  border-radius: var(--radius-sm);
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-line);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  text-align: center;
+  min-width: 0;
+}
+
+.gxbox__item:nth-child(3n + 2) {
+  background: color-mix(in srgb, var(--accent-2) 12%, var(--surface));
+  border-color: color-mix(in srgb, var(--accent-2) 35%, var(--line));
+  color: var(--accent-2);
+}
+
+/* ---------- 区域命名画笔 / grid-template-areas painter ---------- */
+.painter {
+  display: grid;
+  gap: var(--s-4);
+}
+
+@media (min-width: 760px) {
+  .painter { grid-template-columns: minmax(0, 320px) minmax(0, 1fr); }
+}
+
+.painter__board {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  aspect-ratio: 3 / 2;
+}
+
+.painter__cell {
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-sm);
+  border: 1px dashed var(--line-2);
+  background: var(--surface);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  transition: all var(--t-fast) var(--ease);
+}
+
+.painter__cell:hover { border-color: var(--accent); }
+
+.painter__cell[data-region="a"] { background: var(--accent-soft); border: 1px solid var(--accent); color: var(--accent); }
+.painter__cell[data-region="b"] { background: color-mix(in srgb, var(--accent-2) 14%, var(--surface)); border: 1px solid var(--accent-2); color: var(--accent-2); }
+.painter__cell[data-region="c"] { background: color-mix(in srgb, var(--ok) 14%, var(--surface)); border: 1px solid var(--ok); color: var(--ok); }
+
+.painter__preview {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  min-height: 190px;
+  padding: var(--s-3);
+  border-radius: var(--radius-sm);
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+}
+
+.painter__preview > div {
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  padding: var(--s-2);
+}
+
+.painter__preview [data-region="a"] { background: var(--accent-soft); border: 1px solid var(--accent); color: var(--accent); }
+.painter__preview [data-region="b"] { background: color-mix(in srgb, var(--accent-2) 14%, var(--surface)); border: 1px solid var(--accent-2); color: var(--accent-2); }
+.painter__preview [data-region="c"] { background: color-mix(in srgb, var(--ok) 14%, var(--surface)); border: 1px solid var(--ok); color: var(--ok); }
+
+.painter__empty {
+  grid-area: 1 / 1 / -1 / -1;
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  text-align: center;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  font-size: var(--step--1);
+  font-weight: 600;
+}
+
+.status--ok { color: var(--ok); }
+.status--bad { color: var(--warn); }
+
+/* ==========================================================================
+   10. 演示：选型决策 / Demo: choosing flex vs grid
+   ========================================================================== */
+.decide {
+  display: grid;
+  gap: var(--s-4);
+}
+
+@media (min-width: 820px) {
+  .decide { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .decide__verdict { grid-column: 1 / -1; }
+}
+
+.decide__q {
+  display: grid;
+  gap: var(--s-2);
+  padding: var(--s-3) var(--s-4);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.decide__q p {
+  font-size: var(--step--1);
+  font-weight: 600;
+}
+
+.decide__verdict {
+  display: grid;
+  gap: var(--s-2);
+  padding: var(--s-4);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--accent-line);
+  background: var(--accent-soft);
+}
+
+.decide__verdict h5 {
+  font-family: var(--font-mono);
+  font-size: var(--step-1);
+  color: var(--accent);
+}
+
+.decide__verdict p {
+  font-size: var(--step--1);
+  color: var(--ink-2);
+  line-height: 1.65;
+}
+
+.abgrid {
+  display: grid;
+  gap: var(--s-4);
+}
+
+@media (min-width: 700px) {
+  .abgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+.abgrid__panel {
+  display: grid;
+  gap: var(--s-2);
+  padding: var(--s-4);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+}
+
+.abgrid__panel.is-pick {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.abgrid__title {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  font-weight: 650;
+  color: var(--accent-2);
+}
+
+.cardrow {
+  display: flex;
+  gap: var(--s-3);
+  flex-wrap: wrap;
+}
+
+.cardrow--grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+}
+
+.minicard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  flex: 1 1 140px;
+  padding: var(--s-3);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  font-size: 0.78rem;
+}
+
+.minicard__title { font-weight: 650; }
+.minicard__body { color: var(--muted); line-height: 1.5; flex: 1; }
+.minicard__btn {
+  align-self: flex-start;
+  margin-top: auto;
+  padding: 1px var(--s-3);
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.7rem;
+}
+
+/* ==========================================================================
+   11. 演示：视口模拟与断点 / Demo: viewport simulator
+   ========================================================================== */
+.vpsim {
+  display: grid;
+  gap: var(--s-3);
+}
+
+.vpsim__ruler {
+  position: relative;
+  display: flex;
+  height: 26px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+}
+
+.vpsim__band {
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  border-right: 1px solid var(--line);
+  overflow: hidden;
+  white-space: nowrap;
+  transition: background var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+}
+
+.vpsim__band:last-child { border-right: none; }
+.vpsim__band.is-active {
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 650;
+}
+
+.vpsim__marker {
+  position: absolute;
+  top: -1px;
+  bottom: -1px;
+  width: 2px;
+  background: var(--accent-2);
+  transition: left var(--t-fast) linear;
+}
+
+.vpsim__view {
+  /* 被缩放模拟的视口放在这里面：裁掉超出的部分，并撑出正确高度 */
+  position: relative;
+  overflow: hidden;
+  min-height: 120px;
+}
+
+.vpsim__frame {
+  position: relative;
+  margin-inline: auto;
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  overflow: hidden;
+  box-shadow: var(--shadow-1);
+  transition: width var(--t-fast) linear;
+  /* 用网格背景暗示「这是一块视口」 */
+  padding: 0;
+}
+
+.vpsim__frame iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+.vpsim__badge {
+  position: absolute;
+  top: var(--s-2);
+  left: var(--s-2);
+  z-index: 2;
+  padding: 1px var(--s-2);
+  border-radius: var(--radius-sm);
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+}
+
+.vpsim__presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+}
+
+/* 行内图例文字（断点范围、说明性短句） */
+.tx-legend {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+/* ==========================================================================
+   12. 演示：流体排版 / Demo: fluid type
+   ========================================================================== */
+.fluidframe {
+  margin-inline: auto;
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--surface);
+  transition: width var(--t-fast) linear;
+}
+
+.fluidframe iframe { width: 100%; height: 190px; border: 0; display: block; }
+
+/* ==========================================================================
+   13. 演示：容器查询 / Demo: container queries
+   ========================================================================== */
+.cq {
+  display: grid;
+  gap: var(--s-4);
+}
+
+@media (min-width: 820px) {
+  .cq { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+.cq__panel {
+  display: grid;
+  gap: var(--s-2);
+  padding: var(--s-4);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  min-width: 0;
+}
+
+.cq__title {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  color: var(--accent-2);
+  font-weight: 650;
+}
+
+.cq__shell {
+  /* 关键：声明这是一个「查询容器」，其宽度可被 @container 感知 */
+  container-type: inline-size;
+  container-name: card;
+  width: var(--cqw, 320px);
+  max-width: 100%;
+  padding: var(--s-3);
+  border: 1px dashed var(--line-2);
+  border-radius: var(--radius-sm);
+  background: var(--bg-soft);
+  overflow: hidden;
+  transition: width var(--t-fast) linear;
+}
+
+.cq__card {
+  display: grid;
+  gap: var(--s-3);
+  padding: var(--s-3);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+}
+
+.cq__thumb {
+  height: 64px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  opacity: 0.8;
+}
+
+.cq__cardtext { min-width: 0; display: grid; gap: 4px; }
+.cq__cardtext h5 { font-size: var(--step-0); }
+.cq__cardtext p { font-size: 0.76rem; color: var(--muted); line-height: 1.55; }
+
+/* 容器查询版：容器够宽就变成「图左文右」 */
+@container card (min-width: 400px) {
+  .cq__card--cq {
+    grid-template-columns: 96px minmax(0, 1fr);
+    align-items: center;
+  }
+  .cq__card--cq .cq__thumb { height: 76px; }
+}
+
+/* 媒体查询版：只认视口宽度，容器再宽也不会变 */
+.cq__card--mq { grid-template-columns: minmax(0, 1fr); }
+
+@media (min-width: 1500px) {
+  .cq__card--mq {
+    grid-template-columns: 96px minmax(0, 1fr);
+    align-items: center;
+  }
+}
+
+/* ==========================================================================
+   14. 演示：线框图 / Demo: wireframe (case chapter)
+   ========================================================================== */
+.wire {
+  display: grid;
+  gap: 6px;
+  padding: var(--s-3);
+  border-radius: var(--radius-sm);
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+}
+
+.wire__zone {
+  display: grid;
+  place-items: center;
+  gap: var(--s-1);
+  padding: var(--s-3);
+  border-radius: var(--radius-sm);
+  border: 1px dashed var(--line-2);
+  background: var(--surface);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--muted);
+  text-align: center;
+  transition: all var(--t-base) var(--ease);
+}
+
+.wire__zone b { color: var(--ink-2); font-weight: 650; }
+
+.wire__zone[data-off] {
+  opacity: 0.2;
+  border-style: dotted;
+}
+
+.wire__zone--hero { min-height: 92px; background: var(--accent-soft); border-color: var(--accent-line); color: var(--accent); }
+.wire__zone--hero b { color: var(--accent); }
+
+.wire__row {
+  display: grid;
+  grid-template-columns: repeat(var(--wcols, 3), minmax(0, 1fr));
+  gap: 6px;
+}
+
+.wire__row .wire__zone { min-height: 56px; }
+
+@media (max-width: 620px) {
+  .wire__row { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* 案例 A/B：同一个 iframe 换 state 参数，避免维护两份代码 */
+.case-ab {
+  display: grid;
+  gap: var(--s-3);
+}
+
+.case-ab__frame {
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.case-ab__frame iframe {
+  width: 100%;
+  height: 460px;
+  border: 0;
+  display: block;
+}
+
+/* 方案对比网格：三个方案自适应排列 */
+.optgrid {
+  display: grid;
+  gap: var(--s-3);
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+}
+
+/* 迷你骨架示意图：用几条色块表达版式 */
+.skel {
+  display: grid;
+  gap: 4px;
+  padding: var(--s-3);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--bg-soft);
+}
+
+.skel__band {
+  height: 15px;
+  border-radius: 3px;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-line);
+}
+
+.skel__row {
+  display: grid;
+  gap: 4px;
+}
+
+.skel__row i {
+  display: block;
+  height: 12px;
+  border-radius: 3px;
+  background: var(--surface);
+  border: 1px solid var(--line-2);
+}
+
+.skel--single .skel__row { grid-template-columns: minmax(0, 1fr); }
+.skel--two .skel__row { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); }
+.skel--three .skel__row { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) minmax(0, 1fr); }
+
+/* 修复清单：before 状态下划掉，直观表示「这些还没做」 */
+.fixlist {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: var(--s-1);
+  font-size: var(--step--1);
+  color: var(--ink-2);
+}
+
+.fixlist li {
+  display: flex;
+  gap: var(--s-2);
+  align-items: flex-start;
+  line-height: 1.55;
+  transition: opacity var(--t-base) var(--ease);
+}
+
+.fixlist li::before {
+  content: "✓";
+  color: var(--ok);
+  font-weight: 700;
+  flex: 0 0 auto;
+}
+
+.fixlist[data-state="before"] li { opacity: 0.4; }
+
+.fixlist[data-state="before"] li::before {
+  content: "✗";
+  color: var(--warn);
+}
+
+/* ==========================================================================
+   15. 演示：代码标签页 / Demo: code tabs
+   ========================================================================== */
+.tabs {
+  display: grid;
+  gap: 0;
+}
+
+.tabs__bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid var(--line);
+  border-bottom: none;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  background: var(--bg-soft);
+}
+
+.tabs__btn {
+  padding: 3px var(--s-4);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  color: var(--muted);
+}
+
+.tabs__btn.is-active {
+  background: var(--surface);
+  color: var(--accent);
+  font-weight: 650;
+}
+
+.tabs__panel { display: none; }
+.tabs__panel.is-active { display: block; }
+.tabs__panel .codeblock { border-radius: 0 0 var(--radius-sm) var(--radius-sm); }
+
+/* ==========================================================================
+   16. 其他小工具 / Misc
+   ========================================================================== */
+.tag-num {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.5em;
+  padding: 0 4px;
+  border-radius: var(--radius-sm);
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-line);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+}
+
+.ascii {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  line-height: 1.5;
+  white-space: pre;
+  overflow-x: auto;
+  padding: var(--s-4);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  color: var(--ink-2);
+}

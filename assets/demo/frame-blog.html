@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-state="after">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>远山手记 · 首页 / Far Hills Notes</title>
+<link rel="stylesheet" href="frame.css">
+</head>
+<body>
+<!--
+  案例成品：博客首页
+  ------------------------------------------------------------------
+  这份文档被主站的 iframe 加载，用真实宽度接受媒体查询的检验。
+  查询参数：
+    ?lang=zh|en      语言
+    ?state=before|after   「改造前 / 改造后」对照
+    ?theme=light|dark     （保留位，成品只提供浅色）
+-->
+<div class="f-shell">
+
+  <header class="f-head">
+    <div class="f-brand">远山<span>手记</span></div>
+    <nav class="f-nav">
+      <a href="#" aria-current="page" data-k="nav1">文章</a>
+      <a href="#" data-k="nav2">笔记</a>
+      <a href="#" data-k="nav3">关于</a>
+    </nav>
+    <button class="f-search" type="button" data-k="search">搜索</button>
+  </header>
+
+  <div class="f-grid">
+
+    <aside class="f-rail">
+      <h4 data-k="railTitle">归档</h4>
+      <a href="#" aria-current="page" data-k="rail1">2026 · 秋</a>
+      <a href="#" data-k="rail2">2026 · 夏</a>
+      <a href="#" data-k="rail3">2026 · 春</a>
+      <a href="#" data-k="rail4">2025 · 冬</a>
+    </aside>
+
+    <main class="f-stream">
+      <section class="f-hero">
+        <p class="f-kicker" data-k="kicker">精选</p>
+        <h1 data-k="h1">用栅格与留白，把首页安顿好</h1>
+        <p class="f-lead" data-k="lead">先确定信息的优先级，再用栅格把区域落位，最后靠留白和层级把视线引到该去的地方。整个页面的宽度只有四个断点，骨架只用了一层 Grid。</p>
+        <div class="f-meta">
+          <span data-k="date">2026 年 9 月 12 日</span>
+          <span>·</span>
+          <span><b data-k="read">12 分钟</b> <span data-k="readUnit">阅读</span></span>
+        </div>
+      </section>
+
+      <h2 class="f-sec-title" data-k="streamTitle">最新文章</h2>
+      <div class="f-posts">
+
+        <a class="f-post" href="#">
+          <span class="f-thumb" aria-hidden="true"></span>
+          <span>
+            <h3 data-k="p1t">圣杯布局为什么还在被使用</h3>
+            <p data-k="p1d">三栏 + 通栏头尾 + 正文优先加载，这套 2006 年的需求今天依然常见。</p>
+            <span class="f-tags"><span class="f-tag" data-k="tagA">栅格</span><span class="f-tag" data-k="tagB">历史</span></span>
+          </span>
+        </a>
+
+        <a class="f-post" href="#">
+          <span class="f-thumb" aria-hidden="true"></span>
+          <span>
+            <h3 data-k="p2t">Flexbox 与 Grid：按维度选型</h3>
+            <p data-k="p2d">一维用 Flex，二维用 Grid。判断标准只有一条：要不要同时管行和列。</p>
+            <span class="f-tags"><span class="f-tag" data-k="tagC">Flexbox</span><span class="f-tag" data-k="tagD">Grid</span></span>
+          </span>
+        </a>
+
+        <a class="f-post" href="#">
+          <span class="f-thumb" aria-hidden="true"></span>
+          <span>
+            <h3 data-k="p3t">断点不是设备清单</h3>
+            <p data-k="p3d">断点应该加在「版面撑不住」的地方，而不是 iPhone 的型号列表上。</p>
+            <span class="f-tags"><span class="f-tag" data-k="tagE">响应式</span></span>
+          </span>
+        </a>
+
+        <a class="f-post" href="#">
+          <span class="f-thumb" aria-hidden="true"></span>
+          <span>
+            <h3 data-k="p4t">留白是信息结构的一部分</h3>
+            <p data-k="p4d">间距不是「剩下多少填多少」，它是分组与层级的可见形式。</p>
+            <span class="f-tags"><span class="f-tag" data-k="tagF">排版</span><span class="f-tag" data-k="tagG">留白</span></span>
+          </span>
+        </a>
+
+      </div>
+    </main>
+
+    <aside class="f-side">
+      <div class="f-card f-card--accent">
+        <h4 data-k="subTitle">订阅</h4>
+        <p data-k="subBody">每周一封，只写版面与可读性。</p>
+      </div>
+      <div class="f-card">
+        <h4 data-k="aboutTitle">关于作者</h4>
+        <p data-k="aboutBody">设计工程师，长期关注版面结构、可读性与无障碍。</p>
+      </div>
+      <div class="f-card">
+        <h4 data-k="tagsTitle">标签</h4>
+        <div class="f-cloud">
+          <span data-k="tagA">栅格</span>
+          <span data-k="tagC">Flexbox</span>
+          <span data-k="tagE">响应式</span>
+          <span data-k="tagF">排版</span>
+          <span data-k="tagH">无障碍</span>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+
+  <footer class="f-foot">
+    <span data-k="foot">© 2026 远山手记 · 手写 HTML/CSS</span>
+    <nav>
+      <a href="#" data-k="nav1">文章</a>
+      <a href="#" data-k="nav3">关于</a>
+      <a href="#" data-k="rss">RSS</a>
+    </nav>
+  </footer>
+
+</div>
+
+<script>
+/* 这个 iframe 刻意自成一体：文案字典内联在这里，
+   好处是它可以被单独打开、单独复制使用，不依赖主站脚本。 */
+(function () {
+  var DICT = {
+    en: {
+      nav1: "Writing", nav2: "Notes", nav3: "About", search: "Search",
+      railTitle: "Archive",
+      rail1: "Autumn 2026", rail2: "Summer 2026", rail3: "Spring 2026", rail4: "Winter 2025",
+      kicker: "Featured",
+      h1: "Settling a homepage with grids and whitespace",
+      lead: "Decide what matters most, place the regions on a grid, then let whitespace and hierarchy steer the eye. The whole page uses four breakpoints and a single layer of Grid.",
+      date: "Sep 12, 2026", read: "12 min", readUnit: "read",
+      streamTitle: "Latest writing",
+      p1t: "Why the holy grail layout still earns its keep",
+      p1d: "Three columns, full-width header and footer, main content loaded first — a 2006 brief that still shows up daily.",
+      p2t: "Flexbox vs Grid: choose by dimension",
+      p2d: "One dimension, use Flex. Two dimensions, use Grid. The only test: do rows and columns both need control?",
+      p3t: "Breakpoints are not a device list",
+      p3d: "Add a breakpoint where the layout breaks, not where a phone model ends.",
+      p4t: "Whitespace is information structure",
+      p4d: "Spacing is not what is left over — it is how grouping and hierarchy become visible.",
+      subTitle: "Subscribe", subBody: "One letter a week, on layout and readability only.",
+      aboutTitle: "About the author",
+      aboutBody: "Design engineer, long focused on page structure, readability and accessibility.",
+      tagsTitle: "Tags",
+      tagA: "Grid", tagB: "History", tagC: "Flexbox", tagD: "Grid", tagE: "Responsive",
+      tagF: "Typography", tagG: "Whitespace", tagH: "A11y",
+      foot: "© 2026 Far Hills Notes · hand-written HTML/CSS",
+      rss: "RSS"
+    }
+  };
+
+  var params = new URLSearchParams(location.search);
+  var lang = params.get("lang") === "en" ? "en" : "zh";
+  var state = params.get("state") === "before" ? "before" : "after";
+
+  document.documentElement.lang = lang === "en" ? "en" : "zh-CN";
+  document.documentElement.dataset.state = state;
+  if (state === "before") document.body.classList.add("is-before");
+
+  if (lang === "en") {
+    document.querySelectorAll("[data-k]").forEach(function (el) {
+      var v = DICT.en[el.dataset.k];
+      if (v != null) el.textContent = v;
+    });
+    document.title = "Far Hills Notes · Home";
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title data-i18n="c1.title">第 1 章 · 设计原则｜布局实验室</title>
+<meta name="description" content="对齐、留白、视觉层次、栅格系统：把「好看」拆成可执行的规则，并用「远山手记」博客首页案例贯穿。" data-i18n-attr="content:c1.desc">
+<link rel="stylesheet" href="../assets/css/tokens.css">
+<link rel="stylesheet" href="../assets/css/base.css">
+<link rel="stylesheet" href="../assets/css/site.css">
+<link rel="stylesheet" href="../assets/css/demos.css">
+</head>
+<body>
+<a class="skip-link" href="#main" data-i18n="nav.skip">跳到正文</a>
+
+<header class="topbar">
+  <div class="topbar__inner wrap">
+    <a class="brand" href="../index.html">
+      <span class="brand__mark" aria-hidden="true">▦</span>
+      <span class="brand__text">
+        <span class="brand__name" data-i18n="site.brand">布局实验室</span>
+        <span class="brand__sub">Layout Lab</span>
+      </span>
+    </a>
+    <nav class="topnav" aria-label="章节导航" data-i18n-attr="aria-label:nav.label">
+      <a class="topnav__link" href="../index.html" data-i18n="nav.home">首页</a>
+      <a class="topnav__link" href="principles.html" aria-current="page" data-i18n="nav.ch1">① 设计原则</a>
+      <a class="topnav__link" href="patterns.html" data-i18n="nav.ch2">② 经典模式</a>
+      <a class="topnav__link" href="flexgrid.html" data-i18n="nav.ch3">③ Flex &amp; Grid</a>
+      <a class="topnav__link" href="responsive.html" data-i18n="nav.ch4">④ 响应式</a>
+      <a class="topnav__link" href="case.html" data-i18n="nav.ch5">⑤ 案例实战</a>
+    </nav>
+    <div class="topbar__tools">
+      <div class="seg seg--lang" data-lang-switch data-name="lang" role="group" aria-label="Language">
+        <button class="seg__btn is-active" type="button" data-value="zh">中</button>
+        <button class="seg__btn" type="button" data-value="en">EN</button>
+      </div>
+      <button class="iconbtn" type="button" data-theme-toggle aria-label="切换主题">☾</button>
+    </div>
+  </div>
+  <div class="progress"><div class="progress__bar"></div></div>
+</header>
+
+<main class="shell wrap" id="main">
+
+  <aside class="toc toc--desktop">
+    <p class="toc__title" data-i18n="toc.title">本章目录</p>
+    <ul class="toc__list">
+      <li><a class="toc__link" href="#p-align"><span class="toc__num">1.1</span><span data-i18n="c1.p1.short">对齐</span></a></li>
+      <li><a class="toc__link" href="#p-space"><span class="toc__num">1.2</span><span data-i18n="c1.p2.short">留白</span></a></li>
+      <li><a class="toc__link" href="#p-hier"><span class="toc__num">1.3</span><span data-i18n="c1.p3.short">视觉层次</span></a></li>
+      <li><a class="toc__link" href="#p-gridsys"><span class="toc__num">1.4</span><span data-i18n="c1.p4.short">栅格系统</span></a></li>
+    </ul>
+    <p class="toc__title" style="margin-top:1.5rem" data-i18n="toc.case">案例进度</p>
+    <ol class="stepper">
+      <li class="is-current" data-i18n="case.step1">需求</li>
+      <li data-i18n="case.step2">骨架</li>
+      <li data-i18n="case.step3">实现</li>
+      <li data-i18n="case.step4">响应式</li>
+      <li data-i18n="case.step5">精修</li>
+    </ol>
+  </aside>
+
+  <article class="doc">
+
+    <details class="toc toc--mobile">
+      <summary data-i18n="toc.open">本章目录 / 案例进度</summary>
+      <ul class="toc__list" style="margin-top:.75rem">
+        <li><a class="toc__link" href="#p-align"><span class="toc__num">1.1</span><span data-i18n="c1.p1.short">对齐</span></a></li>
+        <li><a class="toc__link" href="#p-space"><span class="toc__num">1.2</span><span data-i18n="c1.p2.short">留白</span></a></li>
+        <li><a class="toc__link" href="#p-hier"><span class="toc__num">1.3</span><span data-i18n="c1.p3.short">视觉层次</span></a></li>
+        <li><a class="toc__link" href="#p-gridsys"><span class="toc__num">1.4</span><span data-i18n="c1.p4.short">栅格系统</span></a></li>
+      </ul>
+      <ol class="stepper" style="margin-top:1rem">
+        <li class="is-current" data-i18n="case.step1">需求</li>
+        <li data-i18n="case.step2">骨架</li>
+        <li data-i18n="case.step3">实现</li>
+        <li data-i18n="case.step4">响应式</li>
+        <li data-i18n="case.step5">精修</li>
+      </ol>
+    </details>
+
+    <header class="doc__head">
+      <p class="eyebrow" data-i18n="c1.eyebrow">第 1 章 · 设计原则</p>
+      <h1 class="doc__title" data-i18n="c1.h1">把「好看」拆成可执行的规则</h1>
+      <p class="doc__lead" data-i18n="c1.lead">布局不是装饰。对齐、留白、层级、栅格这四件事，决定了读者先看到什么、按什么顺序读、在哪里停下来。本章开始我们接手一个真实任务：为个人博客「远山手记」设计首页 —— 先用四条原则把一堆内容整理成一份可读的版面。</p>
+      <div class="doc__meta">
+        <span data-i18n="c1.meta1">4 个知识点</span>
+        <span data-i18n="c1.meta2">4 个可交互演示</span>
+        <span data-i18n="c1.meta3">约 25 分钟</span>
+      </div>
+      <div class="callout callout--case" style="margin-top:1.5rem">
+        <span class="callout__icon" aria-hidden="true">◈</span>
+        <div>
+          <p data-i18n-html="c1.caseNote"><strong>案例启动：「远山手记」首页。</strong>这是一份纯技术博客，作者希望读者 30 秒内判断「这里有没有我要的东西」，并能顺畅地连续读下去。本章交付物：一份对齐、间距、层级都成体系的线框结构。后面四章会依次补上骨架、实现、响应式与精修。</p>
+        </div>
+      </div>
+    </header>
+
+    <!-- ================================================================
+         1.1 对齐 / Alignment
+         ================================================================ -->
+    <section class="point" id="p-align">
+      <header class="point__head">
+        <span class="point__num">1.1</span>
+        <h2 class="point__title" data-i18n="c1.p1.title">对齐：让所有边缘落在同一条线上</h2>
+        <p class="point__sub" data-i18n="c1.p1.sub">人的视觉系统会自动寻找对齐线；找不到时，页面读起来就「毛糙」。对齐的第一目的不是好看，而是减少读者需要解释的边缘数量。</p>
+      </header>
+
+      <div class="block block--theory">
+        <p class="block__label" data-i18n="label.theory">讲解</p>
+        <div class="prose">
+          <h4 data-i18n="c1.p1.h1">对齐在解决什么问题</h4>
+          <p data-i18n-html="c1.p1.t1">一条对齐线，等于一次「这几个元素是一伙的」的暗示。当你把页头的标题、正文的段首、卡片的名字都放在同一条左边界上，读者不需要再逐个判断它们的从属关系 —— 这是把认知成本从读者身上拿走。反过来，<strong>边缘每多一条，阅读就多一分噪声</strong>。</p>
+          <p data-i18n="c1.p1.t2">页面上通常有三类可以对齐的「线」，优先级从高到低：</p>
+          <ul>
+            <li data-i18n-html="c1.p1.t2a"><strong>版心边界</strong>：内容区左右两侧的竖线，是最强、最容易被感知的一条。所有主要区块都应对齐到它。</li>
+            <li data-i18n-html="c1.p1.t2b"><strong>文本基线</strong>：不同字号的文字并排时，让它们「坐」在同一条基线（baseline）上，而不是几何中心。</li>
+            <li data-i18n-html="c1.p1.t2c"><strong>栅格列线</strong>：当页面复杂到版心边界不够用时，用栅格细分（见 1.4）。</li>
+          </ul>
+
+          <h4 data-i18n="c1.p1.h2">三个常见决策</h4>
+          <div class="tablewrap">
+            <table class="data">
+              <thead>
+                <tr>
+                  <th data-i18n="c1.p1.th1">场景</th>
+                  <th data-i18n="c1.p1.th2">推荐</th>
+                  <th data-i18n="c1.p1.th3">理由</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td data-i18n="c1.p1.r1c1">多行正文</td>
+                  <td class="yes" data-i18n="c1.p1.r1c2">左对齐</td>
+                  <td data-i18n="c1.p1.r1c3">每行起点一致，回扫成本最低。中英混排时两端对齐会把英文单词间拉出空洞（「河」）。</td>
+                </tr>
+                <tr>
+                  <td data-i18n="c1.p1.r2c1">短标题 / 按钮</td>
+                  <td class="yes" data-i18n="c1.p1.r2c2">可以居中</td>
+                  <td data-i18n="c1.p1.r2c3">一两行的短文本，居中不会破坏回扫节奏，反而更能聚焦。</td>
+                </tr>
+                <tr>
+                  <td data-i18n="c1.p1.r3c1">长段落</td>
+                  <td class="no" data-i18n="c1.p1.r3c2">不要居中</td>
+                  <td data-i18n="c1.p1.r3c3">每行起点都在变，眼睛找不到下一行的开头，读三行就累了。</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="callout callout--tip">
+            <span class="callout__icon" aria-hidden="true">◆</span>
+            <div>
+              <p data-i18n-html="c1.p1.tip"><strong>一个可操作的检查方法：</strong>眯起眼睛看页面（或者把截图缩到 25%）。如果这时还能看出几条清晰的竖线，说明对齐成立；如果看到的是边界互相错开的「毛边」，就说明有元素没落到线上。</p>
+            </div>
+          </div>
+
+          <dl class="tradeoff">
+            <div>
+              <dt data-i18n="c1.p1.td1t">严格对齐的代价</dt>
+              <dd data-i18n="c1.p1.td1d">所有东西都严格落在栅格上，版面会显得「板」、缺少节奏，因为意外感被抹掉了。</dd>
+            </div>
+            <div>
+              <dt data-i18n="c1.p1.td2t">有意的越界</dt>
+              <dd data-i18n="c1.p1.td2d">让一张大图出血到版心之外，可以制造呼吸感与重点。但越界必须是唯一的、故意的 —— 两处越界就变成了失控。</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+
+      <div class="block block--code">
+        <p class="block__label" data-i18n="label.code">关键代码</p>
+        <figure class="codeblock">
+          <figcaption class="codeblock__bar">
+            <span class="codeblock__title" data-i18n="c1.p1.codeTitle">博客卡片：三层对齐一次写清</span>
+            <span class="codeblock__lang">css</span>
+            <button class="copybtn" type="button" data-i18n="ui.copy">复制</button>
+          </figcaption>
+<pre class="code" data-lang="css"><code><span class="tok-cmt" data-i18n="c1.p1.c1">/* 三层对齐：基线、版心、栅格 */</span>
+.post-card {
+  display: flex;
+  align-items: baseline;      <span class="tok-cmt" data-i18n="c1.p1.c2">/* 不同字号的文字并排 → 基线对齐，视觉上才「坐得住」 */</span>
+  gap: 12px;                  <span class="tok-cmt" data-i18n="c1.p1.c3">/* 间距同样要成体系，别随手写 11px */</span>
+}
+
+.post-card__title { font-size: 24px; }
+.post-card__date  { font-size: 13px; color: var(--muted); }
+
+.post-card__tag {
+  margin-left: auto;          <span class="tok-cmt" data-i18n="c1.p1.c4">/* 用 auto margin 靠右，不必再套一层容器 */</span>
+  align-self: center;
+}
+
+.post-card__body {
+  text-align: left;           <span class="tok-cmt" data-i18n="c1.p1.c5">/* 多行正文永远左对齐 */</span>
+  max-width: 68ch;            <span class="tok-cmt" data-i18n="c1.p1.c6">/* 顺手把行宽管住，理由见 2.1 */</span>
+  margin-inline: auto;        <span class="tok-cmt" data-i18n="c1.p1.c7">/* 注意是「容器居中」，不是「文字居中」 */</span>
+}
+</code></pre>
+        </figure>
+        <ul class="code-notes">
+          <li data-i18n-html="c1.p1.n1"><code>align-items: baseline</code> 与 <code>center</code> 的差别，是这个演示里最容易看出来的部分 —— 打开演示切一下就知道。</li>
+          <li data-i18n-html="c1.p1.n2"><code>margin-left: auto</code> 是 Flex 里最省事的靠边手法：它吃掉所有剩余空间，因此天然响应容器宽度变化。</li>
+          <li data-i18n-html="c1.p1.n3"><code>margin-inline</code> 是逻辑属性，在从左到右与从右到左的语言里都能正确居中。</li>
+        </ul>
+      </div>
+
+      <div class="block block--demo">
+        <p class="block__label" data-i18n="label.demo">动态演示</p>
+        <div class="demo" data-demo="align">
+          <div class="demo__stage demo__stage--soft">
+            <div class="alignbox" id="dv-align">
+              <div class="alignbox__guides" aria-hidden="true">
+                <div class="g-cols"><i></i><i></i><i></i><i></i></div>
+                <div class="g-base"></div>
+              </div>
+              <div class="alignbox__head">
+                <span class="alignbox__avatar" aria-hidden="true">远</span>
+                <div class="alignbox__meta">
+                  <p class="alignbox__name">远山手记</p>
+                  <p class="alignbox__sub" data-i18n="c1.p1.demoSub">设计与前端随笔</p>
+                </div>
+                <span class="alignbox__tag">Grid</span>
+              </div>
+              <p class="alignbox__text" data-i18n="c1.p1.demoText">对齐不是为了整齐，而是为了让读者不必解释你的版面：标题、标签、按钮都落在同一条线上，眼睛一次就能扫完。</p>
+              <div class="alignbox__foot">
+                <span class="alignbox__big">Aa</span>
+                <span class="alignbox__small">baseline</span>
+                <button class="btn alignbox__cta" type="button" data-i18n="c1.p1.demoBtn">阅读全文</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="demo__controls demo__controls--two">
+            <div class="ctrlgroup">
+              <span class="ctrlgroup__label" data-i18n="d.align.text">文本对齐</span>
+              <div class="ctrlgroup__body">
+                <div class="seg" data-name="text">
+                  <button class="seg__btn is-active" type="button" data-value="left" data-i18n="d.align.left">左</button>
+                  <button class="seg__btn" type="button" data-value="center" data-i18n="d.align.center">居中</button>
+                  <button class="seg__btn" type="button" data-value="right" data-i18n="d.align.right">右</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="ctrlgroup">
+              <span class="ctrlgroup__label" data-i18n="d.align.items">元素对齐（交叉轴）</span>
+              <div class="ctrlgroup__body">
+                <div class="seg seg--mono" data-name="items">
+                  <button class="seg__btn" type="button" data-value="stretch">stretch</button>
+                  <button class="seg__btn" type="button" data-value="start">flex-start</button>
+                  <button class="seg__btn is-active" type="button" data-value="center">center</button>
+                  <button class="seg__btn" type="button" data-value="baseline">baseline</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="ctrlgroup ctrlgroup--full">
+              <span class="ctrlgroup__label" data-i18n="d.align.helpers">辅助开关</span>
+              <div class="ctrlgroup__body">
+                <label class="switch"><input type="checkbox" data-name="aligned" checked><span data-i18n="d.align.on">启用对齐</span></label>
+                <label class="switch"><input type="checkbox" data-name="gcols"><span data-i18n="d.align.gcols">列参考线</span></label>
+                <label class="switch"><input type="checkbox" data-name="gbase"><span data-i18n="d.align.gbase">基线网格</span></label>
+              </div>
+            </div>
+
+            <p class="demo__readout" id="dv-align-out" aria-live="polite"></p>
+          </div>
+        </div>
+        <figure class="codeblock">
+          <figcaption class="codeblock__bar">
+            <span class="codeblock__title" data-i18n="d.live">实时输出：上面每一步操作对应的 CSS</span>
+            <span class="codeblock__lang">css</span>
+            <button class="copybtn" type="button" data-i18n="ui.copy">复制</button>
+          </figcaption>
+          <pre class="code code--live" data-lang="css"><code id="code-align"></code></pre>
+        </figure>
+        <p class="demo__note">
+          <span data-i18n-html="c1.p1.demoNote">建议的尝试顺序：先关掉「启用对齐」看看边界错位的观感，再打开「列参考线」逐个把元素放回线上；最后把元素对齐从 <code>center</code> 切到 <code>baseline</code>，观察头像、标题、标签的相对位置变化。</span>
+        </p>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         1.2 留白 / Whitespace
+         ================================================================ -->
+    <section class="point" id="p-space">
+      <header class="point__head">
+        <span class="point__num">1.2</span>
+        <h2 class="point__title" data-i18n="c1.p2.title">留白：间距是信息结构的可见形式</h2>
+        <p class="point__sub" data-i18n="c1.p2.sub">留白不是「剩下的地方」，它是分组与层级的载体。判断一段留白是否合格，看的是比例关系，而不是绝对值。</p>
+      </header>
+
+      <div class="block block--theory">
+        <p class="block__label" data-i18n="label.theory">讲解</p>
+        <div class="prose">
+          <h4 data-i18n="c1.p2.h1">接近性原则：距离即关系</h4>
+          <p data-i18n-html="c1.p2.t1">格式塔心理学的<strong>接近性原则</strong>说：人会把彼此靠近的元素归为一组。这条规律给了留白一个可操作的判据 —— <strong>组内间距必须小于组间间距</strong>。卡片内部的标题与摘要靠得近、卡片与卡片之间离得远，读者不用看分割线就知道「这几行是一张卡」。</p>
+          <p data-i18n-html="c1.p2.t2">一旦这个关系反转（组内比组间还大），版面立刻失去结构：读者会开始怀疑「这张卡到底包含哪几行」。这就是很多「内容都对、但看着乱」的页面真正的病因。</p>
+
+          <h4 data-i18n="c1.p2.h2">用刻度代替随手取值</h4>
+          <p data-i18n-html="c1.p2.t3">不要每次需要间距时临时想一个数。做法是先定义一条<strong>间距刻度</strong>（例如 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64），所有间距都从刻度里取。这样做有三个好处：</p>
+          <ul>
+            <li data-i18n="c1.p2.t3a">节奏感来自比例，而不是来自某个魔数；</li>
+            <li data-i18n="c1.p2.t3b">改一处刻度，全站同步，不需要逐页调；</li>
+            <li data-i18n="c1.p2.t3c">团队协作时有共同语言，review 时不必争论「16 还是 18」。</li>
+          </ul>
+          <p data-i18n-html="c1.p2.t4">本站自己用的就是这条刻度（见 <code>assets/css/tokens.css</code> 里的 <code>--s-1 … --s-9</code>），并且全部间距都是它的倍数 —— 这正是「本站是自身所讲方法的示范」的一处具体体现。</p>
+
+          <dl class="tradeoff">
+            <div>
+              <dt data-i18n="c1.p2.td1t">留白不足</dt>
+              <dd data-i18n="c1.p2.td1d">信息密度高、一屏能看到更多，但读者需要消耗更多注意力去分组，长文尤其吃力。</dd>
+            </div>
+            <div>
+              <dt data-i18n="c1.p2.td2t">留白过度</dt>
+              <dd data-i18n="c1.p2.td2d">呼吸感强、显得高级，但一屏信息太少，滚动成本上升；在工具型界面里会直接降低效率。</dd>
+            </div>
+            <div>
+              <dt data-i18n="c1.p2.td3t">取舍依据</dt>
+              <dd data-i18n="c1.p2.td3d">读得越「深」的场景（长文、详情页），留白越要足；扫得越「快」的场景（列表、后台表格），留白越要省。</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+
+      <div class="block block--code">
+        <p class="block__label" data-i18n="label.code">关键代码</p>
+        <figure class="codeblock">
+          <figcaption class="codeblock__bar">
+            <span class="codeblock__title" data-i18n="c1.p2.codeTitle">间距刻度 + 组内 &lt; 组间</span>
+            <span class="codeblock__lang">css</span>
+            <button class="copybtn" type="button" data-i18n="ui.copy">复制</button>
+          </figcaption>
+<pre class="code" data-lang="css"><code>:root {
+  <span class="tok-cmt" data-i18n="c1.p2.c1">/* 一条刻度，全站共用；倍数关系比数值本身更重要 */</span>
+  --space: 16px;
+}
+
+.post-list {
+  display: grid;
+  <span class="tok-cmt" data-i18n="c1.p2.c2">/* 组间：1.9 倍 —— 让「卡片之间」明显大于「卡片内部」 */</span>
+  gap: calc(var(--space) * 1.9);
+}
+
+.post-card {
+  padding: var(--space);                 <span class="tok-cmt" data-i18n="c1.p2.c3">/* 卡片自己的呼吸空间 */</span>
+  display: grid;
+  gap: var(--space);                     <span class="tok-cmt" data-i18n="c1.p2.c4">/* 组内：1 倍 */</span>
+}
+
+<span class="tok-cmt" data-i18n="c1.p2.c5">/* 只在需要「更紧密」的地方，才用 calc 缩小一档 */</span>
+.post-card__meta {
+  display: flex;
+  gap: calc(var(--space) * 0.5);          <span class="tok-cmt" data-i18n="c1.p2.c6">/* 日期与标签是同一组的细粒度信息 */</span>
+}
+</code></pre>
+        </figure>
+        <ul class="code-notes">
+          <li data-i18n-html="c1.p2.n1">用 <code>gap</code> 而不是 <code>margin</code>：<code>gap</code> 只作用在项目之间，不会在首尾多出空白，也就不必写 <code>:last-child { margin: 0 }</code> 这类补丁。</li>
+          <li data-i18n-html="c1.p2.n2">倍数让关系可读：看到 <code>1.9</code> 与 <code>1</code>，立刻知道哪一层是「组间」。</li>
+          <li data-i18n-html="c1.p2.n3">如果项目用了 <code>clamp()</code> 做流体间距，刻度依然成立 —— 只是把刻度本身变成流体值。</li>
+        </ul>
+      </div>
+
+      <div class="block block--demo">
+        <p class="block__label" data-i18n="label.demo">动态演示</p>
+        <div class="demo" data-demo="space">
+          <div class="demo__stage demo__stage--soft">
+            <div class="spacedemo" id="dv-space">
+              <article class="spaceitem">
+                <div class="spaceitem__top">
+                  <span class="spaceitem__thumb" aria-hidden="true"></span>
+                  <div>
+                    <p class="spaceitem__title" data-i18n="c1.p2.d1t">圣杯布局为什么还在被使用</p>
+                    <p class="spaceitem__meta"><span>2026-09-12</span><span data-i18n="c1.p2.d1m">12 分钟</span></p>
+                  </div>
+                </div>
+                <p class="spaceitem__text" data-i18n="c1.p2.d1d">三栏 + 通栏头尾 + 正文优先加载，这套需求今天依然常见。</p>
+              </article>
+              <article class="spaceitem">
+                <div class="spaceitem__top">
+                  <span class="spaceitem__thumb" aria-hidden="true"></span>
+                  <div>
+                    <p class="spaceitem__title" data-i18n="c1.p2.d2t">Flexbox 与 Grid：按维度选型</p>
+                    <p class="spaceitem__meta"><span>2026-09-08</span><span data-i18n="c1.p2.d2m">6 分钟</span></p>
+                  </div>
+                </div>
+                <p class="spaceitem__text" data-i18n="c1.p2.d2d">一维用 Flex，二维用 Grid。判断标准只有一条。</p>
+              </article>
+            </div>
+          </div>
+
+          <div class="demo__controls demo__controls--two">
+            <label class="ctrl">
+              <span class="ctrl__label" data-i18n="d.space.base">基础间距 --space</span>
+              <input type="range" min="4" max="40" step="2" value="16" data-name="space" data-var="--space" data-unit="px" data-target="#dv-space">
+              <output class="ctrl__val">16px</output>
+            </label>
+
+            <div class="ctrlgroup">
+              <span class="ctrlgroup__label" data-i18n="d.space.presets">预设</span>
+              <div class="ctrlgroup__body">
+                <button class="btn" type="button" data-space-preset="8" data-i18n="d.space.tight">紧凑 8px</button>
+                <button class="btn" type="button" data-space-preset="16" data-i18n="d.space.balanced">均衡 16px</button>
+                <button class="btn" type="button" data-space-preset="28" data-i18n="d.space.loose">宽松 28px</button>
+              </div>
+            </div>
+
+            <div class="ctrlgroup ctrlgroup--full">
+              <span class="ctrlgroup__label" data-i18n="d.space.helpers">辅助开关</span>
+              <div class="ctrlgroup__body">
+                <label class="switch"><input type="checkbox" data-name="group" checked><span data-i18n="d.space.group">组间 &gt; 组内（接近性）</span></label>
+                <label class="switch"><input type="checkbox" data-name="painton"><span data-i18n="d.space.paint">涂出留白区域</span></label>
+              </div>
+            </div>
+
+            <p class="demo__readout" id="dv-space-out" aria-live="polite"></p>
+          </div>
+        </div>
+        <figure class="codeblock">
+          <figcaption class="codeblock__bar">
+            <span class="codeblock__title" data-i18n="d.live">实时输出：上面每一步操作对应的 CSS</span>
+            <span class="codeblock__lang">css</span>
+            <button class="copybtn" type="button" data-i18n="ui.copy">复制</button>
+          </figcaption>
+          <pre class="code code--live" data-lang="css"><code id="code-space"></code></pre>
+        </figure>
+        <p class="demo__note" data-i18n="c1.p2.demoNote">把「组间 &gt; 组内」关掉，你会看到同样的内容和同样的间距总量，但分组关系瞬间消失 —— 这是整章最值得盯住看的一秒。</p>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         1.3 视觉层次 / Visual hierarchy
+         ================================================================ -->
+    <section class="point" id="p-hier">
+      <header class="point__head">
+        <span class="point__num">1.3</span>
+        <h2 class="point__title" data-i18n="c1.p3.title">视觉层次：告诉读者先看哪里</h2>
+        <p class="point__sub" data-i18n="c1.p3.sub">层级不是把重要的东西加粗放大，而是建立一套「顺序」。顺序清晰，读者三秒内就知道从哪儿读起。</p>
+      </header>
+
+      <div class="block block--theory">
+        <p class="block__label" data-i18n="label.theory">讲解</p>
+        <div class="prose">
+          <h4 data-i18n="c1.p3.h1">可用的层级手段，按「副作用」从小到大</h4>
+          <ul>
+            <li data-i18n-html="c1.p3.t1a"><strong>位置</strong>：越靠上、越靠左（在从左到右的语言里）越先被看到。这是最便宜的手段。</li>
+            <li data-i18n-html="c1.p3.t1b"><strong>字号</strong>：最直接的「重要性声明」。但字号差距太小等于没做，差距太大则会压碎正文。</li>
+            <li data-i18n-html="c1.p3.t1c"><strong>字重</strong>：在字号不变的前提下制造对比，副作用最小。适合在紧凑的界面里区分主次。</li>
+            <li data-i18n-html="c1.p3.t1d"><strong>颜色与透明度</strong>：把次要信息「往后推」而不是把主要信息「往前拉」，整体更安静。</li>
+            <li data-i18n-html="c1.p3.t1e"><strong>留白</strong>：环绕的空白越多，元素越被强调。这是最容易被忽略、也最高级的手段。</li>
+            <li data-i18n-html="c1.p3.t1f"><strong>装饰</strong>：边框、底色、图标。最抢眼，也最容易过量 —— 通常放在最后用。</li>
+          </ul>
+
+          <h4 data-i18n="c1.p3.h2">用比例尺，而不是逐个调字号</h4>
+          <p data-i18n-html="c1.p3.t2">定义一条<strong>等比字号刻度</strong>：<code>--base × ratio^n</code>。基准 16px、比例 1.25，就得到 16 / 20 / 25 / 31 这样一组天生的层级。它的好处是层级关系由「比例」保证 —— 你不可能做出「标题和副标题差 1px」这种模糊的层次。</p>
+          <p data-i18n-html="c1.p3.t3">比例的选择本身就是设计判断：<strong>1.2 左右</strong>稳重、信息密度高，适合工具型界面；<strong>1.33–1.5</strong> 戏剧性强，适合杂志式版面与落地页。比例越大，可用的级数越少 —— 1.5 的比例下，四级之后字号就已经超出合理范围。</p>
+
+          <div class="callout callout--warn">
+            <span class="callout__icon" aria-hidden="true">⚠</span>
+            <div>
+              <p data-i18n-html="c1.p3.warn"><strong>常见错误：层级过多。</strong>一个页面里出现五、六种字号，读者反而无法排序。多数页面的层级只需要三级：<em>标题 / 正文 / 注释</em>。超过三级时，先怀疑是不是把「装饰」当成了「层级」。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="block block--code">
+        <p class="block__label" data-i18n="label.code">关键代码</p>
+        <figure class="codeblock">
+          <figcaption class="codeblock__bar">
+            <span class="codeblock__title" data-i18n="c1.p3.codeTitle">一套比例尺建立三级层次</span>
+            <span class="codeblock__lang">css</span>
+            <button class="copybtn" type="button" data-i18n="ui.copy">复制</button>
+          </figcaption>
+<pre class="code" data-lang="css"><code>:root {
+  --base: 16px;
+  --ratio: 1.25;                                    <span class="tok-cmt" data-i18n="c1.p3.c1">/* 比例本身就是设计决策 */</span>
+
+  --step-0: var(--base);                            <span class="tok-cmt" data-i18n="c1.p3.c2">/* 16px  正文 */</span>
+  --step-1: calc(var(--base) * 1.25);               <span class="tok-cmt" data-i18n="c1.p3.c3">/* 20px  副标题 */</span>
+  --step-2: calc(var(--base) * 1.5625);             <span class="tok-cmt" data-i18n="c1.p3.c4">/* 25px  标题 */</span>
+  --step--1: calc(var(--base) / 1.25);              <span class="tok-cmt" data-i18n="c1.p3.c5">/* 12.8px 注释 */</span>
+}
+
+.post-title {
+  font-size: var(--step-2);
+  font-weight: 700;              <span class="tok-cmt" data-i18n="c1.p3.c6">/* 字重：副作用最小的强调手段 */</span>
+  line-height: 1.2;              <span class="tok-cmt" data-i18n="c1.p3.c7">/* 字号越大，行高反而要越小 */</span>
+  letter-spacing: -0.02em;       <span class="tok-cmt" data-i18n="c1.p3.c8">/* 大字号需要收紧字距，否则显得松散 */</span>
+}
+
+.post-meta {
+  font-size: var(--step--1);
+  color: var(--muted);           <span class="tok-cmt" data-i18n="c1.p3.c9">/* 把次要信息往后推，而不是把主要信息往前拉 */</span>
+}
+</code></pre>
+        </figure>
+        <ul class="code-notes">
+          <li data-i18n-html="c1.p3.n1">字号越大，需要的行高倍数越小、字距越紧 —— 这是排版里的一条反直觉规律，因为大字的「视觉体积」本来就大。</li>
+          <li data-i18n-html="c1.p3.n2">用 <code>rem</code> 或 <code>calc</code> 表达刻度，而不是直接写 <code>25px</code>：前者保留了「它从哪来」的信息。</li>
+          <li data-i18n-html="c1.p3.n3">本站的 <code>--step-*</code> 刻度用了 <code>clamp()</code>（见 tokens.css），于是层级在大屏上也保持同样的比例关系。</li>
+        </ul>
+      </div>
+
+      <div class="block block--demo">
+        <p class="block__label" data-i18n="label.demo">动态演示</p>
+        <div class="demo" data-demo="hier">
+          <div class="demo__stage demo__stage--soft">
+            <div class="hier" id="dv-hier" data-labels="off">
+              <p class="hier__kicker" data-i18n="c1.p3.dKicker">精选</p>
+              <h3 class="hier__title" data-level="L1" data-i18n="c1.p3.dTitle">用栅格与留白，把首页安顿好</h3>
+              <p class="hier__sub" data-level="L2" data-i18n="c1.p3.dSub">先把信息排序，再让版面承担顺序。</p>
+              <p class="hier__body" data-level="L3" data-i18n="c1.p3.dBody">层次的本质是顺序，不是装饰。当标题、副标题、正文、注释之间的差距足够明确时，读者根本不需要「努力」就能知道从哪儿读起。</p>
+              <p class="hier__meta" data-level="L4">2026-09-12 · 12 min · Grid</p>
+            </div>
+          </div>
+
+          <div class="demo__controls demo__controls--two">
+            <label class="ctrl">
+              <span class="ctrl__label" data-i18n="d.hier.ratio">字号比例 ratio</span>
+              <input type="range" min="1" max="1.6" step="0.05" value="1.25" data-name="ratio" data-format="x">
+              <output class="ctrl__val">1.25×</output>
+            </label>
+
+            <label class="ctrl">
+              <span class="ctrl__label" data-i18n="d.hier.weight">标题字重</span>
+              <input type="range" min="400" max="800" step="50" value="700" data-name="weight">
+              <output class="ctrl__val">700</output>
+            </label>
+
+            <label class="ctrl">
+              <span class="ctrl__label" data-i18n="d.hier.mute">注释对比度</span>
+              <input type="range" min="0.2" max="1" step="0.05" value="0.55" data-name="mute" data-format="x">
+              <output class="ctrl__val">0.55×</output>
+            </label>
+
+            <div class="ctrlgroup">
+              <span class="ctrlgroup__label" data-i18n="d.hier.helpers">辅助开关</span>
+              <div class="ctrlgroup__body">
+                <label class="switch"><input type="checkbox" data-name="labels"><span data-i18n="d.hier.labels">标注层级</span></label>
+              </div>
+            </div>
+
+            <p class="demo__readout" id="dv-hier-out" aria-live="polite"></p>
+          </div>
+        </div>
+        <figure class="codeblock">
+          <figcaption class="codeblock__bar">
+            <span class="codeblock__title" data-i18n="d.live">实时输出：上面每一步操作对应的 CSS</span>
+            <span class="codeblock__lang">css</span>
+            <button class="copybtn" type="button" data-i18n="ui.copy">复制</button>
+          </figcaption>
+          <pre class="code code--live" data-lang="css"><code id="code-hier"></code></pre>
+        </figure>
+        <p class="demo__note" data-i18n="c1.p3.demoNote">把比例一路调到 1.0：四个层级全部塌成同样大小，页面立刻变得「平」——这就是层级缺失的真实手感。</p>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         1.4 栅格系统 / Grid system
+         ================================================================ -->
+    <section class="point" id="p-gridsys">
+      <header class="point__head">
+        <span class="point__num">1.4</span>
+        <h2 class="point__title" data-i18n="c1.p4.title">栅格：把版心切成可以复用的份数</h2>
+        <p class="point__sub" data-i18n="c1.p4.sub">栅格不是「限制」，而是一套共享的分割方案。它让不同区块在不知道彼此细节的情况下，依然对得上。</p>
+      </header>
+
+      <div class="block block--theory">
+        <p class="block__label" data-i18n="label.theory">讲解</p>
+        <div class="prose">
+          <h4 data-i18n="c1.p4.h1">栅格由四样东西构成</h4>
+          <ul>
+            <li data-i18n-html="c1.p4.t1a"><strong>列（column）</strong>：内容的容器。列数决定了可组合的版式数量。</li>
+            <li data-i18n-html="c1.p4.t1b"><strong>槽（gutter）</strong>：列与列之间的固定空隙。它保证「任何两块内容之间都至少有这么宽」。</li>
+            <li data-i18n-html="c1.p4.t1c"><strong>外边距（margin）</strong>：版心与屏幕边缘的距离。它决定版心的最大宽度。</li>
+            <li data-i18n-html="c1.p4.t1d"><strong>基线（baseline，可选）</strong>：行高的整数倍垂直网格。跨列对齐容易，跨基线对齐难 —— 后者通常只在内容极其密集的出版物上才值得做。</li>
+          </ul>
+
+          <h4 data-i18n="c1.p4.h2">为什么常见 12 列</h4>
+          <p data-i18n-html="c1.p4.t2">12 可以被 <strong>2、3、4、6</strong> 整除。这意味着同一个栅格能同时表达「一半 / 三分之一 / 四分之一 / 六分之一」这些最常用的比例，因此 12 列成为事实标准。16 列（可同时表达 2/4/8）用在内容更细碎的站点，24 列常见于设计系统 —— 本质上都是为了「一次定义，多种组合」。</p>
+          <p data-i18n-html="c1.p4.t3">对博客首页这种结构来说，12 列绰绰有余：正文占 8 列、侧栏占 4 列，卡片一行三张各占 4 列。<strong>列数不是越多越好</strong>：列数越多，槽的总宽度占比越难控制，最后往往退化成「每块都占满，栅格名存实亡」。</p>
+
+          <div class="callout callout--tip">
+            <span class="callout__icon" aria-hidden="true">◆</span>
+            <div>
+              <p data-i18n-html="c1.p4.tip"><strong>CSS Grid 时代的栅格：</strong>过去栅格要靠 <code>float</code> + 百分比（并留下 <code>clearfix</code> 与四舍五入误差），今天一行 <code>grid-template-columns: repeat(12, minmax(0, 1fr))</code> 就够了。<code>minmax(0, 1fr)</code> 里的那个 <code>0</code> 很重要 —— 它防止长单词或长代码把列撑破。</p>
+            </div>
+          </div>
+
+          <dl class="tradeoff">
+            <div>
+              <dt data-i18n="c1.p4.td1t">栅格的价值</dt>
+              <dd data-i18n="c1.p4.td1d">一致性来自约束。有了共同的分割方案，跨页面的版式才可能是「一套」的，而不是每一页各自为政。</dd>
+            </div>
+            <div>
+              <dt data-i18n="c1.p4.td2t">栅格的代价</dt>
+              <dd data-i18n="c1.p4.td2d">强约束会让版式趋于雷同。成熟的做法是：结构严格对齐栅格，视觉重量（颜色、图幅、留白）允许越界。</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+
+      <div class="block block--code">
+        <p class="block__label" data-i18n="label.code">关键代码</p>
+        <figure class="codeblock">
+          <figcaption class="codeblock__bar">
+            <span class="codeblock__title" data-i18n="c1.p4.codeTitle">12 列栅格与跨列内容</span>
+            <span class="codeblock__lang">css</span>
+            <button class="copybtn" type="button" data-i18n="ui.copy">复制</button>
+          </figcaption>
+<pre class="code" data-lang="css"><code>.layout {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));  <span class="tok-cmt" data-i18n="c1.p4.c1">/* 12 列：能被 2/3/4/6 整除 */</span>
+  gap: 24px;                                          <span class="tok-cmt" data-i18n="c1.p4.c2">/* 槽宽 */</span>
+  max-width: 1180px;                                  <span class="tok-cmt" data-i18n="c1.p4.c3">/* 版心 */</span>
+  margin-inline: auto;
+  padding-inline: 16px;                               <span class="tok-cmt" data-i18n="c1.p4.c4">/* 小屏时的外边距 */</span>
+}
+
+.layout > .hero    { grid-column: span 12; }          <span class="tok-cmt" data-i18n="c1.p4.c5">/* 通栏 */</span>
+.layout > .article { grid-column: span 8; }           <span class="tok-cmt" data-i18n="c1.p4.c6">/* 正文 8/12 */</span>
+.layout > .aside   { grid-column: span 4; }           <span class="tok-cmt" data-i18n="c1.p4.c7">/* 侧栏 4/12 */</span>
+.layout > .card    { grid-column: span 4; }           <span class="tok-cmt" data-i18n="c1.p4.c8">/* 一行三张 */</span>
+</code></pre>
+        </figure>
+        <ul class="code-notes">
+          <li data-i18n-html="c1.p4.n1"><code>span N</code> 比 <code>grid-column: 1 / 9</code> 更适合栅格：你只需要声明「占几份」，起始位置交给自动放置。</li>
+          <li data-i18n-html="c1.p4.n2">槽宽用 <code>gap</code>，因此每一块内容都自动获得两侧的呼吸空间，不必再给单块算 margin。</li>
+          <li data-i18n-html="c1.p4.n3">栅格是「版心内部」的规则；版心本身的宽度与居中由 <code>max-width</code> + <code>margin-inline: auto</code> 负责，两者分工明确。</li>
+        </ul>
+      </div>
+
+      <div class="block block--demo">
+        <p class="block__label" data-i18n="label.demo">动态演示</p>
+        <div class="demo" data-demo="gridsystem">
+          <div class="demo__stage">
+            <div class="gridstage" id="dv-grid" data-guides="on">
+              <div class="gridstage__grid">
+                <div class="gcell gcell--hero js-span-full" data-i18n="c1.p4.dHero">通栏 · 精选文章</div>
+                <div class="gcell gcell--strong js-span-wide" data-i18n="c1.p4.dMain">主内容 · 文章流</div>
+                <div class="gcell js-span-narrow" data-i18n="c1.p4.dSide">侧栏</div>
+                <div class="gcell js-span-card" data-i18n="c1.p4.dCard">卡片 A</div>
+                <div class="gcell js-span-card" data-i18n="c1.p4.dCard2">卡片 B</div>
+                <div class="gcell js-span-card" data-i18n="c1.p4.dCard3">卡片 C</div>
+              </div>
+              <div class="gridstage__guides" aria-hidden="true"></div>
+            </div>
+          </div>
+
+          <div class="demo__controls demo__controls--two">
+            <label class="ctrl">
+              <span class="ctrl__label" data-i18n="d.grid.cols">列数</span>
+              <input type="range" min="1" max="12" step="1" value="12" data-name="cols" data-var="--cols" data-target="#dv-grid">
+              <output class="ctrl__val">12</output>
+            </label>
+
+            <label class="ctrl">
+              <span class="ctrl__label" data-i18n="d.grid.gutter">槽宽 gutter</span>
+              <input type="range" min="0" max="40" step="2" value="16" data-name="gutter" data-var="--gut" data-unit="px" data-target="#dv-grid">
+              <output class="ctrl__val">16px</output>
+            </label>
+
+            <label class="ctrl">
+              <span class="ctrl__label" data-i18n="d.grid.width">版心宽度</span>
+              <input type="range" min="520" max="1180" step="20" value="1180" data-name="mw" data-var="--mw" data-unit="px" data-target="#dv-grid">
+              <output class="ctrl__val">1180px</output>
+            </label>
+
+            <div class="ctrlgroup">
+              <span class="ctrlgroup__label" data-i18n="d.grid.helpers">辅助开关</span>
+              <div class="ctrlgroup__body">
+                <label class="switch"><input type="checkbox" data-name="guides" checked><span data-i18n="d.grid.guides">显示栅格</span></label>
+              </div>
+            </div>
+
+            <p class="demo__readout" id="dv-grid-out" aria-live="polite"></p>
+          </div>
+        </div>
+        <figure class="codeblock">
+          <figcaption class="codeblock__bar">
+            <span class="codeblock__title" data-i18n="d.live">实时输出：上面每一步操作对应的 CSS</span>
+            <span class="codeblock__lang">css</span>
+            <button class="copybtn" type="button" data-i18n="ui.copy">复制</button>
+          </figcaption>
+          <pre class="code code--live" data-lang="css"><code id="code-gridsys"></code></pre>
+        </figure>
+        <p class="demo__note" data-i18n="c1.p4.demoNote">把列数从 12 调到 5：正文占 3、侧栏占 2、卡片一行只有一张 —— 你会直观看到「列数决定了可表达的比例」。再关掉栅格显示，检查内容边界是否仍然对得上。</p>
+      </div>
+    </section>
+
+    <nav class="pagenav" aria-label="翻页" data-i18n-attr="aria-label:nav.pager">
+      <a class="pagenav__link" href="../index.html">
+        <span class="pagenav__dir" data-i18n="nav.prev">上一页</span>
+        <span class="pagenav__title" data-i18n="nav.home">首页</span>
+      </a>
+      <a class="pagenav__link pagenav__link--next" href="patterns.html">
+        <span class="pagenav__dir" data-i18n="nav.next">下一页</span>
+        <span class="pagenav__title" data-i18n="nav.ch2">② 经典模式</span>
+      </a>
+    </nav>
+
+  </article>
+</main>
+
+<footer class="sitefoot">
+  <div class="wrap sitefoot__grid">
+    <div>
+      <h4 data-i18n="foot.aboutTitle">关于本站</h4>
+      <p data-i18n="foot.about">「布局实验室」是一份以案例驱动的页面布局教程：每个知识点都由「讲解 / 关键代码 / 动态演示」三块组成，并用同一个案例（博客首页）从头贯穿到尾。</p>
+    </div>
+    <div>
+      <h4 data-i18n="foot.chapters">章节</h4>
+      <ul>
+        <li><a href="principles.html" data-i18n="nav.ch1">① 设计原则</a></li>
+        <li><a href="patterns.html" data-i18n="nav.ch2">② 经典模式</a></li>
+        <li><a href="flexgrid.html" data-i18n="nav.ch3">③ Flex &amp; Grid</a></li>
+        <li><a href="responsive.html" data-i18n="nav.ch4">④ 响应式</a></li>
+        <li><a href="case.html" data-i18n="nav.ch5">⑤ 案例实战</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 data-i18n="foot.metaTitle">技术</h4>
+      <ul>
+        <li data-i18n="foot.meta1">原生 HTML / CSS / JavaScript</li>
+        <li data-i18n="foot.meta2">无构建步骤，直接发布到 GitHub Pages</li>
+        <!-- 发布前请把下面这一行的地址换成你的仓库地址 -->
+        <li><a href="https://github.com/" target="_blank" rel="noopener" data-i18n="foot.repo">GitHub 仓库</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<button class="totop iconbtn" type="button" data-i18n-attr="aria-label:nav.top" aria-label="回到顶部">↑</button>
+
+<script src="../assets/js/ui.js"></script>
+<script src="../assets/js/i18n.js"></script>
+<script src="../assets/js/demo-principles.js"></script>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

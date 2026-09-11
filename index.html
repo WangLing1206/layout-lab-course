@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title data-i18n="index.title">布局实验室 · 页面布局教学｜Layout Lab</title>
+<meta name="description" content="以案例驱动的页面布局教程：对齐、留白、层级、栅格、经典布局模式、Flexbox 与 Grid、响应式。每个知识点都有可交互演示，中英双语。" data-i18n-attr="content:index.desc">
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/site.css">
+<link rel="stylesheet" href="assets/css/demos.css">
+</head>
+<body>
+<a class="skip-link" href="#main" data-i18n="nav.skip">跳到正文</a>
+
+<header class="topbar">
+  <div class="topbar__inner wrap">
+    <a class="brand" href="index.html">
+      <span class="brand__mark" aria-hidden="true">▦</span>
+      <span class="brand__text">
+        <span class="brand__name" data-i18n="site.brand">布局实验室</span>
+        <span class="brand__sub">Layout Lab</span>
+      </span>
+    </a>
+    <nav class="topnav" aria-label="章节导航" data-i18n-attr="aria-label:nav.label">
+      <a class="topnav__link" href="index.html" aria-current="page" data-i18n="nav.home">首页</a>
+      <a class="topnav__link" href="chapters/principles.html" data-i18n="nav.ch1">① 设计原则</a>
+      <a class="topnav__link" href="chapters/patterns.html" data-i18n="nav.ch2">② 经典模式</a>
+      <a class="topnav__link" href="chapters/flexgrid.html" data-i18n="nav.ch3">③ Flex &amp; Grid</a>
+      <a class="topnav__link" href="chapters/responsive.html" data-i18n="nav.ch4">④ 响应式</a>
+      <a class="topnav__link" href="chapters/case.html" data-i18n="nav.ch5">⑤ 案例实战</a>
+    </nav>
+    <div class="topbar__tools">
+      <div class="seg seg--lang" data-lang-switch data-name="lang" role="group" aria-label="Language">
+        <button class="seg__btn is-active" type="button" data-value="zh">中</button>
+        <button class="seg__btn" type="button" data-value="en">EN</button>
+      </div>
+      <button class="iconbtn" type="button" data-theme-toggle aria-label="切换主题">☾</button>
+    </div>
+  </div>
+  <div class="progress"><div class="progress__bar"></div></div>
+</header>
+
+<main id="main">
+
+  <!-- ================================================================
+       Hero
+       ================================================================ -->
+  <section class="hero">
+    <div class="wrap hero__grid">
+      <div>
+        <p class="eyebrow" data-i18n="index.eyebrow">案例驱动 · 中英双语 · 可交互</p>
+        <h1 class="hero__title" data-i18n-html="index.h1">把「页面怎么排」<em>讲清楚</em></h1>
+        <p class="hero__lead" data-i18n="index.lead">这是一份围绕「如何做好页面布局」的教程：讲原理、讲取舍、讲为什么这样更好，而不是罗列 CSS 属性。每个知识点都由「讲解 / 关键代码 / 动态演示」三块组成，并且用同一个案例 —— 从零设计一个博客首页 —— 从头贯穿到尾。</p>
+        <div class="hero__cta">
+          <a class="btn btn--primary" href="chapters/principles.html" data-i18n="index.cta1">从第 1 章开始 →</a>
+          <a class="btn" href="chapters/case.html" data-i18n="index.cta2">直接看案例成品</a>
+        </div>
+        <div class="hero__stats">
+          <div>
+            <p class="stat__num">5</p>
+            <p class="stat__label" data-i18n="index.s1">章 · 一条案例主线</p>
+          </div>
+          <div>
+            <p class="stat__num">18</p>
+            <p class="stat__label" data-i18n="index.s2">个知识点</p>
+          </div>
+          <div>
+            <p class="stat__num">18</p>
+            <p class="stat__label" data-i18n="index.s3">个可交互演示</p>
+          </div>
+          <div>
+            <p class="stat__num">2</p>
+            <p class="stat__label" data-i18n="index.s4">种语言全站同步</p>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="blueprint" aria-hidden="true">
+          <div class="bp-accent">topbar · sticky + backdrop-filter</div>
+          <div class="bp-row">
+            <div>toc<br>sticky</div>
+            <div>main · grid: TOC + 正文</div>
+          </div>
+          <div>demo__controls · flex-wrap</div>
+          <div>cards · repeat(auto-fit, minmax())</div>
+          <div>sitefoot · grid ×3</div>
+        </div>
+        <p class="demo__note" style="margin-top:.75rem" data-i18n="index.blueprintNote">上面这张示意图就是本站的真实骨架：顶栏吸顶、目录栏粘住、正文单列、卡片自适应。整站没有一行布局是用框架生成的。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+
+    <!-- ================================================================
+         案例主线
+         ================================================================ -->
+    <section class="section" id="case">
+      <div class="section__head">
+        <h2 class="section__title" data-i18n="index.caseTitle">一条贯穿全站的案例</h2>
+        <p class="section__desc" data-i18n="index.caseDesc">「远山手记」是一份个人技术博客。它的首页在改造前「能用但不好读」—— 我们用它作为案例，每章解决一个阶段的问题，所有演示也都围绕这份首页展开。</p>
+      </div>
+
+      <div class="callout callout--case">
+        <span class="callout__icon" aria-hidden="true">◈</span>
+        <div>
+          <p data-i18n-html="index.caseBody"><strong>五个阶段，环环相扣：</strong>第 1 章用对齐 / 留白 / 层级 / 栅格整理内容；第 2 章选定骨架（单栏 / 两栏 / 三栏）；第 3 章用 Grid 搭骨架、Flex 做零件；第 4 章改造为移动优先的四档结构；第 5 章交付完整代码，并做前后对比与验收。</p>
+          <ol class="stepper">
+            <li class="is-done" data-i18n="case.step1">需求</li>
+            <li class="is-done" data-i18n="case.step2">骨架</li>
+            <li class="is-done" data-i18n="case.step3">实现</li>
+            <li class="is-done" data-i18n="case.step4">响应式</li>
+            <li class="is-done" data-i18n="case.step5">精修</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         章节
+         ================================================================ -->
+    <section class="section" id="chapters">
+      <div class="section__head">
+        <h2 class="section__title" data-i18n="index.chapters">五章内容</h2>
+        <p class="section__desc" data-i18n="index.chaptersDesc">每章都包含可调参数、可切换方案、可动手实验的演示区 —— 拖动滑块，立刻看到版面的变化。</p>
+      </div>
+
+      <div class="cards">
+        <a class="card" href="chapters/principles.html">
+          <span class="card__num">CHAPTER 01</span>
+          <span class="card__title" data-i18n="index.c1t">设计原则</span>
+          <span class="card__desc" data-i18n="index.c1d">对齐、留白、视觉层次、栅格系统：把「好看」拆成可执行、可检查的规则。</span>
+          <span class="card__list">
+            <span class="pill" data-i18n="index.t1">对齐方式开关</span>
+            <span class="pill" data-i18n="index.t2">留白与接近性</span>
+            <span class="pill" data-i18n="index.t3">层级比例尺</span>
+            <span class="pill" data-i18n="index.t4">12 栅格</span>
+          </span>
+          <span class="card__more" data-i18n="index.enter">进入本章 →</span>
+        </a>
+
+        <a class="card" href="chapters/patterns.html">
+          <span class="card__num">CHAPTER 02</span>
+          <span class="card__title" data-i18n="index.c2t">经典布局模式</span>
+          <span class="card__desc" data-i18n="index.c2d">单栏、两栏、三栏、圣杯布局，以及 F 形与 Z 形浏览模式 —— 每种模式适合解决什么问题。</span>
+          <span class="card__list">
+            <span class="pill" data-i18n="index.t5">行宽测量</span>
+            <span class="pill" data-i18n="index.t6">五种模式一键切换</span>
+            <span class="pill" data-i18n="index.t7">Grid vs Flex 实现</span>
+            <span class="pill" data-i18n="index.t8">眼动路径</span>
+          </span>
+          <span class="card__more" data-i18n="index.enter">进入本章 →</span>
+        </a>
+
+        <a class="card" href="chapters/flexgrid.html">
+          <span class="card__num">CHAPTER 03</span>
+          <span class="card__title" data-i18n="index.c3t">Flexbox 与 Grid</span>
+          <span class="card__desc" data-i18n="index.c3d">两个模块的分工、原理与选型思路。一维用 Flex，二维用 Grid —— 并给出可以画出版式的命名区域。</span>
+          <span class="card__list">
+            <span class="pill" data-i18n="index.t9">Flex 试验台</span>
+            <span class="pill" data-i18n="index.t10">Grid 试验台</span>
+            <span class="pill" data-i18n="index.t11">areas 画笔</span>
+            <span class="pill" data-i18n="index.t12">选型决策器</span>
+          </span>
+          <span class="card__more" data-i18n="index.enter">进入本章 →</span>
+        </a>
+
+        <a class="card" href="chapters/responsive.html">
+          <span class="card__num">CHAPTER 04</span>
+          <span class="card__title" data-i18n="index.c4t">响应式布局</span>
+          <span class="card__desc" data-i18n="index.c4d">断点该加在哪里、移动优先为什么更稳、clamp() 如何抹平台阶、容器查询解决了什么问题。</span>
+          <span class="card__list">
+            <span class="pill" data-i18n="index.t13">视口模拟器</span>
+            <span class="pill" data-i18n="index.t14">流体排版</span>
+            <span class="pill" data-i18n="index.t15">容器查询对比</span>
+            <span class="pill" data-i18n="index.t16">四类陷阱</span>
+          </span>
+          <span class="card__more" data-i18n="index.enter">进入本章 →</span>
+        </a>
+
+        <a class="card" href="chapters/case.html">
+          <span class="card__num">CHAPTER 05</span>
+          <span class="card__title" data-i18n="index.c5t">案例实战</span>
+          <span class="card__desc" data-i18n="index.c5d">从零设计一个博客首页：需求分析、骨架选型、完整代码、改造前后对比与验收清单。</span>
+          <span class="card__list">
+            <span class="pill" data-i18n="index.t17">线框增删</span>
+            <span class="pill" data-i18n="index.t18">方案对比</span>
+            <span class="pill" data-i18n="index.t19">完整成品预览</span>
+            <span class="pill" data-i18n="index.t20">前后对比</span>
+          </span>
+          <span class="card__more" data-i18n="index.enter">进入本章 →</span>
+        </a>
+
+        <a class="card" href="chapters/case.html#p-refine">
+          <span class="card__num">CHECKLIST</span>
+          <span class="card__title" data-i18n="index.check">验收清单</span>
+          <span class="card__desc" data-i18n="index.checkD">八条可以直接拿去用的检查项：行宽、对齐线、层级、间距刻度、键盘顺序、缩放、动效偏好。</span>
+          <span class="card__more" data-i18n="index.enter">查看清单 →</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         本站如何示范
+         ================================================================ -->
+    <section class="section" id="how">
+      <div class="section__head">
+        <h2 class="section__title" data-i18n="index.howTitle">本站自己就是这么写的</h2>
+        <p class="section__desc" data-i18n="index.howDesc">要求之一是「网站本身必须是所教布局方法的良好示范」。下面把用到的技术逐条列出来 —— 你可以在仓库里逐条核对，全部是原生 HTML / CSS / JavaScript，没有构建步骤。</p>
+      </div>
+
+      <div class="tablewrap">
+        <table class="data">
+          <caption data-i18n="index.howCaption">全部实现都在 assets/css 与 assets/js 下，可以直接对照阅读。</caption>
+          <thead>
+            <tr>
+              <th data-i18n="index.howTh1">技术</th>
+              <th data-i18n="index.howTh2">用在哪里</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>CSS 自定义属性</code></td>
+              <td data-i18n="index.how1">tokens.css 统一管理颜色 / 间距 / 字号 / 圆角；暗色主题只覆盖令牌，组件样式一行不改。</td>
+            </tr>
+            <tr>
+              <td><code>Grid</code></td>
+              <td data-i18n="index.how2">整站骨架（目录栏 + 正文栏）、卡片阵列、演示区、案例骨架与断点重排 —— 都是 <code>auto-fit</code> 或 <code>template-areas</code>。</td>
+            </tr>
+            <tr>
+              <td><code>Flexbox</code></td>
+              <td data-i18n="index.how3">顶栏、控件行、开关组、卡片内部、页脚 —— 凡是「一排东西」都用 Flex，并用 <code>auto</code> margin 处理靠边。</td>
+            </tr>
+            <tr>
+              <td><code>clamp()</code></td>
+              <td data-i18n="index.how4">字号刻度 <code>--step--1 … --step-5</code> 全部是流体值，因此 320px 与 1600px 之间没有字号断层。</td>
+            </tr>
+            <tr>
+              <td><code>容器查询</code></td>
+              <td data-i18n="index.how5">第 4.3 节的对照演示：同一个卡片组件在宽容器里变成「图左文右」，窄容器里堆叠，而媒体查询版纹丝不动。</td>
+            </tr>
+            <tr>
+              <td><code>逻辑属性</code></td>
+              <td data-i18n="index.how6"><code>margin-inline</code> / <code>padding-inline</code> / <code>border-inline</code> 全站使用，因此版面天然支持从右到左的语言。</td>
+            </tr>
+            <tr>
+              <td><code>position: sticky</code></td>
+              <td data-i18n="index.how7">顶栏常驻、章节目录粘住、案例侧栏卡片吸顶 —— 注意都配了 <code>align-self: start</code>，否则在 Grid 里会失效。</td>
+            </tr>
+            <tr>
+              <td><code>aspect-ratio</code></td>
+              <td data-i18n="index.how8">所有缩略图与模拟视口用比例而非固定宽高，避免加载与缩放时的布局跳动。</td>
+            </tr>
+            <tr>
+              <td data-i18n="index.how9k">无障碍</td>
+              <td data-i18n="index.how9">语义化标签 + 跳转正文链接 + <code>:focus-visible</code> 焦点环 + <code>aria-live</code> 播报演示读数 + 尊重「减少动态效果」的系统设置。</td>
+            </tr>
+            <tr>
+              <td data-i18n="index.how10k">可交互</td>
+              <td data-i18n="index.how10">18 个演示共用一个约 200 行的控件工具箱（滑块 / 分段按钮 / 开关统一派发事件），因此每个演示只需关心「数据变了以后怎么改样式」。</td>
+            </tr>
+            <tr>
+              <td data-i18n="index.how11k">双语</td>
+              <td data-i18n="index.how11">中文写在 HTML 里、英文放配置对象；<code>data-i18n</code> 标记驱动全站同步切换，缺译文时优雅退回原文。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         如何使用
+         ================================================================ -->
+    <section class="section" id="use">
+      <div class="section__head">
+        <h2 class="section__title" data-i18n="index.useTitle">怎么用这份教程</h2>
+      </div>
+      <div class="cards">
+        <div class="card">
+          <span class="card__num">01</span>
+          <span class="card__title" data-i18n="index.use1t">按顺序读</span>
+          <span class="card__desc" data-i18n="index.use1d">五章是递进关系：原则 → 模式 → 技术 → 响应式 → 案例。案例会不断引用前面章节的结论。</span>
+        </div>
+        <div class="card">
+          <span class="card__num">02</span>
+          <span class="card__title" data-i18n="index.use2t">在演示里动手</span>
+          <span class="card__desc" data-i18n="index.use2d">每个演示下方都有一份「实时输出」代码块，它会跟着你的操作同步重写 —— 把参数调到满意，直接复制那段 CSS。</span>
+        </div>
+        <div class="card">
+          <span class="card__num">03</span>
+          <span class="card__title" data-i18n="index.use3t">切换语言对照术语</span>
+          <span class="card__desc" data-i18n="index.use3d">右上角的「中 / EN」切换全站文案（包括代码注释）。读英文文档时对不上术语，可以随时切回中文。</span>
+        </div>
+        <div class="card">
+          <span class="card__num">04</span>
+          <span class="card__title" data-i18n="index.use4t">用清单验收自己的页面</span>
+          <span class="card__desc" data-i18n="index.use4d">第 5 章末尾的八条清单是为「你自己的页面」准备的，勾选状态会记在这台设备上。</span>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer class="sitefoot">
+  <div class="wrap sitefoot__grid">
+    <div>
+      <h4 data-i18n="foot.aboutTitle">关于本站</h4>
+      <p data-i18n="foot.about">「布局实验室」是一份以案例驱动的页面布局教程：每个知识点都由「讲解 / 关键代码 / 动态演示」三块组成，并用同一个案例（博客首页）从头贯穿到尾。</p>
+    </div>
+    <div>
+      <h4 data-i18n="foot.chapters">章节</h4>
+      <ul>
+        <li><a href="chapters/principles.html" data-i18n="nav.ch1">① 设计原则</a></li>
+        <li><a href="chapters/patterns.html" data-i18n="nav.ch2">② 经典模式</a></li>
+        <li><a href="chapters/flexgrid.html" data-i18n="nav.ch3">③ Flex &amp; Grid</a></li>
+        <li><a href="chapters/responsive.html" data-i18n="nav.ch4">④ 响应式</a></li>
+        <li><a href="chapters/case.html" data-i18n="nav.ch5">⑤ 案例实战</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 data-i18n="foot.metaTitle">技术</h4>
+      <ul>
+        <li data-i18n="foot.meta1">原生 HTML / CSS / JavaScript</li>
+        <li data-i18n="foot.meta2">无构建步骤，直接发布到 GitHub Pages</li>
+        <!-- 发布前请把下面这一行的地址换成你的仓库地址 -->
+        <li><a href="https://github.com/" target="_blank" rel="noopener" data-i18n="foot.repo">GitHub 仓库</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<button class="totop iconbtn" type="button" data-i18n-attr="aria-label:nav.top" aria-label="回到顶部">↑</button>
+
+<script src="assets/js/ui.js"></script>
+<script src="assets/js/i18n.js"></script>
+<script src="assets/js/site.js"></script>
+</body>
+</html>

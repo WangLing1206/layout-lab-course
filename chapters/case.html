@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title data-i18n="c5.title">第 5 章 · 案例实战｜布局实验室</title>
+<meta name="description" content="从零设计一个博客首页：需求分析、骨架选型、完整实现、逐块精修与验收清单，把前四章的方法收束成一份可运行的成品。" data-i18n-attr="content:c5.desc">
+<link rel="stylesheet" href="../assets/css/tokens.css">
+<link rel="stylesheet" href="../assets/css/base.css">
+<link rel="stylesheet" href="../assets/css/site.css">
+<link rel="stylesheet" href="../assets/css/demos.css">
+</head>
+<body>
+<a class="skip-link" href="#main" data-i18n="nav.skip">跳到正文</a>
+
+<header class="topbar">
+  <div class="topbar__inner wrap">
+    <a class="brand" href="../index.html">
+      <span class="brand__mark" aria-hidden="true">▦</span>
+      <span class="brand__text">
+        <span class="brand__name" data-i18n="site.brand">布局实验室</span>
+        <span class="brand__sub">Layout Lab</span>
+      </span>
+    </a>
+    <nav class="topnav" aria-label="章节导航" data-i18n-attr="aria-label:nav.label">
+      <a class="topnav__link" href="../index.html" data-i18n="nav.home">首页</a>
+      <a class="topnav__link" href="principles.html" data-i18n="nav.ch1">① 设计原则</a>
+      <a class="topnav__link" href="patterns.html" data-i18n="nav.ch2">② 经典模式</a>
+      <a class="topnav__link" href="flexgrid.html" data-i18n="nav.ch3">③ Flex &amp; Grid</a>
+      <a class="topnav__link" href="responsive.html" data-i18n="nav.ch4">④ 响应式</a>
+      <a class="topnav__link" href="case.html" aria-current="page" data-i18n="nav.ch5">⑤ 案例实战</a>
+    </nav>
+    <div class="topbar__tools">
+      <div class="seg seg--lang" data-lang-switch data-name="lang" role="group" aria-label="Language">
+        <button class="seg__btn is-active" type="button" data-value="zh">中</button>
+        <button class="seg__btn" type="button" data-value="en">EN</button>
+      </div>
+      <button class="iconbtn" type="button" data-theme-toggle aria-label="切换主题">☾</button>
+    </div>
+  </div>
+  <div class="progress"><div class="progress__bar"></div></div>
+</header>
+
+<main class="shell wrap" id="main">
+
+  <aside class="toc toc--desktop">
+    <p class="toc__title" data-i18n="toc.title">本章目录</p>
+    <ul class="toc__list">
+      <li><a class="toc__link" href="#p-needs"><span class="toc__num">5.1</span><span data-i18n="c5.p1.short">需求与线框</span></a></li>
+      <li><a class="toc__link" href="#p-skeleton"><span class="toc__num">5.2</span><span data-i18n="c5.p2.short">骨架选型</span></a></li>
+      <li><a class="toc__link" href="#p-build"><span class="toc__num">5.3</span><span data-i18n="c5.p3.short">完整实现</span></a></li>
+      <li><a class="toc__link" href="#p-refine"><span class="toc__num">5.4</span><span data-i18n="c5.p4.short">精修与验收</span></a></li>
+    </ul>
+    <p class="toc__title" style="margin-top:1.5rem" data-i18n="toc.case">案例进度</p>
+    <ol class="stepper">
+      <li class="is-done" data-i18n="case.step1">需求</li>
+      <li class="is-done" data-i18n="case.step2">骨架</li>
+      <li class="is-done" data-i18n="case.step3">实现</li>
+      <li class="is-done" data-i18n="case.step4">响应式</li>
+      <li class="is-current" data-i18n="case.step5">精修</li>
+    </ol>
+  </aside>
+
+  <article class="doc">
+
+    <details class="toc toc--mobile">
+      <summary data-i18n="toc.open">本章目录 / 案例进度</summary>
+      <ul class="toc__list" style="margin-top:.75rem">
+        <li><a class="toc__link" href="#p-needs"><span class="toc__num">5.1</span><span data-i18n="c5.p1.short">需求与线框</span></a></li>
+        <li><a class="toc__link" href="#p-skeleton"><span class="toc__num">5.2</span><span data-i18n="c5.p2.short">骨架选型</span></a></li>
+        <li><a class="toc__link" href="#p-build"><span class="toc__num">5.3</span><span data-i18n="c5.p3.short">完整实现</span></a></li>
+        <li><a class="toc__link" href="#p-refine"><span class="toc__num">5.4</span><span data-i18n="c5.p4.short">精修与验收</span></a></li>
+      </ul>
+    </details>
+
+    <header class="doc__head">
+      <p class="eyebrow" data-i18n="c5.eyebrow">第 5 章 · 案例实战</p>
+      <h1 class="doc__title" data-i18n="c5.h1">从零设计一个博客首页</h1>
+      <p class="doc__lead" data-i18n="c5.lead">前四章的方法在这一章收束成一份可运行的成品。四个阶段、四份交付物：需求与线框 → 骨架选型 → 完整实现 → 逐块精修。结尾附一份可以直接拿去用的验收清单。</p>
+      <div class="doc__meta">
+        <span data-i18n="c5.meta1">4 个知识点</span>
+        <span data-i18n="c5.meta2">3 个可交互演示</span>
+        <span data-i18n="c5.meta3">约 30 分钟</span>
+      </div>
+
+      <div class="section" style="padding-top:2rem">
+        <div class="section__head">
+          <h2 class="section__title" data-i18n="c5.timeline">案例回顾：五个阶段</h2>
+          <p class="section__desc" data-i18n="c5.timelineDesc">每一章解决案例的一个阶段，后面的阶段都建立在前面阶段的产出上。</p>
+        </div>
+        <div class="cards">
+          <a class="card" href="principles.html#p-align">
+            <span class="card__num">01</span>
+            <span class="card__title" data-i18n="c5.t1">梳理内容与间距</span>
+            <span class="card__desc" data-i18n="c5.t1d">用对齐、留白、层级、栅格四条原则，把一堆稿件整理成有节奏的线框结构。</span>
+            <span class="card__more" data-i18n="c5.goCh1">回到第 1 章 →</span>
+          </a>
+          <a class="card" href="patterns.html#p-cols">
+            <span class="card__num">02</span>
+            <span class="card__title" data-i18n="c5.t2">选定骨架</span>
+            <span class="card__desc" data-i18n="c5.t2d">在单栏 / 两栏 / 三栏之间做选择，并确认主内容在 DOM 中的顺序。</span>
+            <span class="card__more" data-i18n="c5.goCh2">回到第 2 章 →</span>
+          </a>
+          <a class="card" href="flexgrid.html#p-decide">
+            <span class="card__num">03</span>
+            <span class="card__title" data-i18n="c5.t3">写成代码</span>
+            <span class="card__desc" data-i18n="c5.t3d">Grid 搭骨架、Flex 做零件，并把这套分工贯穿整份样式表。</span>
+            <span class="card__more" data-i18n="c5.goCh3">回到第 3 章 →</span>
+          </a>
+          <a class="card" href="responsive.html#p-breakpoint">
+            <span class="card__num">04</span>
+            <span class="card__title" data-i18n="c5.t4">适配所有宽度</span>
+            <span class="card__desc" data-i18n="c5.t4d">移动优先、三个断点、流体字号，让首页在最窄到最宽都成立。</span>
+            <span class="card__more" data-i18n="c5.goCh4">回到第 4 章 →</span>
+          </a>
+          <a class="card" href="#p-refine">
+            <span class="card__num">05</span>
+            <span class="card__title" data-i18n="c5.t5">精修与验收</span>
+            <span class="card__desc" data-i18n="c5.t5d">逐块对照修正，并用清单确认没有遗漏 —— 也就是本章。</span>
+            <span class="card__more" data-i18n="c5.here">你在这里 ▸</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- ================================================================
+         5.1 需求与线框
+         ================================================================ -->
+    <section class="point" id="p-needs">
+      <header class="point__head">
+        <span class="point__num">5.1</span>
+        <h2 class="point__title" data-i18n="c5.p1.title">先回答「谁来读、来干什么」</h2>
+        <p class="point__sub" data-i18n="c5.p1.sub">布局的每一个取舍都应该能追溯到一条需求。没有需求约束的「好看」只是碰运气。</p>
+      </header>
+
+      <div class="block block--theory">
+        <p class="block__label" data-i18n="label.theory">讲解</p>
+        <div class="prose">
+          <h4 data-i18n="c5.p1.h1">案例背景</h4>
+          <p data-i18n-html="c5.p1.t1"><strong>「远山手记」</strong>是一份个人技术博客，长期更新设计与前端话题。作者自己写、自己排版，没有运营团队，也没有广告位。改造前的首页是「一栏长文一路铺到底」，问题不是不好看，而是<strong>没法用</strong>：读者找不到入口，老读者也看不到「有没有更新」。</p>
+
+          <h4 data-i18n="c5.p1.h2">两类读者，两种任务</h4>
+          <div class="tablewrap">
+            <table class="data">
+              <thead>
+                <tr>
+                  <th data-i18n="c5.p1.th1">读者</th>
+                  <th data-i18n="c5.p1.th2">他们来干什么</th>
+                  <th data-i18n="c5.p1.th3">布局必须提供</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td data-i18n="c5.p1.r1c1">第一次来的访客</td>
+                  <td data-i18n="c5.p1.r1c2">30 秒内判断「这里有没有我要的东西」，决定要不要留下来。</td>
+                  <td data-i18n="c5.p1.r1c3">一个明确的精选区 + 一眼可扫的文章标题列表 + 清晰的文章主题标签。</td>
+                </tr>
+                <tr>
+                  <td data-i18n="c5.p1.r2c1">回访的老读者</td>
+                  <td data-i18n="c5.p1.r2c2">快速确认「有没有新文章」，然后直接点进去。</td>
+                  <td data-i18n="c5.p1.r2c3">稳定的最新文章位置（不要每次改版都换地方）+ 归档入口 + 订阅入口。</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h4 data-i18n="c5.p1.h3">约束条件</h4>
+          <ul>
+            <li data-i18n="c5.p1.t2a"><strong>技术约束</strong>：纯静态、无构建、无图片素材 —— 所以缩略图用 CSS 渐变生成，页面必须脱网可用。</li>
+            <li data-i18n="c5.p1.t2b"><strong>内容约束</strong>：文章数量会持续增长，因此列表必须能「长得下去」，不能是一个写死高度的大区块。</li>
+            <li data-i18n="c5.p1.t2c"><strong>性能与无障碍约束</strong>：移动端优先、正文可读、键盘可达、尊重「减少动态效果」的系统设置。</li>
+          </ul>
+
+          <div class="callout callout--tip">
+            <span class="callout__icon" aria-hidden="true">◆</span>
+            <p data-i18n-html="c5.p1.tip"><strong>把需求翻译成布局决定，是这一节的核心动作。</strong>「老读者要快速确认有没有更新」→ 最新文章列表必须位于 DOM 与视觉的双重起点；「缩略图没有素材」→ 用 <code>aspect-ratio</code> 固定的渐变色块，反而让版面更耐看、更不挑内容。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="block block--code">
+        <p class="block__label" data-i18n="label.code">关键代码</p>
+        <figure class="codeblock">
+          <figcaption class="codeblock__bar">
+            <span class="codeblock__title" data-i18n="c5.p1.codeTitle">线框：区域与跨列关系</span>
+            <span class="codeblock__lang">css</span>
+            <button class="copybtn" type="button" data-i18n="ui.copy">复制</button>
+          </figcaption>
+<pre class="code" data-lang="css"><code><span class="tok-cmt" data-i18n="c5.p1.c1">/* 线框阶段的产出：一张能表达优先级与跨列关系的图 */</span>
+.blog {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);   <span class="tok-cmt" data-i18n="c5.p1.c2">/* 正文 : 侧栏 = 2 : 1 */</span>
+  gap: 24px;
+}
+
+<span class="tok-cmt" data-i18n="c5.p1.c3">/* 通栏区：用 1 / -1 跨满所有列，不依赖具体列数 */</span>
+.blog &gt; .hero,
+.blog &gt; .footer { grid-column: 1 / -1; }
+
+<span class="tok-cmt" data-i18n="c5.p1.c4">/* 侧栏吸顶：读者滚动正文时次级入口始终可见 */</span>
+.blog &gt; .sidebar {
+  align-self: start;
+  position: sticky;
+  top: 24px;
+}
+
+<span class="tok-cmt" data-i18n="c5.p1.c5">/* 侧栏里的卡片等距堆叠，用 Flex 而不是 Grid —— 一维排布 */</span>
+.sidebar { display: flex; flex-direction: column; gap: 16px; }
+</code></pre>
+        </figure>
+        <ul class="code-notes">
+          <li data-i18n-html="c5.p1.n1"><code>2fr : 1fr</code> 的比例来自需求：正文是主任务，侧栏是辅助 —— 不是随手写的。</li>
+          <li data-i18n-html="c5.p1.n2">侧栏 <code>sticky</code> 在长列表页面里价值很高，但要配 <code>align-self: start</code>，否则 Grid 项目默认拉伸会让 sticky 失效（本站的章节目录就是同一个坑的实例）。</li>
+          <li data-i18n-html="c5.p1.n3">线框阶段就写得出这几行 CSS —— 这正是 Grid 的价值：版式可以先用代码描述，再填内容。</li>
+        </ul>
+      </div>
+
+      <div class="block block--demo">
+        <p class="block__label" data-i18n="label.demo">动态演示</p>
+        <div class="demo" data-demo="wire">
+          <div class="demo__stage demo__stage--soft">
+            <div class="wire" id="dv-wire">
+              <div class="wire__zone wire__zone--hero" data-zone="hero"><b data-i18n="c5.p1.wHero">Hero · 精选</b><span data-i18n="c5.p1.wHeroD">一篇文章 + 摘要 + 元信息</span></div>
+              <div class="wire__row" data-row="main" style="grid-template-columns:minmax(0,2fr) minmax(0,1fr)">
+                <div class="wire__zone" data-zone="stream"><b data-i18n="c5.p1.wStream">文章流</b><span data-i18n="c5.p1.wStreamD">4 篇，标题 + 摘要 + 标签</span></div>
+                <div class="wire__zone" data-zone="side"><b data-i18n="c5.p1.wSide">侧栏</b><span data-i18n="c5.p1.wSideD">订阅 / 关于 / 标签</span></div>
+              </div>
+              <div class="wire__zone" data-zone="foot"><b data-i18n="c5.p1.wFoot">页脚</b><span data-i18n="c5.p1.wFootD">版权 + 次级入口</span></div>
+            </div>
+          </div>
+
+          <div class="demo__controls demo__controls--two">
+            <div class="ctrlgroup ctrlgroup--full">
+              <span class="ctrlgroup__label" data-i18n="d.wire.zones">显示 / 隐藏区域</span>
+              <div class="ctrlgroup__body">
+                <label class="switch"><input type="checkbox" data-name="z-hero" checked><span data-i18n="c5.p1.wHero">Hero · 精选</span></label>
+                <label class="switch"><input type="checkbox" data-name="z-stream" checked><span data-i18n="c5.p1.wStream">文章流</span></label>
+                <label class="switch"><input type="checkbox" data-name="z-side" checked><span data-i18n="c5.p1.wSide">侧栏</span></label>
+                <label class="switch"><input type="checkbox" data-name="z-foot" checked><span data-i18n="c5.p1.wFoot">页脚</span></label>
+              </div>
+            </div>
+
+            <p class="demo__readout" id="dv-wire-out" aria-live="polite"></p>
+          </div>
+
+          <figure class="codeblock">
+            <figcaption class="codeblock__bar">
+              <span class="codeblock__title" data-i18n="d.live">实时输出：上面每一步操作对应的 CSS</span>
+              <span class="codeblock__lang">css</span>
+              <button class="copybtn" type="button" data-i18n="ui.copy">复制</button>
+            </figcaption>
+            <pre class="code code--live" data-lang="css"><code id="code-wire"></code></pre>
+          </figure>
+        </div>
+        <p class="demo__note" data-i18n="c5.p1.demoNote">试试关掉侧栏：正文立刻获得满宽 —— 但请注意读数里那句取舍说明。线框阶段的价值就在于，你可以用三秒钟否定一个方案，而不必先把它写出来。</p>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         5.2 骨架选型
+         ================================================================ -->
+    <section class="point" id="p-skeleton">
+      <header class="point__head">
+        <span class="point__num">5.2</span>
+        <h2 class="point__title" data-i18n="c5.p2.title">三个骨架方案，一次说清取舍</h2>
+        <p class="point__sub" data-i18n="c5.p2.sub">把候选方案并排画出来、把代价写在旁边，决策就不再依赖直觉。</p>
+      </header>
+
+      <div class="block block--theory">
+        <p class="block__label" data-i18n="label.theory">讲解</p>
+        <div class="prose">
+          <h4 data-i18n="c5.p2.h1">选型的三个维度</h4>
+          <ul>
+            <li data-i18n-html="c5.p2.t1a"><strong>阅读体验</strong>：正文行宽是否落在可读区间（2.1）？这是硬指标。</li>
+            <li data-i18n-html="c5.p2.t1b"><strong>信息容量</strong>：一屏能承载多少个「入口」？这决定了新访客的留存。</li>
+            <li data-i18n-html="c5.p2.t1c"><strong>降级成本</strong>：窄屏时要拆掉几层结构？每拆一层就多一个断点、多一处可能出错的地方。</li>
+          </ul>
+          <p data-i18n-html="c5.p2.t2">把三个方案放到这三个维度上量一遍，结论其实很明确：<strong>方案 B（两栏）在三个维度上的总和最优</strong>。本文这个博客的内容量还没到需要三栏的程度，而纯单栏又装不下「归档 + 订阅 + 标签」这三个入口。</p>
+
+          <div class="callout callout--case">
+            <span class="callout__icon" aria-hidden="true">◈</span>
+            <p data-i18n-html="c5.p2.decision"><strong>最终决策：两栏为主，宽屏升级到三栏。</strong>默认（窄屏）单栏 → 600px 起两栏 → 1200px 起加上左侧归档栏变成三栏。选择三栏而不是「两栏 + 把归档塞进侧栏」，是因为归档在宽屏上需要<em>常驻可见</em>（老读者的高频入口），而侧栏已经有订阅与标签两个模块了。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="block block--code">
+        <p class="block__label" data-i18n="label.code">关键代码</p>
+        <figure class="codeblock">
+          <figcaption class="codeblock__bar">
+            <span class="codeblock__title" data-i18n="c5.p2.codeTitle">最终骨架：三段式 + 三档断点</span>
+            <span class="codeblock__lang">css</span>
+            <button class="copybtn" type="button" data-i18n="ui.copy">复制</button>
+          </figcaption>
+<pre class="code" data-lang="css"><code><span class="tok-cmt" data-i18n="c5.p2.c1">/* 默认：手机单栏 */</span>
+.f-grid {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "stream" "side";
+}
+
+<span class="tok-cmt" data-i18n="c5.p2.c2">/* 600px：平板两栏 —— 正文为主，侧栏 220px */</span>
+@media (min-width: 600px) {
+  .f-grid {
+    grid-template-columns: minmax(0, 1fr) 220px;
+    grid-template-areas: "stream side";
+    gap: 32px;
+  }
+}
+
+<span class="tok-cmt" data-i18n="c5.p2.c3">/* 1200px：桌面三栏 —— 归档栏登场 */</span>
+@media (min-width: 1200px) {
+  .f-grid {
+    grid-template-columns: 180px minmax(0, 1fr) 240px;
+    grid-template-areas: "rail stream side";
+  }
+  .f-rail { display: grid; }        <span class="tok-cmt" data-i18n="c5.p2.c4">/* 归档栏只在最宽档出现 */</span>
+}
+
+<span class="tok-cmt" data-i18n="c5.p2.c5">/* 三段式：DOM 顺序 = 内容优先级，视觉顺序由 areas 决定 */</span>
+<span class="tok-cmt" data-i18n="c5.p2.c6">/* 归档栏放在 DOM 的第二位？不行 —— 它应当是 &lt;aside&gt;，</span>
+<span class="tok-cmt" data-i18n="c5.p2.c7">   因此 HTML 里写在 main 之后，靠 grid-area 放到左侧 */</span>
+</code></pre>
+        </figure>
+        <ul class="code-notes">
+          <li data-i18n-html="c5.p2.n1">三个断点对应三种结构，而不是三套样式 —— 每档只做「加一栏」，没有任何撤销操作。</li>
+          <li data-i18n-html="c5.p2.n2"><code>.f-rail</code> 默认 <code>display: none</code>：它在窄屏下不存在（内容是归档列表，属于低频信息），宽屏才出现。用显示/隐藏而不是重排，可以让窄屏的阅读顺序保持干净。</li>
+          <li data-i18n-html="c5.p2.n3">对照第 4 章：这里的结构与 4.1 演示里跑的正是同一份代码。</li>
+        </ul>
+      </div>
+
+      <div class="block block--demo">
+        <p class="block__label" data-i18n="label.demo">动态演示</p>
+        <div class="demo" data-demo="skeleton">
+          <div class="demo__stage demo__stage--soft">
+            <div class="optgrid">
+              <div class="abgrid__panel" data-option="a">
+                <p class="abgrid__title" data-i18n="d.skel.aTitle">方案 A · 单栏</p>
+                <div class="skel skel--single" aria-hidden="true">
+                  <span class="skel__band"></span>
+                  <span class="skel__row"><i></i><i></i><i></i><i></i></span>
+                </div>
+                <ul class="fixlist" data-state="after">
+                  <li data-i18n="d.skel.a1">阅读体验最好，行宽容易控制</li>
+                  <li data-i18n="d.skel.a2">实现与降级成本最低</li>
+                  <li data-i18n="d.skel.a3">但归档 / 订阅 / 标签三处入口无处安放</li>
+                </ul>
+              </div>
+
+              <div class="abgrid__panel" data-option="b">
+                <p class="abgrid__title" data-i18n="d.skel.bTitle">方案 B · 两栏（推荐）</p>
+                <div class="skel skel--two" aria-hidden="true">
+                  <span class="skel__band"></span>
+                  <span class="skel__row"><i></i><i></i></span>
+                  <span class="skel__row"><i></i><i></i></span>
+                </div>
+                <ul class="fixlist" data-state="after">
+                  <li data-i18n="d.skel.b1">正文行宽仍可控制在可读区间</li>
+                  <li data-i18n="d.skel.b2">侧栏承载订阅 / 关于 / 标签</li>
+                  <li data-i18n="d.skel.b3">窄屏只需一次「侧栏下移」的降级</li>
+                </ul>
+              </div>
+
+              <div class="abgrid__panel" data-option="c">
+                <p class="abgrid__title" data-i18n="d.skel.cTitle">方案 C · 三栏 + 通栏头尾</p>
+                <div class="skel skel--three" aria-hidden="true">
+                  <span class="skel__band"></span>
+                  <span class="skel__row"><i></i><i></i><i></i></span>
+                  <span class="skel__row"><i></i><i></i><i></i></span>
+                </div>
+                <ul class="fixlist" data-state="after">
+                  <li data-i18n="d.skel.c1">信息容量最大，导航可常驻</li>
+                  <li data-i18n="d.skel.c2">900px 以下会挤，需要两处断点降级</li>
+                  <li data-i18n="d.skel.c3">对当前内容量来说，主内容被压得过窄</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="demo__controls demo__controls--two">
+            <div class="ctrlgroup">
+              <span class="ctrlgroup__label" data-i18n="d.skel.pick">选择方案</span>
+              <div class="ctrlgroup__body">
+                <div class="seg" data-name="pick">
+                  <button class="seg__btn" type="button" data-value="a" data-i18n="d.skel.aShort">A 单栏</button>
+                  <button class="seg__btn is-active" type="button" data-value="b" data-i18n="d.skel.bShort">B 两栏</button>
+                  <button class="seg__btn" type="button" data-value="c" data-i18n="d.skel.cShort">C 三栏</button>
+                </div>
+              </div>
+            </div>
+
+            <p class="demo__readout" id="dv-skel-out" aria-live="polite"></p>
+          </div>
+        </div>
+        <p class="demo__note" data-i18n="c5.p2.demoNote">切换三个方案，被选中的面板会加一圈高亮，下方给出选择它的完整理由。注意：最终成品其实同时包含了 A 和 B —— 窄屏是 A，宽屏是 B（再加一栏），这正是响应式布局的常态。</p>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         5.3 完整实现
+         ================================================================ -->
+    <section class="point" id="p-build">
+      <header class="point__head">
+        <span class="point__num">5.3</span>
+        <h2 class="point__title" data-i18n="c5.p3.title">完整实现：三份文件，一个成品</h2>
+        <p class="point__sub" data-i18n="c5.p3.sub">成品只有 HTML、CSS、一小段 JS。下面是可以直接复制运行的代码，以及它在四种宽度下的真实表现。</p>
+      </header>
+
+      <div class="block block--theory">
+        <p class="block__label" data-i18n="label.theory">讲解</p>
+        <div class="prose">
+          <h4 data-i18n="c5.p3.h1">文件结构</h4>
+          <pre class="code code--flat" data-lang="text"><code>case/
+├─ index.html   结构与文案（语义化标签：header / main / aside / footer）
+├─ frame.css    全部样式：令牌 → 骨架 → 组件 → 断点
+└─ lang.js      一小段脚本：读取 ?lang 参数做双语，与本站主站的配置对象同源</code></pre>
+          <p data-i18n-html="c5.p3.t1">样式表内部严格按<strong>四层顺序</strong>排列，这个顺序本身就是一份可读的文档：</p>
+          <ol>
+            <li data-i18n-html="c5.p3.t1a"><strong>令牌层</strong>：颜色、间距刻度、字体、圆角 —— 所有值只在这里出现一次；</li>
+            <li data-i18n-html="c5.p3.t1b"><strong>骨架层</strong>：页面级的 Grid（<code>.f-shell</code> / <code>.f-grid</code>），决定区域的相对位置；</li>
+            <li data-i18n-html="c5.p3.t1c"><strong>组件层</strong>：卡片、页头、侧栏模块；内部用 Flex，尺寸用令牌；</li>
+            <li data-i18n-html="c5.p3.t1d"><strong>断点层</strong>：三个 <code>min-width</code> 媒体查询，全部集中在文件末尾。</li>
+          </ol>
+
+          <h4 data-i18n="c5.p3.h2">几处值得单独说明的决定</h4>
+          <ul>
+            <li data-i18n-html="c5.p3.t2a"><strong>缩略图用 CSS 渐变</strong>而不是图片：<code>aspect-ratio</code> 固定比例 → 加载零等待、不产生布局跳动（CLS），而且不用维护素材。缺点是同质化，但博客列表页的缩略图本来就是「节奏点」而非内容。</li>
+            <li data-i18n-html="c5.p3.t2b"><strong>用边框分组，而不是阴影</strong>：列表里十几张卡片，如果每张都带阴影，页面会变得很吵；1px 边框在密集列表里安静得多。</li>
+            <li data-i18n-html="c5.p3.t2c"><strong>用 <code>grid-auto-rows</code> 与 <code>1fr</code> 保证同一行的卡片等高</strong>，按钮靠 <code>margin-top: auto</code> 吸到卡片底部 —— 一行里所有按钮因此落在同一条线上（回到 3.4 的第三条判据）。</li>
+            <li data-i18n-html="c5.p3.t2d"><strong>主题只提供了浅色</strong>，但所有颜色都走令牌，因此加一套 <code>[data-theme=dark]</code> 覆盖即可 —— 主站正是这么做的。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="block block--code">
+        <p class="block__label" data-i18n="label.code">关键代码</p>
+        <div class="tabs">
+          <div class="tabs__bar" role="tablist">
+            <button class="tabs__btn is-active" type="button" data-tab="html">index.html</button>
+            <button class="tabs__btn" type="button" data-tab="css">frame.css</button>
+            <button class="tabs__btn" type="button" data-tab="js">lang.js</button>
+            <button class="copybtn" type="button" data-i18n="ui.copy" style="margin-left:auto">复制</button>
+          </div>
+
+          <div class="tabs__panel is-active" data-panel="html">
+            <figure class="codeblock">
+              <figcaption class="codeblock__bar">
+                <span class="codeblock__title" data-i18n="c5.p3.codeHtmlTitle">结构：语义化标签 + 内容优先级顺序</span>
+                <span class="codeblock__lang">html</span>
+              </figcaption>
+<pre class="code" data-lang="html"><code>&lt;div class="f-shell"&gt;
+  &lt;header class="f-head"&gt;
+    &lt;div class="f-brand"&gt;远山&lt;span&gt;手记&lt;/span&gt;&lt;/div&gt;
+    &lt;nav class="f-nav"&gt;
+      &lt;a href="#" aria-current="page"&gt;文章&lt;/a&gt;
+      &lt;a href="#"&gt;笔记&lt;/a&gt;
+      &lt;a href="#"&gt;关于&lt;/a&gt;
+    &lt;/nav&gt;
+    &lt;button class="f-search" type="button"&gt;搜索&lt;/button&gt;
+  &lt;/header&gt;
+
+  &lt;div class="f-grid"&gt;
+    &lt;!-- 归档栏：DOM 里在正文之后，靠 grid-area 放到左侧 --&gt;
+    &lt;aside class="f-rail"&gt;
+      &lt;h4&gt;归档&lt;/h4&gt;
+      &lt;a href="#" aria-current="page"&gt;2026 · 秋&lt;/a&gt;
+      &lt;a href="#"&gt;2026 · 夏&lt;/a&gt;
+    &lt;/aside&gt;
+
+    &lt;!-- 正文：DOM 顺序上的第一块内容 --&gt;
+    &lt;main class="f-stream"&gt;
+      &lt;section class="f-hero"&gt;
+        &lt;p class="f-kicker"&gt;精选&lt;/p&gt;
+        &lt;h1&gt;用栅格与留白，把首页安顿好&lt;/h1&gt;
+        &lt;p class="f-lead"&gt;先确定信息优先级，再用栅格落位……&lt;/p&gt;
+      &lt;/section&gt;
+      &lt;h2 class="f-sec-title"&gt;最新文章&lt;/h2&gt;
+      &lt;div class="f-posts"&gt;
+        &lt;a class="f-post" href="#"&gt;
+          &lt;span class="f-thumb" aria-hidden="true"&gt;&lt;/span&gt;
+          &lt;span&gt;
+            &lt;h3&gt;圣杯布局为什么还在被使用&lt;/h3&gt;
+            &lt;p&gt;三栏 + 通栏头尾 + 正文优先加载……&lt;/p&gt;
+          &lt;/span&gt;
+        &lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+
+    &lt;aside class="f-side"&gt;…订阅 / 关于 / 标签…&lt;/aside&gt;
+  &lt;/div&gt;
+
+  &lt;footer class="f-foot"&gt;© 2026 远山手记&lt;/footer&gt;
+&lt;/div&gt;</code></pre>
+            </figure>
+            <ul class="code-notes">
+              <li data-i18n-html="c5.p3.n3">用语义化标签（<code>header</code> / <code>main</code> / <code>aside</code> / <code>nav</code> / <code>footer</code>）而不是一堆 <code>div</code>：屏幕阅读器据此提供地标导航，键盘用户可以一键跳到 <code>main</code>。</li>
+              <li data-i18n-html="c5.p3.n4">页面里只有一个 <code>h1</code>，标题层级不跳级（h1 → h2 → h3）—— 这是无障碍的基本要求，也顺手保证了视觉层级。</li>
+              <li data-i18n-html="c5.p3.n5"><code>aria-hidden</code> 用在纯装饰的缩略图上，避免屏幕阅读器读出无意义的空元素。</li>
+            </ul>
+          </div>
+
+          <div class="tabs__panel" data-panel="css">
+            <figure class="codeblock">
+              <figcaption class="codeblock__bar">
+                <span class="codeblock__title" data-i18n="c5.p3.codeCssTitle">样式：令牌 → 骨架 → 组件 → 断点</span>
+                <span class="codeblock__lang">css</span>
+              </figcaption>
+<pre class="code" data-lang="css"><code><span class="tok-cmt" data-i18n="c5.p3.c1">/* ① 令牌层 */</span>
+:root {
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --accent: #1f6b64;
+  --line: #e6e2da;
+}
+
+<span class="tok-cmt" data-i18n="c5.p3.c2">/* ② 骨架层：Grid 决定区域位置 */</span>
+.f-shell {
+  display: grid;
+  gap: var(--space-5);
+  max-width: 1180px;
+  margin-inline: auto;
+  padding: var(--space-4);
+}
+
+.f-grid {
+  display: grid;
+  gap: var(--space-5);
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "stream" "side";
+}
+.f-rail { display: none; }
+.f-stream { grid-area: stream; min-width: 0; }
+.f-side { grid-area: side; min-width: 0; }
+
+<span class="tok-cmt" data-i18n="c5.p3.c3">/* ③ 组件层：Flex 处理组件内部 */</span>
+.f-post {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.f-thumb {
+  width: 64px;
+  aspect-ratio: 1;                       <span class="tok-cmt" data-i18n="c5.p3.c4">/* 固定比例：加载不跳动 */</span>
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--accent), #7fb8ae);
+}
+
+.f-hero h1 {
+  font-size: clamp(22px, 3.4vw + 8px, 40px);   <span class="tok-cmt" data-i18n="c5.p3.c5">/* 流体字号：少一个断点 */</span>
+}
+
+<span class="tok-cmt" data-i18n="c5.p3.c6">/* ④ 断点层：集中在文件末尾，只做增强 */</span>
+@media (min-width: 600px) {
+  .f-grid {
+    grid-template-columns: minmax(0, 1fr) 220px;
+    grid-template-areas: "stream side";
+    gap: var(--space-6);
+  }
+}
+
+@media (min-width: 900px) {
+  .f-posts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .f-post:first-child { grid-column: 1 / -1; }   <span class="tok-cmt" data-i18n="c5.p3.c7">/* 首篇通栏，形成节奏 */</span>
+}
+
+@media (min-width: 1200px) {
+  .f-grid {
+    grid-template-columns: 180px minmax(0, 1fr) 240px;
+    grid-template-areas: "rail stream side";
+  }
+  .f-rail { display: grid; align-content: start; gap: 4px; }
+}
+</code></pre>
+            </figure>
+            <ul class="code-notes">
+              <li data-i18n-html="c5.p3.n6">四层的顺序不能乱：令牌在最上（所有值来自这里），断点在最下（只覆盖位置与尺寸）。中间两层是「结构」与「零件」的分工。</li>
+              <li data-i18n-html="c5.p3.n7">注意组件层里 <code>.f-post</code> 用的是 Grid（二维：图与文），而不是 Flex —— 图文并排且需要对齐时 Grid 更省事；<code>.f-thumb</code> 用 <code>aspect-ratio: 1</code> 保证永远是正方形。</li>
+              <li data-i18n-html="c5.p3.n8">断点层里没有任何颜色或字体声明 —— 那是令牌层的职责。这条纪律让改版变得很安全。</li>
+            </ul>
+          </div>
+
+          <div class="tabs__panel" data-panel="js">
+            <figure class="codeblock">
+              <figcaption class="codeblock__bar">
+                <span class="codeblock__title" data-i18n="c5.p3.codeJsTitle">脚本：读参数做双语（与主站同源的做法）</span>
+                <span class="codeblock__lang">js</span>
+              </figcaption>
+<pre class="code" data-lang="js"><code><span class="tok-cmt" data-i18n="c5.p3.j1">// 文案集中在一个配置对象里，切换语言只做一件事：遍历带 data-k 的元素</span>
+const DICT = {
+  en: {
+    nav1: "Writing", nav2: "Notes", nav3: "About",
+    h1: "Settling a homepage with grids and whitespace",
+    streamTitle: "Latest writing"
+  }
+};
+
+const params = new URLSearchParams(location.search);
+const lang = params.get("lang") === "en" ? "en" : "zh";
+const state = params.get("state") === "before" ? "before" : "after";
+
+<span class="tok-cmt" data-i18n="c5.p3.j2">// state=before 用于「改造前 / 改造后」对比，只切一个 class</span>
+if (state === "before") document.body.classList.add("is-before");
+
+if (lang === "en") {
+  document.querySelectorAll("[data-k]").forEach(function (el) {
+    const value = DICT.en[el.dataset.k];
+    if (value != null) el.textContent = value;   <span class="tok-cmt" data-i18n="c5.p3.j3">// 中文原文写在 HTML 里，缺译文时自然退回中文</span>
+  });
+}
+</code></pre>
+            </figure>
+            <ul class="code-notes">
+              <li data-i18n-html="c5.p3.n9">中文直接写在 HTML 里：没有 JS 也能完整阅读；英文放在配置对象里，只需维护一份对照，不会出现两份 HTML 逐渐「漂移」。</li>
+              <li data-i18n-html="c5.p3.n10">缺译文时优雅退回原文，而不是显示空白或 <code>undefined</code> —— 双语站点最容易出的问题就是漏译，这一点必须兜住。</li>
+              <li data-i18n-html="c5.p3.n11">本站主站的 i18n 用的是同一套思路，只是规模更大（区分「页面文案」与「JS 动态文案」两张表）。</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="block block--demo">
+        <p class="block__label" data-i18n="label.demo">动态演示</p>
+        <div class="demo" data-demo="viewport">
+          <div class="demo__stage">
+            <div class="vpsim">
+              <div class="vpsim__ruler" aria-hidden="true">
+                <span class="vpsim__band" data-bp="phone" style="flex:280">&lt;600</span>
+                <span class="vpsim__band" data-bp="tablet" style="flex:300">600–899</span>
+                <span class="vpsim__band" data-bp="laptop" style="flex:300">900–1199</span>
+                <span class="vpsim__band" data-bp="desktop" style="flex:240">≥1200</span>
+                <span class="vpsim__marker"></span>
+              </div>
+              <div class="vpsim__view">
+                <span class="vpsim__badge"></span>
+                <div class="vpsim__frame">
+                  <iframe data-frame="../assets/demo/frame-blog.html" title="案例成品预览" loading="lazy"></iframe>
+                </div>
+              </div>
+              <div class="vpsim__presets">
+                <button class="btn" type="button" data-w="375" data-i18n="d.vp.p375">手机 375</button>
+                <button class="btn" type="button" data-w="768" data-i18n="d.vp.p768">平板 768</button>
+                <button class="btn" type="button" data-w="1024" data-i18n="d.vp.p1024">笔记本 1024</button>
+                <button class="btn" type="button" data-w="1280" data-i18n="d.vp.p1280">桌面 1280</button>
+                <a class="btn btn--primary" href="../assets/demo/frame-blog.html" target="_blank" rel="noopener" data-i18n="d.vp.open">在新标签页打开成品 ↗</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="demo__controls demo__controls--two">
+            <label class="ctrl">
+              <span class="ctrl__label" data-i18n="d.vp.width">视口宽度</span>
+              <input type="range" min="320" max="1440" step="5" value="1280" data-name="width" data-unit="px">
+              <output class="ctrl__val">1280px</output>
+            </label>
+
+            <p class="demo__readout" id="dv-vp-out" aria-live="polite"></p>
+            <p class="demo__note" id="dv-vp-note"></p>
+          </div>
+
+          <figure class="codeblock">
+            <figcaption class="codeblock__bar">
+              <span class="codeblock__title" data-i18n="d.live">实时输出：上面每一步操作对应的 CSS</span>
+              <span class="codeblock__lang">css</span>
+              <button class="copybtn" type="button" data-i18n="ui.copy">复制</button>
+            </figcaption>
+            <pre class="code code--live" data-lang="css"><code id="code-viewport"></code></pre>
+          </figure>
+        </div>
+        <p class="demo__note" data-i18n="c5.p3.demoNote">这就是成品本身：可以滚动、可以点链接、可以在四种设备宽度之间来回切。注意 900px 那一档 —— 文章流变成两列且首篇通栏，这是一处「为了节奏而加」的断点，不是需求要求的结构变化。</p>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         5.4 精修与验收
+         ================================================================ -->
+    <section class="point" id="p-refine">
+      <header class="point__head">
+        <span class="point__num">5.4</span>
+        <h2 class="point__title" data-i18n="c5.p4.title">逐块精修：把「能用」变成「好读」</h2>
+        <p class="point__sub" data-i18n="c5.p4.sub">最后一轮改造不动结构，只修正七处具体的版面问题 —— 而效果差别相当大。</p>
+      </header>
+
+      <div class="block block--theory">
+        <p class="block__label" data-i18n="label.theory">讲解</p>
+        <div class="prose">
+          <h4 data-i18n="c5.p4.h1">改造前到底哪里不对</h4>
+          <p data-i18n-html="c5.p4.t1">最初的实现可以运行、内容也对，但每一处都是「随手写的」：没有版心（<code>max-width: none</code>）、三栏写死（任何宽度都是三栏）、标题和正文同一字号、间距来自 3px / 4px 这类随手值、缩略图写死 96px。</p>
+          <div class="callout callout--warn">
+            <span class="callout__icon" aria-hidden="true">⚠</span>
+            <p data-i18n-html="c5.p4.warn"><strong>这一节的要点：坏版面往往不是「设计能力不足」，而是每一个决定都缺少依据。</strong>逐条对照前面四章的原则，问题会自己浮出来 —— 这也是为什么验收清单比审美直觉更可靠。</p>
+          </div>
+
+          <h4 data-i18n="c5.p4.h2">七处修正，以及它们各自对应的原则</h4>
+          <div class="tablewrap">
+            <table class="data">
+              <thead>
+                <tr>
+                  <th data-i18n="c5.p4.th1">改动</th>
+                  <th data-i18n="c5.p4.th2">从 → 到</th>
+                  <th data-i18n="c5.p4.th3">对应原则</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td data-i18n="c5.p4.r1c1">加版心</td>
+                  <td data-i18n="c5.p4.r1c2"><code>max-width: none</code> → <code>1180px + margin-inline: auto</code></td>
+                  <td data-i18n="c5.p4.r1c3">2.1 行宽</td>
+                </tr>
+                <tr>
+                  <td data-i18n="c5.p4.r2c1">三栏写死 → 四档断点</td>
+                  <td data-i18n="c5.p4.r2c2">固定三栏 → 单栏 / 两栏 / 三栏</td>
+                  <td data-i18n="c5.p4.r2c3">4.1 移动优先</td>
+                </tr>
+                <tr>
+                  <td data-i18n="c5.p4.r3c1">建立字号层级</td>
+                  <td data-i18n="c5.p4.r3c2">标题 15px → <code>clamp(22px, 3.4vw + 8px, 40px)</code></td>
+                  <td data-i18n="c5.p4.r3c3">1.3 层级 + 4.2 流体</td>
+                </tr>
+                <tr>
+                  <td data-i18n="c5.p4.r4c1">间距归入刻度</td>
+                  <td data-i18n="c5.p4.r4c2">3px / 4px 随手值 → <code>--space-1 … --space-7</code></td>
+                  <td data-i18n="c5.p4.r4c3">1.2 留白</td>
+                </tr>
+                <tr>
+                  <td data-i18n="c5.p4.r5c1">缩略图改为弹性</td>
+                  <td data-i18n="c5.p4.r5c2"><code>width: 96px</code> → <code>width: 64px; aspect-ratio: 1</code></td>
+                  <td data-i18n="c5.p4.r5c3">4.3 响应式陷阱</td>
+                </tr>
+                <tr>
+                  <td data-i18n="c5.p4.r6c1">卡片内部对齐</td>
+                  <td data-i18n="c5.p4.r6c2">文字随内容浮动 → 图与文分列，按钮吸底</td>
+                  <td data-i18n="c5.p4.r6c3">1.1 对齐 + 3.4 跨卡片对齐</td>
+                </tr>
+                <tr>
+                  <td data-i18n="c5.p4.r7c1">分组关系可见</td>
+                  <td data-i18n="c5.p4.r7c2">组内 = 组间 → 组间 = 组内 × 1.9</td>
+                  <td data-i18n="c5.p4.r7c3">1.2 接近性原则</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="block block--code">
+        <p class="block__label" data-i18n="label.code">关键代码</p>
+        <figure class="codeblock">
+          <figcaption class="codeblock__bar">
+            <span class="codeblock__title" data-i18n="c5.p4.codeTitle">同一份代码的「改造前」覆盖层</span>
+            <span class="codeblock__lang">css</span>
+            <button class="copybtn" type="button" data-i18n="ui.copy">复制</button>
+          </figcaption>
+<pre class="code" data-lang="css"><code><span class="tok-cmt" data-i18n="c5.p4.c1">/* 演示用的「改造前」：全部是常见错误，逐条对应上面的修正表 */</span>
+body.is-before .f-shell {
+  max-width: none;          <span class="tok-cmt" data-i18n="c5.p4.c2">/* ✗ 没有版心 → 行宽随窗口无限拉长 */</span>
+  padding: 4px;             <span class="tok-cmt" data-i18n="c5.p4.c3">/* ✗ 间距随手给 */</span>
+  gap: 4px;
+}
+
+body.is-before .f-grid {
+  grid-template-columns: 70px minmax(0, 1fr) 70px;
+  grid-template-areas: "rail stream side";
+  <span class="tok-cmt" data-i18n="c5.p4.c4">/* ✗ 不管多窄都硬撑三栏，窄屏挤成一团 */</span>
+}
+
+body.is-before .f-hero h1 {
+  font-size: 15px;          <span class="tok-cmt" data-i18n="c5.p4.c5">/* ✗ 标题与正文同级 → 层次消失 */</span>
+  font-weight: 400;
+}
+
+body.is-before .f-thumb {
+  width: 96px;              <span class="tok-cmt" data-i18n="c5.p4.c6">/* ✗ 写死宽度，容器再窄也不缩 */</span>
+  height: 96px;
+}
+
+body.is-before .f-posts { gap: 3px; }   <span class="tok-cmt" data-i18n="c5.p4.c7">/* ✗ 组内组间一样大 → 分组关系消失 */</span>
+</code></pre>
+        </figure>
+        <ul class="code-notes">
+          <li data-i18n-html="c5.p4.n1">把旧样式写成<strong>一层覆盖</strong>（而不是维护两份 HTML），使 A/B 对比只需切换一个 class —— 演示、回归测试、向同事解释改了什么，都用同一份代码。</li>
+          <li data-i18n-html="c5.p4.n2">注意每一行都标了「✗ + 原因」。代码注释写清楚「为什么这样是错的」，比只写「这是旧版本」有用得多。</li>
+          <li data-i18n-html="c5.p4.n3">这个 <code>is-before</code> 类在真实项目里通常只存在于演示环境；它的价值是让「改版收益」可见、可测。</li>
+        </ul>
+      </div>
+
+      <div class="block block--demo">
+        <p class="block__label" data-i18n="label.demo">动态演示</p>
+        <div class="demo" data-demo="caseab">
+          <div class="demo__stage demo__stage--flush">
+            <div class="case-ab">
+              <div class="case-ab__frame">
+                <iframe data-frame="../assets/demo/frame-blog.html" data-frame-query="state=after" title="改造前后对比" loading="lazy"></iframe>
+              </div>
+            </div>
+          </div>
+
+          <div class="demo__controls demo__controls--two">
+            <div class="ctrlgroup">
+              <span class="ctrlgroup__label" data-i18n="d.caseab.state">版本</span>
+              <div class="ctrlgroup__body">
+                <div class="seg" data-name="state">
+                  <button class="seg__btn" type="button" data-value="before" data-i18n="d.caseab.before">改造前</button>
+                  <button class="seg__btn is-active" type="button" data-value="after" data-i18n="d.caseab.after">改造后</button>
+                </div>
+              </div>
+            </div>
+
+            <p class="demo__readout" id="dv-caseab-out" aria-live="polite"></p>
+
+            <div class="ctrlgroup ctrlgroup--full">
+              <span class="ctrlgroup__label" data-i18n="d.caseab.fixes">这一轮做掉的七处修正</span>
+              <ul class="fixlist" id="dv-caseab-list" data-state="after">
+                <li data-i18n="d.caseab.f1">加版心：max-width 1180px + 居中</li>
+                <li data-i18n="d.caseab.f2">三栏写死 → 四档断点（移动优先）</li>
+                <li data-i18n="d.caseab.f3">建立字号层级（标题用流体 clamp）</li>
+                <li data-i18n="d.caseab.f4">间距全部归入统一刻度</li>
+                <li data-i18n="d.caseab.f5">缩略图改用比例而非固定宽高</li>
+                <li data-i18n="d.caseab.f6">卡片内部对齐，按钮吸底</li>
+                <li data-i18n="d.caseab.f7">组间间距放大到组内的 1.9 倍</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <p class="demo__note" data-i18n="c5.p4.demoNote">先看「改造前」并在下方把视口拖窄 —— 你会看到行宽失控、三栏挤成一团、标题与正文一样大。再切回「改造后」：同样的内容、同样的 HTML 结构，只是每一个决定都有了依据。</p>
+      </div>
+
+      <div class="block block--theory">
+        <p class="block__label" data-i18n="c5.p4.checklistLabel">验收清单</p>
+        <div class="prose">
+          <p data-i18n-html="c5.p4.checkIntro">把下面这份清单用在<strong>你自己的</strong>页面上。八条全部打勾，版面质量就有了基本保障（勾选状态会记在这台设备上）。</p>
+          <ul class="checklist">
+            <li><input type="checkbox"><span data-i18n="c5.p4.k1">把浏览器从最窄拖到最宽，没有任何一处横向滚动条、没有内容重叠或溢出。</span></li>
+            <li><input type="checkbox"><span data-i18n="c5.p4.k2">正文行宽在 45–75 西文字符（或 25–40 汉字）之间，超宽屏上也不会继续拉长。</span></li>
+            <li><input type="checkbox"><span data-i18n="c5.p4.k3">眯眼看页面（或缩到 25%），还能看出几条清晰的竖直对齐线。</span></li>
+            <li><input type="checkbox"><span data-i18n="c5.p4.k4">页面里的层级不超过三级，且用比例尺而不是随手取的字号。</span></li>
+            <li><input type="checkbox"><span data-i18n="c5.p4.k5">所有间距都来自同一套刻度；组内间距小于组间间距。</span></li>
+            <li><input type="checkbox"><span data-i18n="c5.p4.k6">关闭 CSS 的高亮，只用键盘 Tab 走一遍：焦点顺序与视觉顺序一致，且没有卡在不可见元素上。</span></li>
+            <li><input type="checkbox"><span data-i18n="c5.p4.k7">缩放到 200% 或把默认字号调大，版面仍然成立（说明用了 rem / 相对单位）。</span></li>
+            <li><input type="checkbox"><span data-i18n="c5.p4.k8">支持「减少动态效果」的系统设置；图片有宽高或比例，加载时不产生跳动。</span></li>
+          </ul>
+          <div class="callout callout--case">
+            <span class="callout__icon" aria-hidden="true">◈</span>
+            <p data-i18n-html="c5.p4.end"><strong>案例到此完成。</strong>回看这五章：需求决定了骨架，骨架决定了实现方式，实现方式决定了断点怎么加 —— 每一步都可以追溯到上一步。页面布局的「好」，最终来自这种<em>可追溯</em>，而不是来自某一个漂亮的像素值。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <nav class="pagenav" aria-label="翻页" data-i18n-attr="aria-label:nav.pager">
+      <a class="pagenav__link" href="responsive.html">
+        <span class="pagenav__dir" data-i18n="nav.prev">上一页</span>
+        <span class="pagenav__title" data-i18n="nav.ch4">④ 响应式</span>
+      </a>
+      <a class="pagenav__link pagenav__link--next" href="../index.html">
+        <span class="pagenav__dir" data-i18n="nav.next">回到</span>
+        <span class="pagenav__title" data-i18n="nav.home">首页</span>
+      </a>
+    </nav>
+
+  </article>
+</main>
+
+<footer class="sitefoot">
+  <div class="wrap sitefoot__grid">
+    <div>
+      <h4 data-i18n="foot.aboutTitle">关于本站</h4>
+      <p data-i18n="foot.about">「布局实验室」是一份以案例驱动的页面布局教程：每个知识点都由「讲解 / 关键代码 / 动态演示」三块组成，并用同一个案例（博客首页）从头贯穿到尾。</p>
+    </div>
+    <div>
+      <h4 data-i18n="foot.chapters">章节</h4>
+      <ul>
+        <li><a href="principles.html" data-i18n="nav.ch1">① 设计原则</a></li>
+        <li><a href="patterns.html" data-i18n="nav.ch2">② 经典模式</a></li>
+        <li><a href="flexgrid.html" data-i18n="nav.ch3">③ Flex &amp; Grid</a></li>
+        <li><a href="responsive.html" data-i18n="nav.ch4">④ 响应式</a></li>
+        <li><a href="case.html" data-i18n="nav.ch5">⑤ 案例实战</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 data-i18n="foot.metaTitle">技术</h4>
+      <ul>
+        <li data-i18n="foot.meta1">原生 HTML / CSS / JavaScript</li>
+        <li data-i18n="foot.meta2">无构建步骤，直接发布到 GitHub Pages</li>
+        <!-- 发布前请把下面这一行的地址换成你的仓库地址 -->
+        <li><a href="https://github.com/" target="_blank" rel="noopener" data-i18n="foot.repo">GitHub 仓库</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<button class="totop iconbtn" type="button" data-i18n-attr="aria-label:nav.top" aria-label="回到顶部">↑</button>
+
+<script src="../assets/js/ui.js"></script>
+<script src="../assets/js/i18n.js"></script>
+<script src="../assets/js/demo-case.js"></script>
+<script src="../assets/js/demo-responsive.js"></script>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

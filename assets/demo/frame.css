@@ -1,0 +1,495 @@
+/* ==========================================================================
+   frame.css — 案例成品：博客首页的样式 / The case deliverable
+   --------------------------------------------------------------------------
+   这份文件被 iframe 加载，是「从零设计博客首页」的最终代码。
+   它被刻意写成一份可以直接拿去用的示范：
+     · 顶部一组设计令牌
+     · 移动优先的四个断点（600 / 900 / 1200）
+     · Grid 负责页面骨架，Flex 负责组件内部
+     · body.is-before 是「改造前」的对照版本，用于前后对比演示
+   ========================================================================== */
+
+:root {
+  --bg: #fbfaf8;
+  --surface: #ffffff;
+  --ink: #16181d;
+  --ink-2: #3c4049;
+  --muted: #6d727e;
+  --line: #e6e2da;
+  --accent: #1f6b64;
+  --accent-2: #b1593a;
+  --accent-soft: #e9f1ef;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --radius: 10px;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  --font-serif: "Iowan Old Style", Georgia, "Songti SC", "Noto Serif SC", serif;
+  --font-mono: ui-monospace, Menlo, Consolas, monospace;
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+img { display: block; max-width: 100%; }
+
+/* ==========================================================================
+   骨架 / Shell
+   ========================================================================== */
+.f-shell {
+  /* 移动优先：窄屏默认单栏、内边距最小 */
+  display: grid;
+  gap: var(--space-5);
+  max-width: 1180px;
+  margin-inline: auto;
+  padding: var(--space-4);
+}
+
+/* ---------- 页头 / Header ---------- */
+.f-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--line);
+  /* 小屏顶栏吸顶：滚动时导航不可丢 */
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter: blur(8px);
+  padding-top: var(--space-3);
+}
+
+.f-brand {
+  font-family: var(--font-serif);
+  font-size: 17px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.f-brand span {
+  color: var(--accent);
+}
+
+.f-nav {
+  display: flex;
+  gap: var(--space-1);
+  margin-left: auto;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.f-nav::-webkit-scrollbar { display: none; }
+
+.f-nav a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 13px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.f-nav a[aria-current] {
+  color: var(--accent);
+  background: var(--accent-soft);
+  font-weight: 650;
+}
+
+.f-search {
+  flex: 0 0 auto;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--muted);
+  border-radius: 999px;
+  padding: 3px 11px;
+  font-size: 12px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* ---------- 主网格 / Main grid ---------- */
+.f-grid {
+  display: grid;
+  gap: var(--space-5);
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    "stream"
+    "side";
+}
+
+.f-rail { display: none; }      /* 只在最宽的断点出现 */
+.f-stream { grid-area: stream; min-width: 0; }
+.f-side { grid-area: side; min-width: 0; }
+
+/* ---------- 精选区 / Hero ---------- */
+.f-hero {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background:
+    radial-gradient(120% 140% at 100% 0%, var(--accent-soft), transparent 60%),
+    var(--surface);
+}
+
+.f-kicker {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-2);
+}
+
+.f-hero h1 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-weight: 600;
+  /* 流体字号：视口变宽时平滑放大，两端由 clamp 兜住 */
+  font-size: clamp(22px, 3.4vw + 8px, 40px);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  max-width: 22ch;
+}
+
+.f-lead {
+  margin: 0;
+  color: var(--ink-2);
+  font-size: 14px;
+  max-width: 56ch;
+}
+
+.f-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  font-size: 12px;
+  color: var(--muted);
+  font-family: var(--font-mono);
+}
+
+.f-meta b { color: var(--accent); font-weight: 650; }
+
+/* ---------- 文章流 / Post stream ---------- */
+.f-sec-title {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  margin: 0 0 var(--space-3);
+  font-size: 13px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.f-sec-title::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+.f-posts {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.f-post {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  gap: var(--space-3);
+  align-items: start;
+  padding: var(--space-4);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.18s ease, transform 0.18s ease;
+}
+
+.f-post:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.f-thumb {
+  width: 64px;
+  height: 64px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--accent) 0%, #7fb8ae 100%);
+  opacity: 0.9;
+}
+
+.f-post:nth-child(2) .f-thumb { background: linear-gradient(135deg, var(--accent-2), #e0a583); }
+.f-post:nth-child(3) .f-thumb { background: linear-gradient(135deg, #4a6fa5, #9db8dd); }
+.f-post:nth-child(4) .f-thumb { background: linear-gradient(135deg, #7a5c9e, #c3aede); }
+
+.f-post h3 {
+  margin: 0 0 var(--space-1);
+  font-size: 15px;
+  font-weight: 650;
+  line-height: 1.4;
+  text-wrap: balance;
+}
+
+.f-post p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.f-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  margin-top: var(--space-2);
+}
+
+.f-tag {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-radius: 999px;
+  padding: 1px 8px;
+}
+
+/* ---------- 侧栏 / Sidebar ---------- */
+.f-side {
+  display: grid;
+  gap: var(--space-3);
+  align-content: start;
+}
+
+.f-card {
+  padding: var(--space-4);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.f-card h4 {
+  margin: 0 0 var(--space-2);
+  font-size: 12px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.f-card p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--ink-2);
+  line-height: 1.6;
+}
+
+.f-card--accent {
+  background: var(--accent-soft);
+  border-color: #bcd8d4;
+}
+
+.f-card--accent p { color: var(--accent); }
+
+.f-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+.f-cloud span {
+  font-size: 12px;
+  padding: 1px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  color: var(--muted);
+}
+
+/* ---------- 页脚 / Footer ---------- */
+.f-foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
+  align-items: center;
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--line);
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.f-foot nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-left: auto;
+}
+
+.f-foot a { color: var(--muted); text-decoration: none; }
+
+/* ==========================================================================
+   断点：移动优先，逐级「增强」
+   ========================================================================== */
+
+/* 600px —— 平板：正文 + 侧栏两栏 */
+@media (min-width: 600px) {
+  .f-shell { padding: var(--space-5); gap: var(--space-6); }
+  .f-grid {
+    grid-template-columns: minmax(0, 1fr) 220px;
+    grid-template-areas: "stream side";
+    gap: var(--space-6);
+  }
+  .f-post { grid-template-columns: 76px minmax(0, 1fr); }
+  .f-thumb { width: 76px; height: 76px; }
+}
+
+/* 900px —— 笔记本：加大版心与节奏 */
+@media (min-width: 900px) {
+  .f-shell { padding: var(--space-6); }
+  .f-grid {
+    grid-template-columns: minmax(0, 1fr) 260px;
+    gap: var(--space-7);
+  }
+  .f-posts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* 第一篇文章通栏，形成「一主两辅」的视觉节奏 */
+  .f-post:first-child { grid-column: 1 / -1; }
+  .f-post:first-child .f-thumb { width: 100%; height: 120px; }
+  .f-post:first-child h3 { font-size: 18px; }
+  .f-hero { padding: var(--space-6); }
+}
+
+/* 1200px —— 桌面：左侧归档栏 + 正文 + 右侧信息栏 */
+@media (min-width: 1200px) {
+  .f-grid {
+    grid-template-columns: 180px minmax(0, 1fr) 240px;
+    grid-template-areas: "rail stream side";
+  }
+  .f-rail {
+    display: grid;
+    gap: var(--space-1);
+    align-content: start;
+    grid-area: rail;
+  }
+  .f-rail h4 {
+    margin: 0 0 var(--space-1);
+    font-size: 12px;
+    font-family: var(--font-mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .f-rail a {
+    display: block;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    color: var(--muted);
+    text-decoration: none;
+  }
+  .f-rail a[aria-current] {
+    color: var(--accent);
+    background: var(--accent-soft);
+    font-weight: 650;
+  }
+  .f-posts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* ==========================================================================
+   「改造前」对照版本 / The "before" state
+   --------------------------------------------------------------------------
+   这里集合了页面布局最常见的几类错误：
+   固定三栏、没有版心、行宽失控、层级靠默认值、间距随手给、缩略图写死宽度。
+   ========================================================================== */
+body.is-before .f-shell {
+  max-width: none;          /* ✗ 没有版心：正文行宽随窗口无限拉长 */
+  padding: 4px;
+  gap: 4px;
+}
+
+body.is-before .f-head {
+  position: static;
+  padding: 2px 0;
+  gap: 4px;
+}
+
+body.is-before .f-brand { font-size: 14px; }
+
+body.is-before .f-nav { margin-left: 0; gap: 2px; }
+body.is-before .f-nav a { font-size: 12px; padding: 1px 4px; }
+
+body.is-before .f-grid {
+  /* ✗ 不管多窄都硬撑三栏 */
+  grid-template-columns: 70px minmax(0, 1fr) 70px;
+  grid-template-areas: "rail stream side";
+  gap: 4px;
+}
+
+body.is-before .f-rail { display: grid; gap: 1px; }
+
+body.is-before .f-hero {
+  padding: 6px;
+  gap: 2px;
+  border-radius: 0;
+  background: var(--surface);
+}
+
+body.is-before .f-kicker {
+  letter-spacing: 0;
+  color: var(--ink);       /* ✗ 小标题和正文同样醒目 → 层次消失 */
+  text-transform: none;
+}
+
+body.is-before .f-hero h1 {
+  /* ✗ 标题字号≈正文，字重也差不多 */
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: 0;
+  max-width: none;
+}
+
+body.is-before .f-lead { font-size: 13px; max-width: none; }
+
+body.is-before .f-post {
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 2px;
+  padding: 3px;
+  border-radius: 0;
+}
+
+body.is-before .f-thumb {
+  width: 96px;             /* ✗ 写死宽度：容器再窄也不会缩 */
+  height: 96px;
+  border-radius: 0;
+}
+
+body.is-before .f-post h3 { font-size: 13px; font-weight: 400; }
+body.is-before .f-post p { font-size: 12px; line-height: 1.35; }
+
+body.is-before .f-posts { gap: 3px; }
+body.is-before .f-side { gap: 3px; }
+body.is-before .f-card { padding: 3px; border-radius: 0; }
+body.is-before .f-card h4 { margin-bottom: 1px; letter-spacing: 0; }
+body.is-before .f-card p { font-size: 12px; line-height: 1.35; }
+body.is-before .f-sec-title { margin-bottom: 2px; letter-spacing: 0; }
+body.is-before .f-foot { padding-top: 6px; gap: 4px; }

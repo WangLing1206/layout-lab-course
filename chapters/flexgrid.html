@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title data-i18n="c3.title">第 3 章 · Flexbox 与 Grid｜布局实验室</title>
+<meta name="description" content="Flexbox 与 Grid 的原理、适用场景与选型思路：一维用 Flex，二维用 Grid，并用 grid-template-areas 画出你的版式。" data-i18n-attr="content:c3.desc">
+<link rel="stylesheet" href="../assets/css/tokens.css">
+<link rel="stylesheet" href="../assets/css/base.css">
+<link rel="stylesheet" href="../assets/css/site.css">
+<link rel="stylesheet" href="../assets/css/demos.css">
+</head>
+<body>
+<a class="skip-link" href="#main" data-i18n="nav.skip">跳到正文</a>
+
+<header class="topbar">
+  <div class="topbar__inner wrap">
+    <a class="brand" href="../index.html">
+      <span class="brand__mark" aria-hidden="true">▦</span>
+      <span class="brand__text">
+        <span class="brand__name" data-i18n="site.brand">布局实验室</span>
+        <span class="brand__sub">Layout Lab</span>
+      </span>
+    </a>
+    <nav class="topnav" aria-label="章节导航" data-i18n-attr="aria-label:nav.label">
+      <a class="topnav__link" href="../index.html" data-i18n="nav.home">首页</a>
+      <a class="topnav__link" href="principles.html" data-i18n="nav.ch1">① 设计原则</a>
+      <a class="topnav__link" href="patterns.html" data-i18n="nav.ch2">② 经典模式</a>
+      <a class="topnav__link" href="flexgrid.html" aria-current="page" data-i18n="nav.ch3">③ Flex &amp; Grid</a>
+      <a class="topnav__link" href="responsive.html" data-i18n="nav.ch4">④ 响应式</a>
+      <a class="topnav__link" href="case.html" data-i18n="nav.ch5">⑤ 案例实战</a>
+    </nav>
+    <div class="topbar__tools">
+      <div class="seg seg--lang" data-lang-switch data-name="lang" role="group" aria-label="Language">
+        <button class="seg__btn is-active" type="button" data-value="zh">中</button>
+        <button class="seg__btn" type="button" data-value="en">EN</button>
+      </div>
+      <button class="iconbtn" type="button" data-theme-toggle aria-label="切换主题">☾</button>
+    </div>
+  </div>
+  <div class="progress"><div class="progress__bar"></div></div>
+</header>
+
+<main class="shell wrap" id="main">
+
+  <aside class="toc toc--desktop">
+    <p class="toc__title" data-i18n="toc.title">本章目录</p>
+    <ul class="toc__list">
+      <li><a class="toc__link" href="#p-flex"><span class="toc__num">3.1</span><span data-i18n="c3.p1.short">Flexbox</span></a></li>
+      <li><a class="toc__link" href="#p-grid"><span class="toc__num">3.2</span><span data-i18n="c3.p2.short">Grid</span></a></li>
+      <li><a class="toc__link" href="#p-areas"><span class="toc__num">3.3</span><span data-i18n="c3.p3.short">命名区域</span></a></li>
+      <li><a class="toc__link" href="#p-decide"><span class="toc__num">3.4</span><span data-i18n="c3.p4.short">选型思路</span></a></li>
+    </ul>
+    <p class="toc__title" style="margin-top:1.5rem" data-i18n="toc.case">案例进度</p>
+    <ol class="stepper">
+      <li class="is-done" data-i18n="case.step1">需求</li>
+      <li class="is-done" data-i18n="case.step2">骨架</li>
+      <li class="is-current" data-i18n="case.step3">实现</li>
+      <li data-i18n="case.step4">响应式</li>
+      <li data-i18n="case.step5">精修</li>
+    </ol>
+  </aside>
+
+  <article class="doc">
+
+    <details class="toc toc--mobile">
+      <summary data-i18n="toc.open">本章目录 / 案例进度</summary>
+      <ul class="toc__list" style="margin-top:.75rem">
+        <li><a class="toc__link" href="#p-flex"><span class="toc__num">3.1</span><span data-i18n="c3.p1.short">Flexbox</span></a></li>
+        <li><a class="toc__link" href="#p-grid"><span class="toc__num">3.2</span><span data-i18n="c3.p2.short">Grid</span></a></li>
+        <li><a class="toc__link" href="#p-areas"><span class="toc__num">3.3</span><span data-i18n="c3.p3.short">命名区域</span></a></li>
+        <li><a class="toc__link" href="#p-decide"><span class="toc__num">3.4</span><span data-i18n="c3.p4.short">选型思路</span></a></li>
+      </ul>
+    </details>
+
+    <header class="doc__head">
+      <p class="eyebrow" data-i18n="c3.eyebrow">第 3 章 · 现代布局技术</p>
+      <h1 class="doc__title" data-i18n="c3.h1">Flexbox 与 Grid：分工、原理与选型</h1>
+      <p class="doc__lead" data-i18n="c3.lead">这两个模块不是竞争关系，而是分工关系。理解「一维 / 二维」这一条分界线，你就能在写第一行代码之前决定用谁 —— 而不是先写 Flex，发现不行再换成 Grid。</p>
+      <div class="doc__meta">
+        <span data-i18n="c3.meta1">4 个知识点</span>
+        <span data-i18n="c3.meta2">4 个可交互演示</span>
+        <span data-i18n="c3.meta3">约 30 分钟</span>
+      </div>
+      <div class="callout callout--case" style="margin-top:1.5rem">
+        <span class="callout__icon" aria-hidden="true">◈</span>
+        <div>
+          <p data-i18n-html="c3.caseNote"><strong>案例第 3 阶段：把骨架写成代码。</strong>骨架方案定了：桌面三栏（左归档 / 中正文 / 右信息）、平板两栏、手机单栏。本章的任务是选对工具 —— 页面骨架用 Grid，卡片内部用 Flex，并让这套分工在整份代码里保持一致。</p>
+        </div>
+      </div>
+    </header>
+
+    <!-- ================================================================
+         3.1 Flexbox
+         ================================================================ -->
+    <section class="point" id="p-flex">
+      <header class="point__head">
+        <span class="point__num">3.1</span>
+        <h2 class="point__title" data-i18n="c3.p1.title">Flexbox：一条主轴上的分配问题</h2>
+        <p class="point__sub" data-i18n="c3.p1.sub">Flex 只解决一件事：让一组项目在一条轴上排布，并决定剩余空间怎么分。</p>
+      </header>
+
+      <div class="block block--theory">
+        <p class="block__label" data-i18n="label.theory">讲解</p>
+        <div class="prose">
+          <h4 data-i18n="c3.p1.h1">主轴与交叉轴</h4>
+          <p data-i18n-html="c3.p1.t1">Flex 容器里有两个轴：<strong>主轴</strong>（main axis，由 <code>flex-direction</code> 决定）与<strong>交叉轴</strong>（cross axis，垂直于主轴）。所有属性都只作用在其中一个轴上，把这条记牢，属性名就不再需要死记：</p>
+          <ul>
+            <li data-i18n-html="c3.p1.t1a"><code>justify-content</code> → 主轴上的分布（项目之间和两端怎么分空间）</li>
+            <li data-i18n-html="c3.p1.t1b"><code>align-items</code> → 交叉轴上的对齐（单行内每个项目怎么对齐）</li>
+            <li data-i18n-html="c3.p1.t1c"><code>align-content</code> → 交叉轴上「行之间」的分布（只在换行且有多行时有效）</li>
+          </ul>
+          <p data-i18n-html="c3.p1.t2">方向改变时，两个轴的角色会互换 —— <code>flex-direction: column</code> 之后，<code>justify-content</code> 管的是垂直方向。这也是 Flex 最常被误用的地方：以为属性写错了，其实是轴换了。</p>
+
+          <h4 data-i18n="c3.p1.h2">容器决定「怎么排」，项目决定「占多少」</h4>
+          <p data-i18n-html="c3.p1.t3">项目侧最核心的是三个属性，它们共同回答「这一项占用多少空间」：</p>
+          <ul>
+            <li data-i18n-html="c3.p1.t3a"><code>flex-grow</code>：有剩余空间时，按比例分给谁（默认 0，即不参与分配）</li>
+            <li data-i18n-html="c3.p1.t3b"><code>flex-shrink</code>：空间不够时，谁可以被压缩（默认 1）</li>
+            <li data-i18n-html="c3.p1.t3c"><code>flex-basis</code>：分配前的基础尺寸（默认 <code>auto</code>，即由内容决定）</li>
+          </ul>
+          <p data-i18n-html="c3.p1.t4">日常用得最多的是简写 <code>flex: 1 1 0</code>（等分剩余空间）与 <code>flex: 0 0 200px</code>（固定 200px 不接受压缩）。注意 <code>flex: 1</code> 展开后是 <code>1 1 0%</code>，其中的 <code>basis: 0</code> 意味着「忽略内容宽度，从零开始等分」—— 这是 <code>flex: 1</code> 与 <code>flex: auto</code>（= <code>1 1 auto</code>，内容宽的项会更宽）的关键差别。</p>
+
+          <div class="callout callout--warn">
+            <span class="callout__icon" aria-hidden="true">⚠</span>
+            <p data-i18n-html="c3.p1.warn"><strong>两个高频陷阱。</strong>一是 <code>min-width: auto</code>：Flex 项目默认不会缩到比内容更窄，因此一段长文本或长代码会把容器撑破 —— 给它加 <code>min-width: 0</code> 即可。二是嵌套过深：用 Flex 套 Flex 去模拟二维表格，代码会迅速失控，那正是 Grid 的活。</p>
+          </div>
+
+          <dl class="tradeoff">
+            <div>
+              <dt data-i18n="c3.p1.td1t">Flex 的强项</dt>
+              <dd data-i18n="c3.p1.td1d">导航条、按钮组、表单行、卡片内部（图 + 文）、底部对齐的卡片页脚 —— 凡是「一排东西」都是 Flex 的主场。</dd>
+            </div>
+            <div>
+              <dt data-i18n="c3.p1.td2t">Flex 的边界</dt>
+              <dd data-i18n="c3.p1.td2d">它不知道「列」的存在：多个容器之间无法共享轨道，因此跨卡片对齐标题、跨行对齐高度都要靠别的办法。</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+
+      <div class="block block--code">
+        <p class="block__label" data-i18n="label.code">关键代码</p>
+        <figure class="codeblock">
+          <figcaption class="codeblock__bar">
+            <span class="codeblock__title" data-i18n="c3.p1.codeTitle">卡片内部：一个典型的 Flex 场景</span>
+            <span class="codeblock__lang">css</span>
+            <button class="copybtn" type="button" data-i18n="ui.copy">复制</button>
+          </figcaption>
+<pre class="code" data-lang="css"><code>.post-card {
+  display: flex;
+  flex-direction: column;      <span class="tok-cmt" data-i18n="c3.p1.c1">/* 主轴改为垂直：卡片上下堆叠 */</span>
+  gap: 12px;
+  min-width: 0;                <span class="tok-cmt" data-i18n="c3.p1.c2">/* 允许被压缩，防止长内容撑破容器 */</span>
+}
+
+.post-card__meta {
+  display: flex;
+  align-items: center;         <span class="tok-cmt" data-i18n="c3.p1.c3">/* 交叉轴（垂直）居中 */</span>
+  justify-content: space-between;  <span class="tok-cmt" data-i18n="c3.p1.c4">/* 主轴（水平）两端分布 */</span>
+  gap: 8px;
+}
+
+.post-card__footer {
+  margin-top: auto;            <span class="tok-cmt" data-i18n="c3.p1.c5">/* auto margin 吸走剩余空间 → 页脚被压到底部 */</span>
+}
+
+.post-card__title {
+  flex: 1 1 0;                 <span class="tok-cmt" data-i18n="c3.p1.c6">/* grow shrink basis：等分可用宽度 */</span>
+  min-width: 0;                <span class="tok-cmt" data-i18n="c3.p1.c7">/* 配合 overflow:hidden 才能让长标题出现省略号 */</span>
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+</code></pre>
+        </figure>
+        <ul class="code-notes">
+          <li data-i18n-html="c3.p1.n1"><code>margin-top: auto</code> 是 Flex 里最实用的技巧之一：它把「剩下的空间」全吃掉，于是页脚被顶到底部，而不需要 <code>position: absolute</code> 或固定高度。</li>
+          <li data-i18n-html="c3.p1.n2">注意 <code>min-width: 0</code> 出现了两次：一次在容器上（允许自己被压缩），一次在标题上（允许省略号生效）。这是 Flex 最常见的一类「玄学问题」的真正原因。</li>
+          <li data-i18n-html="c3.p1.n3">用 <code>gap</code> 而不是 <code>margin-right</code>：不必处理最后一个元素，间距也不会在压缩时被吃掉。</li>
+        </ul>
+      </div>
+
+      <div class="block block--demo">
+        <p class="block__label" data-i18n="label.demo">动态演示</p>
+        <div class="demo" data-demo="flex">
+          <div class="demo__stage demo__stage--soft">
+            <div class="fxwrap" data-axes="off">
+              <div class="fxbox" id="dv-flex"></div>
+              <div class="axis" aria-hidden="true">
+                <span class="axis__label axis__cross">cross axis</span>
+                <span class="axis__label axis__main">main axis</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="demo__controls demo__controls--two">
+            <div class="ctrlgroup">
+              <span class="ctrlgroup__label">flex-direction</span>
+              <div class="ctrlgroup__body">
+                <div class="seg seg--mono" data-name="dir">
+                  <button class="seg__btn is-active" type="button" data-value="row">row</button>
+                  <button class="seg__btn" type="button" data-value="column">column</button>
+                  <button class="seg__btn" type="button" data-value="row-reverse">row-reverse</button>
+                  <button class="seg__btn" type="button" data-value="column-reverse">column-reverse</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="ctrlgroup">
+              <span class="ctrlgroup__label">flex-wrap</span>
+              <div class="ctrlgroup__body">
+                <div class="seg seg--mono" data-name="wrap">
+                  <button class="seg__btn is-active" type="button" data-value="nowrap">nowrap</button>
+                  <button class="seg__btn" type="button" data-value="wrap">wrap</button>
+                  <button class="seg__btn" type="button" data-value="wrap-reverse">wrap-reverse</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="ctrlgroup ctrlgroup--full">
+              <span class="ctrlgroup__label">justify-content（主轴）</span>
+              <div class="ctrlgroup__body">
+                <div class="seg seg--mono" data-name="justify">
+                  <button class="seg__btn is-active" type="button" data-value="flex-start">flex-start</button>
+                  <button class="seg__btn" type="button" data-value="center">center</button>
+                  <button class="seg__btn" type="button" data-value="flex-end">flex-end</button>
+                  <button class="seg__btn" type="button" data-value="space-between">space-between</button>
+                  <button class="seg__btn" type="button" data-value="space-around">space-around</button>
+                  <button class="seg__btn" type="button" data-value="space-evenly">space-evenly</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="ctrlgroup">
+              <span class="ctrlgroup__label">align-items（交叉轴 · 单行）</span>
+              <div class="ctrlgroup__body">
+                <div class="seg seg--mono" data-name="align">
+                  <button class="seg__btn" type="button" data-value="stretch">stretch</button>
+                  <button class="seg__btn is-active" type="button" data-value="flex-start">flex-start</button>
+                  <button class="seg__btn" type="button" data-value="center">center</button>
+                  <button class="seg__btn" type="button" data-value="flex-end">flex-end</button>
+                  <button class="seg__btn" type="button" data-value="baseline">baseline</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="ctrlgroup">
+              <span class="ctrlgroup__label">align-content（交叉轴 · 多行）</span>
+              <div class="ctrlgroup__body">
+                <div class="seg seg--mono" data-name="content">
+                  <button class="seg__btn is-active" type="button" data-value="stretch">stretch</button>
+                  <button class="seg__btn" type="button" data-value="flex-start">flex-start</button>
+                  <button class="seg__btn" type="button" data-value="center">center</button>
+                  <button class="seg__btn" type="button" data-value="space-between">space-between</button>
+                </div>
+              </div>
+            </div>
+
+            <label class="ctrl">
+              <span class="ctrl__label">gap</span>
+              <input type="range" min="0" max="40" step="2" value="12" data-name="gap" data-var="--gap" data-unit="px" data-target="#dv-flex">
+              <output class="ctrl__val">12px</output>
+            </label>
+
+            <label class="ctrl">
+              <span class="ctrl__label" data-i18n="d.flex.height">容器高度（0 = auto）</span>
+              <input type="range" min="0" max="320" step="10" value="210" data-name="height" data-format="auto">
+              <output class="ctrl__val">210</output>
+            </label>
+
+            <div class="ctrlgroup">
+              <span class="ctrlgroup__label" data-i18n="d.flex.count">项目数量</span>
+              <div class="ctrlgroup__body">
+                <div class="seg" data-name="count">
+                  <button class="seg__btn" type="button" data-value="2">2</button>
+                  <button class="seg__btn" type="button" data-value="3">3</button>
+                  <button class="seg__btn is-active" type="button" data-value="4">4</button>
+                  <button class="seg__btn" type="button" data-value="5">5</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="ctrlgroup">
+              <span class="ctrlgroup__label" data-i18n="d.flex.axes">辅助</span>
+              <div class="ctrlgroup__body">
+                <label class="switch"><input type="checkbox" data-name="axes"><span data-i18n="d.flex.axesOn">显示两个轴</span></label>
+              </div>
+            </div>
+
+            <div class="ctrlgroup ctrlgroup--full">
+              <span class="ctrlgroup__label" data-i18n="d.flex.grow">让某一项 flex-grow: 1（检查它是否吸收剩余空间）</span>
+              <div class="ctrlgroup__body chips">
+                <label class="chip"><input type="checkbox"><span>1</span></label>
+                <label class="chip"><input type="checkbox"><span>2</span></label>
+                <label class="chip"><input type="checkbox"><span>3</span></label>
+                <label class="chip"><input type="checkbox"><span>4</span></label>
+                <label class="chip"><input type="checkbox"><span>5</span></label>
+              </div>
+            </div>
+
+            <p class="demo__readout" id="dv-flex-out" aria-live="polite"></p>
+          </div>
+
+          <figure class="codeblock">
+            <figcaption class="codeblock__bar">
+              <span class="codeblock__title" data-i18n="d.live">实时输出：上面每一步操作对应的 CSS</span>
+              <span class="codeblock__lang">css</span>
+              <button class="copybtn" type="button" data-i18n="ui.copy">复制</button>
+            </figcaption>
+            <pre class="code code--live" data-lang="css"><code id="code-flex"></code></pre>
+          </figure>
+        </div>
+        <p class="demo__note" data-i18n="c3.p1.demoNote">推荐路径：先把 flex-wrap 改成 wrap 并把容器高度拉到 300，然后逐个试 align-content —— 你会看到「单行对齐」和「多行分布」的差别。再切到 column，观察两个轴的角色互换、以及轴标签的移动。</p>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         3.2 Grid
+         ================================================================ -->
+    <section class="point" id="p-grid">
+      <header class="point__head">
+        <span class="point__num">3.2</span>
+        <h2 class="point__title" data-i18n="c3.p2.title">Grid：先画轨道，再放内容</h2>
+        <p class="point__sub" data-i18n="c3.p2.sub">Grid 的工作方式与 Flex 相反：先在容器上定义好行列轨道，再把项目放进格子里。</p>
+      </header>
+
+      <div class="block block--theory">
+        <p class="block__label" data-i18n="label.theory">讲解</p>
+        <div class="prose">
+          <h4 data-i18n="c3.p2.h1">轨道、单元格、区域</h4>
+          <p data-i18n-html="c3.p2.t1">Grid 把容器切成<strong>轨道</strong>（track，即行与列），轨道交叉形成<strong>单元格</strong>，相邻单元格可以合成<strong>区域</strong>。项目通过三种方式落位：自动放置（默认，按顺序填）、线号定位（<code>grid-column: 2 / 4</code>）、命名区域（<code>grid-area: main</code>）。</p>
+          <p data-i18n-html="c3.p2.t2">关键词是<strong>「先声明，后放置」</strong>。这让你在写内容之前就先描述版式，也正是它能替代大量断点与嵌套的原因。</p>
+
+          <h4 data-i18n="c3.p2.h2">fr 与 minmax：弹性轨道的两种写法</h4>
+          <ul>
+            <li data-i18n-html="c3.p2.t2a"><code>1fr</code> 表示「剩余空间的一份」。<code>1fr 2fr 1fr</code> 就是三列按 1:2:1 分配剩余空间。</li>
+            <li data-i18n-html="c3.p2.t2b"><code>minmax(0, 1fr)</code> 与 <code>1fr</code> 的差别很关键：轨道的最小值是 <code>auto</code> 时，内容（长单词、长代码、表格）会把轨道撑得比 1fr 更宽，导致整个网格溢出。<strong>只要列里有不可预测的长内容，就写 <code>minmax(0, 1fr)</code></strong>。</li>
+            <li data-i18n-html="c3.p2.t2c"><code>minmax(200px, 1fr)</code> 混用固定与弹性：侧栏恒为 200px，主内容吃掉剩下的。<code>minmax(0, 220px)</code> 则让侧栏「最多 220px，窄了就缩」。</li>
+          </ul>
+
+          <h4 data-i18n="c3.p2.h3">auto-fill / auto-fit：不写媒体查询的自适应</h4>
+          <p data-i18n-html="c3.p2.t3"><code>repeat(auto-fill, minmax(220px, 1fr))</code> 是 Grid 最有价值的一行代码：容器变宽就自动多塞几列，变窄就自动减少列数，<strong>完全不需要媒体查询</strong>。它有两点需要注意：</p>
+          <ul>
+            <li data-i18n-html="c3.p2.t3a"><code>auto-fill</code> 会保留空轨道，<code>auto-fit</code> 会把空轨道折叠掉。元素少、希望它们「撑满一行」时用 <code>auto-fit</code>；希望保持与别处一致的列宽节奏时用 <code>auto-fill</code>。</li>
+            <li data-i18n-html="c3.p2.t3b"><code>minmax()</code> 里的最小值决定了「多少像素开始换列」—— 它就是断点的替代物，只是由浏览器替你算。</li>
+          </ul>
+
+          <div class="callout callout--tip">
+            <span class="callout__icon" aria-hidden="true">◆</span>
+            <p data-i18n-html="c3.p2.tip"><strong>显式网格与隐式网格。</strong>你声明的行叫显式网格；项目超出的部分会由浏览器自动生成<strong>隐式网格</strong>来容纳。<code>grid-auto-rows: minmax(120px, auto)</code> 可以控制这些自动行的最小高度，是「卡片墙」保持等高节奏的常用手法。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="block block--code">
+        <p class="block__label" data-i18n="label.code">关键代码</p>
+        <figure class="codeblock">
+          <figcaption class="codeblock__bar">
+            <span class="codeblock__title" data-i18n="c3.p2.codeTitle">三种轨道写法，三种适用场景</span>
+            <span class="codeblock__lang">css</span>
+            <button class="copybtn" type="button" data-i18n="ui.copy">复制</button>
+          </figcaption>
+<pre class="code" data-lang="css"><code><span class="tok-cmt" data-i18n="c3.p2.c1">/* 1. 等分：三列同宽 */</span>
+.tracks--even {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+<span class="tok-cmt" data-i18n="c3.p2.c2">/* 2. 固定 + 弹性：侧栏恒宽，主内容吃掉剩余空间 */</span>
+.tracks--sidebar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 240px;
+  gap: 24px;
+}
+
+<span class="tok-cmt" data-i18n="c3.p2.c3">/* 3. 自适应卡片墙：不写媒体查询，容器变宽自动加列 */</span>
+.tracks--auto {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  grid-auto-rows: minmax(120px, auto);   <span class="tok-cmt" data-i18n="c3.p2.c4">/* 隐式行也有最小高度 */</span>
+}
+
+<span class="tok-cmt" data-i18n="c3.p2.c5">/* 显式放置：让某一项跨列、跨行 */</span>
+.featured {
+  grid-column: 1 / -1;                   <span class="tok-cmt" data-i18n="c3.p2.c6">/* 从第 1 条线到最后一 条线 = 通栏 */</span>
+  grid-row: span 2;                      <span class="tok-cmt" data-i18n="c3.p2.c7">/* 占两行，通常用于「一主多辅」的卡片墙 */</span>
+}
+</code></pre>
+        </figure>
+        <ul class="code-notes">
+          <li data-i18n-html="c3.p2.n1"><code>1 / -1</code> 里的 <code>-1</code> 表示「最后一条列线」，因此它天然是「通栏」，无论栅格有多少列 —— 比写 <code>1 / 13</code> 更安全。</li>
+          <li data-i18n-html="c3.p2.n2">自适应卡片墙的代价是列宽不完全可控（有 ±220px 内的浮动），做像素级对齐的版面时仍然要用断点或命名区域。</li>
+          <li data-i18n-html="c3.p2.n3">本站的演示区、卡片阵列、货架式布局大量使用了 <code>repeat(auto-fit, minmax(...))</code>：它是「少写断点」的主要手段。</li>
+        </ul>
+      </div>
+
+      <div class="block block--demo">
+        <p class="block__label" data-i18n="label.demo">动态演示</p>
+        <div class="demo" data-demo="grid">
+          <div class="demo__stage demo__stage--soft">
+            <div class="gxbox" id="dv-gx"></div>
+          </div>
+
+          <div class="demo__controls demo__controls--two">
+            <div class="ctrlgroup ctrlgroup--full">
+              <span class="ctrlgroup__label">grid-template-columns</span>
+              <div class="ctrlgroup__body">
+                <div class="seg seg--mono" data-name="cols">
+                  <button class="seg__btn is-active" type="button" data-value="r3">repeat(3, minmax(0, 1fr))</button>
+                  <button class="seg__btn" type="button" data-value="f12">1fr 2fr 1fr</button>
+                  <button class="seg__btn" type="button" data-value="side">200px minmax(0, 1fr)</button>
+                  <button class="seg__btn" type="button" data-value="auto">repeat(auto-fill, minmax(140px, 1fr))</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="ctrlgroup">
+              <span class="ctrlgroup__label">grid-template-rows</span>
+              <div class="ctrlgroup__body">
+                <div class="seg seg--mono" data-name="rows">
+                  <button class="seg__btn is-active" type="button" data-value="auto">auto</button>
+                  <button class="seg__btn" type="button" data-value="r2">repeat(2, minmax(0, 1fr))</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="ctrlgroup">
+              <span class="ctrlgroup__label" data-i18n="d.grid.count">项目数量</span>
+              <div class="ctrlgroup__body">
+                <div class="seg" data-name="count">
+                  <button class="seg__btn" type="button" data-value="2">2</button>
+                  <button class="seg__btn" type="button" data-value="3">3</button>
+                  <button class="seg__btn is-active" type="button" data-value="4">4</button>
+                  <button class="seg__btn" type="button" data-value="5">5</button>
+                  <button class="seg__btn" type="button" data-value="6">6</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="ctrlgroup">
+              <span class="ctrlgroup__label">justify-items（格内水平）</span>
+              <div class="ctrlgroup__body">
+                <div class="seg seg--mono" data-name="justify">
+                  <button class="seg__btn is-active" type="button" data-value="stretch">stretch</button>
+                  <button class="seg__btn" type="button" data-value="start">start</button>
+                  <button class="seg__btn" type="button" data-value="center">center</button>
+                  <button class="seg__btn" type="button" data-value="end">end</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="ctrlgroup">
+              <span class="ctrlgroup__label">align-items（格内垂直）</span>
+              <div class="ctrlgroup__body">
+                <div class="seg seg--mono" data-name="align">
+                  <button class="seg__btn is-active" type="button" data-value="stretch">stretch</button>
+                  <button class="seg__btn" type="button" data-value="start">start</button>
+                  <button class="seg__btn" type="button" data-value="center">center</button>
+                  <button class="seg__btn" type="button" data-value="end">end</button>
+                </div>
+              </div>
+            </div>
+
+            <label class="ctrl">
+              <span class="ctrl__label">gap</span>
+              <input type="range" min="0" max="40" step="2" value="12" data-name="gap" data-var="--gap" data-unit="px" data-target="#dv-gx">
+              <output class="ctrl__val">12px</output>
+            </label>
+
+            <p class="demo__readout" id="dv-gx-out" aria-live="polite"></p>
+          </div>
+
+          <figure class="codeblock">
+            <figcaption class="codeblock__bar">
+              <span class="codeblock__title" data-i18n="d.live">实时输出：上面每一步操作对应的 CSS</span>
+              <span class="codeblock__lang">css</span>
+              <button class="copybtn" type="button" data-i18n="ui.copy">复制</button>
+            </figcaption>
+            <pre class="code code--live" data-lang="css"><code id="code-grid"></code></pre>
+          </figure>
+        </div>
+        <p class="demo__note" data-i18n="c3.p2.demoNote">试三次：① 切到 <code>repeat(auto-fill, …)</code> 并拖动浏览器窗口，看列数自己变化；② 切到 <code>1fr 2fr 1fr</code> 再点 justify-items 的 start/center，看项目在格子内移动；③ 行模板设为 <code>repeat(2, …)</code> 并把项目加到 6 个，看隐式行如何接住多余的项目。</p>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         3.3 命名区域
+         ================================================================ -->
+    <section class="point" id="p-areas">
+      <header class="point__head">
+        <span class="point__num">3.3</span>
+        <h2 class="point__title" data-i18n="c3.p3.title">命名区域：把版式画出来</h2>
+        <p class="point__sub" data-i18n="c3.p3.sub">grid-template-areas 让你用 ASCII 图直接描述页面结构 —— 这大概是 CSS 里最接近「所见即所得」的一处。</p>
+      </header>
+
+      <div class="block block--theory">
+        <p class="block__label" data-i18n="label.theory">讲解</p>
+        <div class="prose">
+          <h4 data-i18n="c3.p3.h1">用字符画出结构</h4>
+          <p data-i18n-html="c3.p3.t1">每个字符串是一行，字符串里的每个名字是一个单元格，同名的相邻单元格合成一个区域，<code>.</code> 表示空格子。下面这张「图」就是一份可执行的版式声明：</p>
+          <pre class="code code--flat" data-lang="css"><code>grid-template-columns: 180px minmax(0, 1fr) 240px;
+grid-template-areas:
+  "header header header"
+  "rail   main   side"
+  "footer footer footer";</code></pre>
+          <p data-i18n-html="c3.p3.t2">它有两个别的手法很难替代的优点：<strong>① 可读性</strong> —— 半年后再看这八行，你仍然能立刻说出页面长什么样；<strong>② 与 DOM 顺序解耦</strong> —— HTML 里可以按内容优先级写（正文在前），视觉位置由这张图决定。</p>
+
+          <h4 data-i18n="c3.p3.h2">一条硬性规则：区域必须是矩形</h4>
+          <p data-i18n-html="c3.p3.t3">CSS 规定：<strong>同名区域必须构成一个矩形</strong>。如果你把 <code>a</code> 画成 L 形或断开的两块，整条 <code>grid-template-areas</code> 声明会被<em>整体丢弃</em>（不是局部失效），所有项目退回到自动放置 —— 页面看起来会「莫名其妙地散架」。这是使用命名区域时唯一的重大陷阱，而好消息是它很容易用肉眼检查：<strong>同名的格子连起来必须是个方块</strong>。</p>
+
+          <div class="callout callout--tip">
+            <span class="callout__icon" aria-hidden="true">◆</span>
+            <p data-i18n-html="c3.p3.tip"><strong>配合断点重排，只需重写这张图。</strong>响应式改造时不必动 HTML、也不必重写一堆属性 —— 在 <code>@media</code> 里把 areas 换成单列版本即可（本站案例正是这么做的，见第 4 章与第 5 章）。</p>
+          </div>
+
+          <dl class="tradeoff">
+            <div>
+              <dt data-i18n="c3.p3.td1t">什么时候值得用</dt>
+              <dd data-i18n="c3.p3.td1d">页面级、有名字的区域（页头 / 导航 / 正文 / 侧栏 / 页脚）—— 区域越「大」、越稳定，命名区域越划算。</dd>
+            </div>
+            <div>
+              <dt data-i18n="c3.p3.td2t">什么时候不必用</dt>
+              <dd data-i18n="c3.p3.td2d">同构的卡片阵列（每张卡都一样）用 <code>repeat(auto-fill, …)</code> 更省事；此时给每张卡起名字反而是噪声。</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+
+      <div class="block block--code">
+        <p class="block__label" data-i18n="label.code">关键代码</p>
+        <figure class="codeblock">
+          <figcaption class="codeblock__bar">
+            <span class="codeblock__title" data-i18n="c3.p3.codeTitle">一个完整的页面骨架</span>
+            <span class="codeblock__lang">css</span>
+            <button class="copybtn" type="button" data-i18n="ui.copy">复制</button>
+          </figcaption>
+<pre class="code" data-lang="css"><code>.page {
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr) 240px;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  <span class="tok-cmt" data-i18n="c3.p3.c1">/* 这三行字符串就是版式本身 */</span>
+  grid-template-areas:
+    "header header header"
+    "rail   main   side"
+    "footer footer footer";
+  gap: 24px;
+  min-height: 100dvh;          <span class="tok-cmt" data-i18n="c3.p3.c2">/* dvh 而不是 vh：移动端地址栏收放不会导致跳动 */</span>
+}
+
+.page &gt; header { grid-area: header; }
+.page &gt; nav    { grid-area: rail; }
+.page &gt; main   { grid-area: main; min-width: 0; }
+.page &gt; aside  { grid-area: side; }
+.page &gt; footer { grid-area: footer; }
+
+<span class="tok-cmt" data-i18n="c3.p3.c3">/* 断点里只重画这张图，HTML 一行都不用改 */</span>
+@media (max-width: 900px) {
+  .page {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "header"
+      "main"
+      "rail"
+      "side"
+      "footer";
+  }
+}
+</code></pre>
+        </figure>
+        <ul class="code-notes">
+          <li data-i18n-html="c3.p3.n1">字符串之间的空白无关紧要，但<strong>每个字符串的字符数必须一致</strong>（列数相同），否则声明同样会失效。</li>
+          <li data-i18n-html="c3.p3.n2">用 <code>.</code> 可以留出真正的空位，例如 <code>". main side"</code> 让第一列在那一行完全空着。</li>
+          <li data-i18n-html="c3.p3.n3">断点里的重排顺序就是移动端的阅读顺序：把 <code>main</code> 提到 <code>rail</code> 之前，读者先看到正文。</li>
+        </ul>
+      </div>
+
+      <div class="block block--demo">
+        <p class="block__label" data-i18n="label.demo">动态演示</p>
+        <div class="demo" data-demo="areas">
+          <div class="demo__stage demo__stage--soft">
+            <div class="painter">
+              <div>
+                <p class="demo__note" style="margin-bottom:.5rem" data-i18n="d.areas.boardHint">点击格子涂色（当前画笔见下方）；a / b / c 分别代表页头 / 正文 / 侧栏。</p>
+                <div class="painter__board" id="dv-areas-board"></div>
+              </div>
+              <div>
+                <p class="demo__note" style="margin-bottom:.5rem" data-i18n="d.areas.previewHint">这是浏览器按你生成的 grid-template-areas 真实渲染的结果：</p>
+                <div class="painter__preview" id="dv-areas-preview">
+                  <div data-region="a" style="grid-area:a" data-i18n="c3.p3.dA">页头 a</div>
+                  <div data-region="b" style="grid-area:b" data-i18n="c3.p3.dB">正文 b</div>
+                  <div data-region="c" style="grid-area:c" data-i18n="c3.p3.dC">侧栏 c</div>
+                  <div class="painter__empty" data-i18n="c3.p3.dEmpty">还没有画出任何区域</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="demo__controls demo__controls--two">
+            <div class="ctrlgroup">
+              <span class="ctrlgroup__label" data-i18n="d.areas.brush">画笔</span>
+              <div class="ctrlgroup__body">
+                <div class="seg seg--mono" data-name="brush">
+                  <button class="seg__btn is-active" type="button" data-value="a">a</button>
+                  <button class="seg__btn" type="button" data-value="b">b</button>
+                  <button class="seg__btn" type="button" data-value="c">c</button>
+                  <button class="seg__btn" type="button" data-value="." data-i18n="d.areas.erase">擦除</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="ctrlgroup">
+              <span class="ctrlgroup__label" data-i18n="d.areas.actions">操作</span>
+              <div class="ctrlgroup__body">
+                <button class="btn" type="button" data-role="clear" data-i18n="d.areas.clear">清空</button>
+                <span class="status status--ok" id="dv-areas-status"></span>
+              </div>
+            </div>
+          </div>
+
+          <figure class="codeblock">
+            <figcaption class="codeblock__bar">
+              <span class="codeblock__title" data-i18n="d.live">实时输出：上面每一步操作对应的 CSS</span>
+              <span class="codeblock__lang">css</span>
+              <button class="copybtn" type="button" data-i18n="ui.copy">复制</button>
+            </figcaption>
+            <pre class="code code--live" data-lang="css"><code id="code-areas"></code></pre>
+          </figure>
+        </div>
+        <p class="demo__note" data-i18n="c3.p3.demoNote">故意画一个「断开的 a」（例如第一行涂 a a a、第三行中间再涂一个 a）：状态会立刻变成「区域非法」，右边预览也会散架 —— 这就是 CSS 丢弃整条声明的结果。再清空重画成两个规整的矩形，恢复正常。</p>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         3.4 选型思路
+         ================================================================ -->
+    <section class="point" id="p-decide">
+      <header class="point__head">
+        <span class="point__num">3.4</span>
+        <h2 class="point__title" data-i18n="c3.p4.title">选型：三个问题定下用谁</h2>
+        <p class="point__sub" data-i18n="c3.p4.sub">不要在写完 Flex 之后才发现需要 Grid。选型可以压缩成三个是非问题。</p>
+      </header>
+
+      <div class="block block--theory">
+        <p class="block__label" data-i18n="label.theory">讲解</p>
+        <div class="prose">
+          <h4 data-i18n="c3.p4.h1">一条主判据：维度</h4>
+          <p data-i18n-html="c3.p4.t1"><strong>一维用 Flex，二维用 Grid。</strong>「维度」不是指「看起来有几行几列」，而是指<em>你是否需要同时控制行与列</em>。导航条是一排项目 —— 一维，Flex。卡片墙要让每张卡片的标题、正文、按钮在横向与纵向都对齐 —— 二维，Grid（内部配合 Flex）。</p>
+
+          <h4 data-i18n="c3.p4.h2">两条辅助判据</h4>
+          <ul>
+            <li data-i18n-html="c3.p4.t2a"><strong>尺寸由谁决定？</strong>内容驱动（项目多宽就多宽，剩余空间再分配）→ Flex。<code>flex-basis: auto</code> 的默认行为就是内容优先。布局驱动（版面先定，内容去适应格子）→ Grid。</li>
+            <li data-i18n-html="c3.p4.t2b"><strong>需要跨容器对齐吗？</strong>同一行里的多张卡片，标题必须落在同一条基线上 —— 这要求它们共享行轨道，只有 Grid 能做到。Flex 里的项目彼此独立，无法互相「对齐到同一行」。</li>
+          </ul>
+
+          <h4 data-i18n="c3.p4.h3">它们最常见的合作方式：Grid 搭骨架，Flex 做零件</h4>
+          <p data-i18n-html="c3.p4.t3">真实项目里两者几乎总是一起出现，分工非常清晰：<strong>页面级、区域级用 Grid</strong>（页头 / 正文 / 侧栏 / 卡片阵列），<strong>组件内部用 Flex</strong>（按钮组、标签行、卡片的图 + 文、页脚的一排链接）。本站就是这套分工：整站骨架与卡片阵列是 Grid，顶栏、控件行、卡片内部是 Flex。</p>
+
+          <div class="callout callout--tip">
+            <span class="callout__icon" aria-hidden="true">◆</span>
+            <p data-i18n-html="c3.p4.tip"><strong>反过来说也有一条经验：</strong>如果你发现自己在 Flex 容器里嵌套了三层 Flex 只为了对齐网格，那几乎一定是选错了工具；如果你为了让 Grid 里的项目「按内容宽度排列」而反复调 <code>auto-fit</code> 和 <code>justify-content</code>，那也可能是该用 Flex。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="block block--code">
+        <p class="block__label" data-i18n="label.code">关键代码</p>
+        <figure class="codeblock">
+          <figcaption class="codeblock__bar">
+            <span class="codeblock__title" data-i18n="c3.p4.codeTitle">同一个「卡片一行三张」，两种写法的差别</span>
+            <span class="codeblock__lang">css</span>
+            <button class="copybtn" type="button" data-i18n="ui.copy">复制</button>
+          </figcaption>
+<pre class="code" data-lang="css"><code><span class="tok-cmt" data-i18n="c3.p4.c1">/* A. Flex 版：项目各自独立，宽度靠 flex-basis 约定 */</span>
+.cards--flex {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.cards--flex &gt; .card {
+  flex: 1 1 220px;        <span class="tok-cmt" data-i18n="c3.p4.c2">/* 每张卡至少 220px，剩余空间平分 */</span>
+}
+<span class="tok-cmt" data-i18n="c3.p4.c3">/* ⚠️ 最后一行不足三张时，卡片会被拉宽填满整行 —— 有时这正是你要的，
+   但若要保持列宽一致，就需要再加一层占位元素或改用 Grid */</span>
+
+<span class="tok-cmt" data-i18n="c3.p4.c4">/* B. Grid 版：先定轨道，卡片只负责占位 */</span>
+.cards--grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+<span class="tok-cmt" data-i18n="c3.p4.c5">/* 每个格子宽度由轨道决定，因此同一行的卡片天然等宽；
+   卡片内部的标题 / 正文 / 按钮再用 Flex 排布（见 3.1） */</span>
+.cards--grid .card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.cards--grid .card__cta { margin-top: auto; }   <span class="tok-cmt" data-i18n="c3.p4.c6">/* 按钮统一吸到底部 */</span>
+</code></pre>
+        </figure>
+        <ul class="code-notes">
+          <li data-i18n-html="c3.p4.n1">两种写法都能跑，差别在于<strong>「列宽由谁保证」</strong>：Flex 版靠每个项目自己，Grid 版靠轨道统一规定。</li>
+          <li data-i18n-html="c3.p4.n2">注意 Grid 版里仍然用了 Flex —— 这不是二选一，而是分层：外层 Grid 管列，内层 Flex 管卡片内部的纵向排列与底部对齐。</li>
+          <li data-i18n-html="c3.p4.n3">如果卡片内容长度差异很大（标题一两行、摘要长短不一），Grid 版加上 <code>grid-auto-rows: 1fr</code> 可以强制每行等高，Flex 版则做不到。</li>
+        </ul>
+      </div>
+
+      <div class="block block--demo">
+        <p class="block__label" data-i18n="label.demo">动态演示</p>
+        <div class="demo" data-demo="decide">
+          <div class="decide" id="dv-decide">
+            <div class="decide__q">
+              <p data-i18n="d.decide.q1">① 你需要同时控制行和列吗？</p>
+              <div class="ctrlgroup__body">
+                <div class="seg" data-name="dim">
+                  <button class="seg__btn is-active" type="button" data-value="1d" data-i18n="d.decide.dim1">只要一维（一行或一列）</button>
+                  <button class="seg__btn" type="button" data-value="2d" data-i18n="d.decide.dim2">需要二维（行 + 列）</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="decide__q">
+              <p data-i18n="d.decide.q2">② 项目的尺寸由谁决定？</p>
+              <div class="ctrlgroup__body">
+                <div class="seg" data-name="drive">
+                  <button class="seg__btn is-active" type="button" data-value="content" data-i18n="d.decide.drive1">内容驱动（内容多宽就多宽）</button>
+                  <button class="seg__btn" type="button" data-value="layout" data-i18n="d.decide.drive2">布局驱动（版面先定）</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="decide__q">
+              <p data-i18n="d.decide.q3">③ 需要「跨卡片对齐」吗？（每张卡的标题、按钮落在同一条线上）</p>
+              <div class="ctrlgroup__body">
+                <div class="seg" data-name="cross">
+                  <button class="seg__btn" type="button" data-value="no" data-i18n="d.decide.cross1">不需要</button>
+                  <button class="seg__btn is-active" type="button" data-value="need" data-i18n="d.decide.cross2">需要</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="decide__verdict" id="dv-decide-verdict" aria-live="polite"></div>
+
+            <div class="abgrid">
+              <div class="abgrid__panel" data-engine="flex">
+                <p class="abgrid__title">Flexbox</p>
+                <div class="cardrow">
+                  <div class="minicard">
+                    <p class="minicard__title" data-i18n="d.decide.c1t">短标题</p>
+                    <p class="minicard__body" data-i18n="d.decide.c1b">内容宽度决定卡片宽度，剩余空间按 flex-grow 分配。</p>
+                    <span class="minicard__btn" data-i18n="d.decide.read">阅读</span>
+                  </div>
+                  <div class="minicard">
+                    <p class="minicard__title" data-i18n="d.decide.c2t">一个明显更长的标题会占掉更多宽度</p>
+                    <p class="minicard__body" data-i18n="d.decide.c2b">于是同一行里的按钮不在同一条线上。</p>
+                    <span class="minicard__btn" data-i18n="d.decide.read">阅读</span>
+                  </div>
+                  <div class="minicard">
+                    <p class="minicard__title" data-i18n="d.decide.c3t">中等标题</p>
+                    <p class="minicard__body" data-i18n="d.decide.c3b">卡片宽度随内容浮动。</p>
+                    <span class="minicard__btn" data-i18n="d.decide.read">阅读</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="abgrid__panel" data-engine="grid">
+                <p class="abgrid__title">Grid</p>
+                <div class="cardrow cardrow--grid">
+                  <div class="minicard">
+                    <p class="minicard__title" data-i18n="d.decide.c1t">短标题</p>
+                    <p class="minicard__body" data-i18n="d.decide.c1b">列宽由轨道统一规定，因此同一行的卡片永远等宽。</p>
+                    <span class="minicard__btn" data-i18n="d.decide.read">阅读</span>
+                  </div>
+                  <div class="minicard">
+                    <p class="minicard__title" data-i18n="d.decide.c2t">一个明显更长的标题会占掉更多宽度</p>
+                    <p class="minicard__body" data-i18n="d.decide.c2b">标题换行，但按钮依然对齐在同一条线上。</p>
+                    <span class="minicard__btn" data-i18n="d.decide.read">阅读</span>
+                  </div>
+                  <div class="minicard">
+                    <p class="minicard__title" data-i18n="d.decide.c3t">中等标题</p>
+                    <p class="minicard__body" data-i18n="d.decide.c3b">卡片等宽，节奏统一。</p>
+                    <span class="minicard__btn" data-i18n="d.decide.read">阅读</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="demo__note" data-i18n="c3.p4.demoNote">改一下三个问题的答案，下方结论会实时更新，并在两个面板里高亮被选中的方案。注意第二个卡片：「按钮是否落在同一条线上」正是第三条判据的直观证据。</p>
+      </div>
+    </section>
+
+    <nav class="pagenav" aria-label="翻页" data-i18n-attr="aria-label:nav.pager">
+      <a class="pagenav__link" href="patterns.html">
+        <span class="pagenav__dir" data-i18n="nav.prev">上一页</span>
+        <span class="pagenav__title" data-i18n="nav.ch2">② 经典模式</span>
+      </a>
+      <a class="pagenav__link pagenav__link--next" href="responsive.html">
+        <span class="pagenav__dir" data-i18n="nav.next">下一页</span>
+        <span class="pagenav__title" data-i18n="nav.ch4">④ 响应式</span>
+      </a>
+    </nav>
+
+  </article>
+</main>
+
+<footer class="sitefoot">
+  <div class="wrap sitefoot__grid">
+    <div>
+      <h4 data-i18n="foot.aboutTitle">关于本站</h4>
+      <p data-i18n="foot.about">「布局实验室」是一份以案例驱动的页面布局教程：每个知识点都由「讲解 / 关键代码 / 动态演示」三块组成，并用同一个案例（博客首页）从头贯穿到尾。</p>
+    </div>
+    <div>
+      <h4 data-i18n="foot.chapters">章节</h4>
+      <ul>
+        <li><a href="principles.html" data-i18n="nav.ch1">① 设计原则</a></li>
+        <li><a href="patterns.html" data-i18n="nav.ch2">② 经典模式</a></li>
+        <li><a href="flexgrid.html" data-i18n="nav.ch3">③ Flex &amp; Grid</a></li>
+        <li><a href="responsive.html" data-i18n="nav.ch4">④ 响应式</a></li>
+        <li><a href="case.html" data-i18n="nav.ch5">⑤ 案例实战</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 data-i18n="foot.metaTitle">技术</h4>
+      <ul>
+        <li data-i18n="foot.meta1">原生 HTML / CSS / JavaScript</li>
+        <li data-i18n="foot.meta2">无构建步骤，直接发布到 GitHub Pages</li>
+        <!-- 发布前请把下面这一行的地址换成你的仓库地址 -->
+        <li><a href="https://github.com/" target="_blank" rel="noopener" data-i18n="foot.repo">GitHub 仓库</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<button class="totop iconbtn" type="button" data-i18n-attr="aria-label:nav.top" aria-label="回到顶部">↑</button>
+
+<script src="../assets/js/ui.js"></script>
+<script src="../assets/js/i18n.js"></script>
+<script src="../assets/js/demo-flexgrid.js"></script>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>
