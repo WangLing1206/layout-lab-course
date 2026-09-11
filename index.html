@@ -19,7 +19,7 @@
       <span class="brand__mark" aria-hidden="true">▦</span>
       <span class="brand__text">
         <span class="brand__name" data-i18n="site.brand">布局实验室</span>
-        <span class="brand__sub">Layout Lab</span>
+        <span class="brand__sub" data-i18n="site.brandSub">Layout Lab</span>
       </span>
     </a>
     <nav class="topnav" aria-label="章节导航" data-i18n-attr="aria-label:nav.label">
@@ -50,7 +50,7 @@
     <div class="wrap hero__grid">
       <div>
         <p class="eyebrow" data-i18n="index.eyebrow">案例驱动 · 中英双语 · 可交互</p>
-        <h1 class="hero__title" data-i18n-html="index.h1">把「页面怎么排」<em>讲清楚</em></h1>
+        <h1 class="hero__title" data-i18n-html="index.h1">把「页面怎么排」<br><em>讲清楚</em></h1>
         <p class="hero__lead" data-i18n="index.lead">这是一份围绕「如何做好页面布局」的教程：讲原理、讲取舍、讲为什么这样更好，而不是罗列 CSS 属性。每个知识点都由「讲解 / 关键代码 / 动态演示」三块组成，并且用同一个案例 —— 从零设计一个博客首页 —— 从头贯穿到尾。</p>
         <div class="hero__cta">
           <a class="btn btn--primary" href="chapters/principles.html" data-i18n="index.cta1">从第 1 章开始 →</a>
@@ -81,7 +81,7 @@
           <div class="bp-accent">topbar · sticky + backdrop-filter</div>
           <div class="bp-row">
             <div>toc<br>sticky</div>
-            <div>main · grid: TOC + 正文</div>
+            <div data-i18n="index.bp2">main · grid: TOC + 正文</div>
           </div>
           <div>demo__controls · flex-wrap</div>
           <div>cards · repeat(auto-fit, minmax())</div>
@@ -222,7 +222,7 @@
           </thead>
           <tbody>
             <tr>
-              <td><code>CSS 自定义属性</code></td>
+              <td data-i18n-html="index.how1k"><code>CSS 自定义属性</code></td>
               <td data-i18n="index.how1">tokens.css 统一管理颜色 / 间距 / 字号 / 圆角；暗色主题只覆盖令牌，组件样式一行不改。</td>
             </tr>
             <tr>
@@ -238,11 +238,11 @@
               <td data-i18n="index.how4">字号刻度 <code>--step--1 … --step-5</code> 全部是流体值，因此 320px 与 1600px 之间没有字号断层。</td>
             </tr>
             <tr>
-              <td><code>容器查询</code></td>
+              <td data-i18n-html="index.how5k"><code>容器查询</code></td>
               <td data-i18n="index.how5">第 4.3 节的对照演示：同一个卡片组件在宽容器里变成「图左文右」，窄容器里堆叠，而媒体查询版纹丝不动。</td>
             </tr>
             <tr>
-              <td><code>逻辑属性</code></td>
+              <td data-i18n-html="index.how6k"><code>逻辑属性</code></td>
               <td data-i18n="index.how6"><code>margin-inline</code> / <code>padding-inline</code> / <code>border-inline</code> 全站使用，因此版面天然支持从右到左的语言。</td>
             </tr>
             <tr>

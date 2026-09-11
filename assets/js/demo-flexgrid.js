@@ -61,7 +61,7 @@
       const grown = grow.slice(0, count).filter(Boolean).length;
       out.innerHTML =
         `flex-direction: <b>${dir}</b> · flex-wrap: <b>${wrap}</b>` +
-        ` · gap: <b>${gap}px</b> · flex-grow 项: <b>${grown}</b>`;
+        ` · gap: <b>${gap}px</b> · ${t("ui.fx.grown")}: <b>${grown}</b>`;
 
       api.code(
         "#code-flex",

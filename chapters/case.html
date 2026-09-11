@@ -19,7 +19,7 @@
       <span class="brand__mark" aria-hidden="true">▦</span>
       <span class="brand__text">
         <span class="brand__name" data-i18n="site.brand">布局实验室</span>
-        <span class="brand__sub">Layout Lab</span>
+        <span class="brand__sub" data-i18n="site.brandSub">Layout Lab</span>
       </span>
     </a>
     <nav class="topnav" aria-label="章节导航" data-i18n-attr="aria-label:nav.label">
@@ -412,9 +412,9 @@
         <div class="prose">
           <h4 data-i18n="c5.p3.h1">文件结构</h4>
           <pre class="code code--flat" data-lang="text"><code>case/
-├─ index.html   结构与文案（语义化标签：header / main / aside / footer）
-├─ frame.css    全部样式：令牌 → 骨架 → 组件 → 断点
-└─ lang.js      一小段脚本：读取 ?lang 参数做双语，与本站主站的配置对象同源</code></pre>
+├─ index.html   <span data-i18n="c5.p3.fs1">结构与文案（语义化标签：header / main / aside / footer）</span>
+├─ frame.css    <span data-i18n="c5.p3.fs2">全部样式：令牌 → 骨架 → 组件 → 断点</span>
+└─ lang.js      <span data-i18n="c5.p3.fs3">一小段脚本：读取 ?lang 参数做双语，与本站主站的配置对象同源</span></code></pre>
           <p data-i18n-html="c5.p3.t1">样式表内部严格按<strong>四层顺序</strong>排列，这个顺序本身就是一份可读的文档：</p>
           <ol>
             <li data-i18n-html="c5.p3.t1a"><strong>令牌层</strong>：颜色、间距刻度、字体、圆角 —— 所有值只在这里出现一次；</li>
@@ -451,46 +451,46 @@
               </figcaption>
 <pre class="code" data-lang="html"><code>&lt;div class="f-shell"&gt;
   &lt;header class="f-head"&gt;
-    &lt;div class="f-brand"&gt;远山&lt;span&gt;手记&lt;/span&gt;&lt;/div&gt;
+    &lt;div class="f-brand"&gt;<span data-i18n="c5.p3.hc1">远山</span>&lt;span&gt;<span data-i18n="c5.p3.hc2">手记</span>&lt;/span&gt;&lt;/div&gt;
     &lt;nav class="f-nav"&gt;
-      &lt;a href="#" aria-current="page"&gt;文章&lt;/a&gt;
-      &lt;a href="#"&gt;笔记&lt;/a&gt;
-      &lt;a href="#"&gt;关于&lt;/a&gt;
+      &lt;a href="#" aria-current="page"&gt;<span data-i18n="c5.p3.hc3">文章</span>&lt;/a&gt;
+      &lt;a href="#"&gt;<span data-i18n="c5.p3.hc4">笔记</span>&lt;/a&gt;
+      &lt;a href="#"&gt;<span data-i18n="c5.p3.hc5">关于</span>&lt;/a&gt;
     &lt;/nav&gt;
-    &lt;button class="f-search" type="button"&gt;搜索&lt;/button&gt;
+    &lt;button class="f-search" type="button"&gt;<span data-i18n="c5.p3.hc6">搜索</span>&lt;/button&gt;
   &lt;/header&gt;
 
   &lt;div class="f-grid"&gt;
-    &lt;!-- 归档栏：DOM 里在正文之后，靠 grid-area 放到左侧 --&gt;
+    &lt;!-- <span data-i18n="c5.p3.hl1">归档栏：DOM 里在正文之后，靠 grid-area 放到左侧</span> --&gt;
     &lt;aside class="f-rail"&gt;
-      &lt;h4&gt;归档&lt;/h4&gt;
-      &lt;a href="#" aria-current="page"&gt;2026 · 秋&lt;/a&gt;
-      &lt;a href="#"&gt;2026 · 夏&lt;/a&gt;
+      &lt;h4&gt;<span data-i18n="c5.p3.hc7">归档</span>&lt;/h4&gt;
+      &lt;a href="#" aria-current="page"&gt;<span data-i18n="c5.p3.hc8">2026 · 秋</span>&lt;/a&gt;
+      &lt;a href="#"&gt;<span data-i18n="c5.p3.hc9">2026 · 夏</span>&lt;/a&gt;
     &lt;/aside&gt;
 
-    &lt;!-- 正文：DOM 顺序上的第一块内容 --&gt;
+    &lt;!-- <span data-i18n="c5.p3.hl2">正文：DOM 顺序上的第一块内容</span> --&gt;
     &lt;main class="f-stream"&gt;
       &lt;section class="f-hero"&gt;
-        &lt;p class="f-kicker"&gt;精选&lt;/p&gt;
-        &lt;h1&gt;用栅格与留白，把首页安顿好&lt;/h1&gt;
-        &lt;p class="f-lead"&gt;先确定信息优先级，再用栅格落位……&lt;/p&gt;
+        &lt;p class="f-kicker"&gt;<span data-i18n="c5.p3.hc10">精选</span>&lt;/p&gt;
+        &lt;h1&gt;<span data-i18n="c5.p3.hc11">用栅格与留白，把首页安顿好</span>&lt;/h1&gt;
+        &lt;p class="f-lead"&gt;<span data-i18n="c5.p3.hc12">先确定信息优先级，再用栅格落位……</span>&lt;/p&gt;
       &lt;/section&gt;
-      &lt;h2 class="f-sec-title"&gt;最新文章&lt;/h2&gt;
+      &lt;h2 class="f-sec-title"&gt;<span data-i18n="c5.p3.hc13">最新文章</span>&lt;/h2&gt;
       &lt;div class="f-posts"&gt;
         &lt;a class="f-post" href="#"&gt;
           &lt;span class="f-thumb" aria-hidden="true"&gt;&lt;/span&gt;
           &lt;span&gt;
-            &lt;h3&gt;圣杯布局为什么还在被使用&lt;/h3&gt;
-            &lt;p&gt;三栏 + 通栏头尾 + 正文优先加载……&lt;/p&gt;
+            &lt;h3&gt;<span data-i18n="c5.p3.hc14">圣杯布局为什么还在被使用</span>&lt;/h3&gt;
+            &lt;p&gt;<span data-i18n="c5.p3.hc15">三栏 + 通栏头尾 + 正文优先加载……</span>&lt;/p&gt;
           &lt;/span&gt;
         &lt;/a&gt;
       &lt;/div&gt;
     &lt;/main&gt;
 
-    &lt;aside class="f-side"&gt;…订阅 / 关于 / 标签…&lt;/aside&gt;
+    &lt;aside class="f-side"&gt;<span data-i18n="c5.p3.hc17">…订阅 / 关于 / 标签…</span>&lt;/aside&gt;
   &lt;/div&gt;
 
-  &lt;footer class="f-foot"&gt;© 2026 远山手记&lt;/footer&gt;
+  &lt;footer class="f-foot"&gt;© 2026 <span data-i18n="c5.p3.hc16">远山手记</span>&lt;/footer&gt;
 &lt;/div&gt;</code></pre>
             </figure>
             <ul class="code-notes">
