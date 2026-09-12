@@ -49,6 +49,8 @@
     "label.theory": "Explanation",
     "label.code": "Key code",
     "label.demo": "Live demo",
+    "label.tabs": "Explanation / Key code / Live demo",
+    "label.toDemo": "Watch the live demo",
     "d.live": "Live output: the CSS for whatever you just did",
     "foot.aboutTitle": "About",
     "foot.about":

@@ -22,6 +22,8 @@
     frame.style.marginBottom = scale < 1 ? `-${(height * (1 - scale)).toFixed(1)}px` : "0";
     frame.style.marginLeft = scale < 1 ? "0" : "auto";
     frame.style.marginRight = scale < 1 ? "0" : "auto";
+    /* 缩放后元素的布局高度仍是原值，把外层高度收紧，避免下方留出空白 */
+    view.style.height = height * scale + "px";
     return { scale, avail };
   }
 
@@ -47,7 +49,6 @@
     const paint = () => {
       const w = parseFloat(api.value("width"));
       const { scale } = fitFrame(frame, w, 460);
-      view.style.height = 460 * scale + "px";
 
       marker.style.left = ((w - MIN) / (MAX - MIN)) * 100 + "%";
       const bp = BPS.find((b) => w <= b.max);

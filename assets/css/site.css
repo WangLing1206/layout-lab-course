@@ -353,11 +353,10 @@
 .block--code .block__label::before { content: "⌘"; }
 
 .block--demo {
-  border-left-color: #b9892f;
+  border-left-color: var(--accent-3);
   background: linear-gradient(180deg, var(--surface-2), var(--surface) 240px);
 }
-.block--demo .block__label { color: #9a6f18; }
-[data-theme="dark"] .block--demo .block__label { color: #d9b061; }
+.block--demo .block__label { color: var(--accent-3-ink); }
 .block--demo .block__label::before { content: "▶"; }
 
 /* 演示块内的提示条 */
@@ -373,6 +372,124 @@
 
 [data-lang="en"] .block--demo .block__label::after {
   content: "drag the sliders / click the buttons";
+}
+
+/* ==========================================================================
+   知识点三栏切换器 / Point tabs: explanation · code · live demo
+   --------------------------------------------------------------------------
+   每个知识点的三个板块不再从上到下堆叠，而是做成三栏等宽的切换器：
+   一次只看一块，读者不必滚过整段代码才能碰到演示。
+   无 JS 时不会加上 .is-tabbed，切换器隐藏、三个板块按原顺序堆叠，功能不丢。
+   ========================================================================== */
+.point__tabs {
+  display: none;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--s-2);
+  padding: var(--s-1);
+  margin-bottom: var(--s-5);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg-soft);
+}
+
+.point.is-tabbed .point__tabs {
+  display: grid;
+}
+
+.ptab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+  min-width: 0;
+  padding: var(--s-3) var(--s-2);
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  color: var(--muted);
+  font-size: var(--step--1);
+  font-weight: 650;
+  line-height: 1.3;
+  text-align: center;
+  transition: color var(--t-fast) var(--ease), background var(--t-fast) var(--ease),
+    border-color var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease);
+}
+
+.ptab::before {
+  font-size: 1.05em;
+  line-height: 1;
+}
+
+.ptab--theory::before { content: "◆"; color: var(--accent); }
+.ptab--code::before { content: "⌘"; color: var(--accent-2); }
+.ptab--demo::before { content: "▶"; color: var(--accent-3); }
+
+.ptab:hover {
+  color: var(--ink);
+  background: var(--surface);
+}
+
+.ptab[aria-selected="true"] {
+  background: var(--surface);
+  box-shadow: var(--shadow-1);
+}
+
+.ptab--theory[aria-selected="true"] {
+  color: var(--accent);
+  border-color: var(--accent-line);
+}
+
+.ptab--code[aria-selected="true"] {
+  color: var(--accent-2);
+  border-color: color-mix(in srgb, var(--accent-2) 40%, var(--line));
+}
+
+.ptab--demo[aria-selected="true"] {
+  color: var(--accent-3-ink);
+  border-color: color-mix(in srgb, var(--accent-3) 50%, var(--line));
+}
+
+/* ---------- 面板 / Panels ---------- */
+.point.is-tabbed .point__panel { display: none; }
+
+.point.is-tabbed .point__panel.is-active {
+  display: block;
+  animation: panel-in var(--t-base) var(--ease);
+}
+
+@keyframes panel-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+
+.point__panel > .block { margin-bottom: 0; }
+
+/* 切换器已经写明板块名称，面板里不再重复同一个标题 */
+.point.is-tabbed .point__panel .block__label { display: none; }
+
+/* 但演示面板要保留「可以动手」的提示 */
+.point.is-tabbed .point__panel[data-panel="demo"]::before {
+  content: "▶ 拖动滑块 / 点击按钮 —— 下面的代码会跟着重写";
+  display: block;
+  margin-bottom: var(--s-4);
+  font-size: var(--step--1);
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  color: var(--accent-3-ink);
+}
+
+[data-lang="en"] .point.is-tabbed .point__panel[data-panel="demo"]::before {
+  content: "▶ drag the sliders / click the buttons — the code below rewrites itself";
+}
+
+/* 面板底部的「跳到动态演示」 */
+.paneljump {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: var(--s-4);
+}
+
+@media (max-width: 420px) {
+  .ptab { flex-direction: column; gap: var(--s-1); padding-inline: var(--s-1); }
 }
 
 /* ==========================================================================

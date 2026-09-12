@@ -29,6 +29,8 @@
   --line-2: #d2cdc2;
   --accent: #1f6b64;
   --accent-2: #b1593a;
+  --accent-3: #b9892f;      /* 演示区：琥珀 */
+  --accent-3-ink: #8a6314;
   --accent-soft: #e8f1ef;
   --accent-line: #bcd8d4;
   --mark: #f8ecc9;
@@ -103,6 +105,8 @@
   --line-2: #3a3e49;
   --accent: #6cc6bb;
   --accent-2: #e08a63;
+  --accent-3: #d9b061;
+  --accent-3-ink: #e2c076;
   --accent-soft: #1d2c2b;
   --accent-line: #2f4a48;
   --mark: #4a3f1c;

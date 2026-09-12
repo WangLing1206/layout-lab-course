@@ -201,6 +201,10 @@ ${hidden}`;
 
     api.on("lab:ready", paint);
     api.on("lab:seg", paint);
+    /* 面板刚从隐藏变为可见时，重播一次扫读路径 */
+    api.on("lab:show", (d) => {
+      if (d.tab === "demo") paint();
+    });
     const replay = api.$('[data-role="replay"]');
     if (replay) replay.addEventListener("click", play);
     window.Lang.onChange(paint);

@@ -84,6 +84,10 @@ img { display: block; max-width: 100%; }
   white-space: nowrap;
 }
 
+.f-brand em {
+  font-style: normal;     /* 字标前半段用普通字重，后半段才上强调色 */
+}
+
 .f-brand span {
   color: var(--accent);
 }

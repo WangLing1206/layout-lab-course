@@ -98,138 +98,157 @@
         <p class="point__sub" data-i18n="c4.p1.sub">断点不是设备清单。设备宽度每年都在变，而「两栏挤到 200px 就不可读」这个事实不会变。</p>
       </header>
 
-      <div class="block block--theory">
-        <p class="block__label" data-i18n="label.theory">讲解</p>
-        <div class="prose">
-          <h4 data-i18n="c4.p1.h1">怎么找到你的断点</h4>
-          <p data-i18n-html="c4.p1.t1">把浏览器窗口从最窄慢慢拖到最宽，<strong>记录第一处「看起来不对」的宽度</strong> —— 通常是某段文字开始贴边、某个按钮被压变形、两栏的内容互相挤压的时候。那就是你的断点。它由<em>你的内容</em>决定，不由 iPhone 的型号决定。这样得到的断点，长时间内都不需要跟着新设备更新。</p>
+      <div class="point__tabs" role="tablist" data-i18n-attr="aria-label:label.tabs" aria-label="讲解 / 关键代码 / 动态演示">
+        <button class="ptab ptab--theory is-active" type="button" role="tab" aria-selected="true" data-tab="theory" id="tab-p-breakpoint-theory" aria-controls="pan-p-breakpoint-theory"><span data-i18n="label.theory">讲解</span></button>
+        <button class="ptab ptab--code" type="button" role="tab" aria-selected="false" data-tab="code" id="tab-p-breakpoint-code" aria-controls="pan-p-breakpoint-code"><span data-i18n="label.code">关键代码</span></button>
+        <button class="ptab ptab--demo" type="button" role="tab" aria-selected="false" data-tab="demo" id="tab-p-breakpoint-demo" aria-controls="pan-p-breakpoint-demo"><span data-i18n="label.demo">动态演示</span></button>
+      </div>
 
-          <h4 data-i18n="c4.p1.h2">移动优先：默认样式写给窄屏</h4>
-          <p data-i18n-html="c4.p1.t2">「移动优先」不是「先考虑手机用户」，而是一种<strong>书写顺序</strong>：默认样式是最简单的一栏版本，然后不断用 <code>min-width</code> 往上叠加。它带来四个实际好处：</p>
-          <ul>
-            <li data-i18n="c4.p1.t2a">强迫你先做内容优先级判断 —— 窄屏放不下一切，必须排序；</li>
-            <li data-i18n="c4.p1.t2b">覆盖方向单一：后写的规则覆盖先写的，永远只需担心「往上加」，不会互相打架；</li>
-            <li data-i18n="c4.p1.t2c">基线是最简单的版本，因此在老设备、慢网络、媒体查询失效的环境里依然可用；</li>
-            <li data-i18n="c4.p1.t2d">不需要用 <code>max-width</code> 把宽屏样式「砍回去」，避免了层层覆盖与 <code>!important</code> 救火。</li>
-          </ul>
-          <p data-i18n-html="c4.p1.t3">反过来，桌面优先（默认宽屏 + <code>max-width</code> 一路下砍）的问题是每加一档都在做减法：断点之间的组合容易漏掉，最后常常要靠 <code>!important</code> 强行压住前面的规则。</p>
+      <div class="point__panels">
+        <div class="point__panel" role="tabpanel" id="pan-p-breakpoint-theory" aria-labelledby="tab-p-breakpoint-theory" data-panel="theory">
+  <div class="block block--theory">
+          <p class="block__label" data-i18n="label.theory">讲解</p>
+          <div class="prose">
+            <h4 data-i18n="c4.p1.h1">怎么找到你的断点</h4>
+            <p data-i18n-html="c4.p1.t1">把浏览器窗口从最窄慢慢拖到最宽，<strong>记录第一处「看起来不对」的宽度</strong> —— 通常是某段文字开始贴边、某个按钮被压变形、两栏的内容互相挤压的时候。那就是你的断点。它由<em>你的内容</em>决定，不由 iPhone 的型号决定。这样得到的断点，长时间内都不需要跟着新设备更新。</p>
 
-          <h4 data-i18n="c4.p1.h3">断点要几个</h4>
-          <p data-i18n-html="c4.p1.t4">两到四个通常就够。本站案例用了<strong>三个</strong>：<code>600px</code>（正文 + 侧栏两栏）、<code>900px</code>（更宽的版心、文章流两列）、<code>1200px</code>（三栏：归档 / 正文 / 信息）。每多一个断点，就多一组需要测试的宽度组合 —— 断点越多，越容易出现「只在某个宽度下才好看」的脆弱版面。</p>
+            <h4 data-i18n="c4.p1.h2">移动优先：默认样式写给窄屏</h4>
+            <p data-i18n-html="c4.p1.t2">「移动优先」不是「先考虑手机用户」，而是一种<strong>书写顺序</strong>：默认样式是最简单的一栏版本，然后不断用 <code>min-width</code> 往上叠加。它带来四个实际好处：</p>
+            <ul>
+              <li data-i18n="c4.p1.t2a">强迫你先做内容优先级判断 —— 窄屏放不下一切，必须排序；</li>
+              <li data-i18n="c4.p1.t2b">覆盖方向单一：后写的规则覆盖先写的，永远只需担心「往上加」，不会互相打架；</li>
+              <li data-i18n="c4.p1.t2c">基线是最简单的版本，因此在老设备、慢网络、媒体查询失效的环境里依然可用；</li>
+              <li data-i18n="c4.p1.t2d">不需要用 <code>max-width</code> 把宽屏样式「砍回去」，避免了层层覆盖与 <code>!important</code> 救火。</li>
+            </ul>
+            <p data-i18n-html="c4.p1.t3">反过来，桌面优先（默认宽屏 + <code>max-width</code> 一路下砍）的问题是每加一档都在做减法：断点之间的组合容易漏掉，最后常常要靠 <code>!important</code> 强行压住前面的规则。</p>
 
-          <div class="callout callout--tip">
-            <span class="callout__icon" aria-hidden="true">◆</span>
-            <p data-i18n-html="c4.p1.tip"><strong>先试试能不能不用断点。</strong>能靠 <code>repeat(auto-fit, minmax(...))</code>、<code>flex-wrap</code>、<code>clamp()</code> 解决的问题，就不要写媒体查询 —— 它们在任何宽度下都成立，不需要你预先猜出「撑不住」的那个点。</p>
+            <h4 data-i18n="c4.p1.h3">断点要几个</h4>
+            <p data-i18n-html="c4.p1.t4">两到四个通常就够。本站案例用了<strong>三个</strong>：<code>600px</code>（正文 + 侧栏两栏）、<code>900px</code>（更宽的版心、文章流两列）、<code>1200px</code>（三栏：归档 / 正文 / 信息）。每多一个断点，就多一组需要测试的宽度组合 —— 断点越多，越容易出现「只在某个宽度下才好看」的脆弱版面。</p>
+
+            <div class="callout callout--tip">
+              <span class="callout__icon" aria-hidden="true">◆</span>
+              <p data-i18n-html="c4.p1.tip"><strong>先试试能不能不用断点。</strong>能靠 <code>repeat(auto-fit, minmax(...))</code>、<code>flex-wrap</code>、<code>clamp()</code> 解决的问题，就不要写媒体查询 —— 它们在任何宽度下都成立，不需要你预先猜出「撑不住」的那个点。</p>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="block block--code">
-        <p class="block__label" data-i18n="label.code">关键代码</p>
-        <figure class="codeblock">
-          <figcaption class="codeblock__bar">
-            <span class="codeblock__title" data-i18n="c4.p1.codeTitle">案例首页的三个断点（移动优先）</span>
-            <span class="codeblock__lang">css</span>
-            <button class="copybtn" type="button" data-i18n="ui.copy">复制</button>
-          </figcaption>
-<pre class="code" data-lang="css"><code>.blog {                            <span class="tok-cmt" data-i18n="c4.p1.c1">/* 默认 = 手机：单栏堆叠 */</span>
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  grid-template-areas: "stream" "side";
-  gap: 24px;
-  padding-inline: 16px;
-}
-
-<span class="tok-cmt" data-i18n="c4.p1.c2">/* 600px：正文 + 侧栏。为什么是 600？因为 600 以下两栏都太窄 */</span>
-@media (min-width: 600px) {
-  .blog {
-    grid-template-columns: minmax(0, 1fr) 220px;
-    grid-template-areas: "stream side";
-    gap: 32px;
-  }
-}
-
-<span class="tok-cmt" data-i18n="c4.p1.c3">/* 900px：版心变宽，文章流两列 */</span>
-@media (min-width: 900px) {
-  .blog { padding-inline: 32px; gap: 48px; }
-  .posts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-
-<span class="tok-cmt" data-i18n="c4.p1.c4">/* 1200px：三栏 —— 左侧归档栏出现 */</span>
-@media (min-width: 1200px) {
-  .blog {
-    grid-template-columns: 180px minmax(0, 1fr) 240px;
-    grid-template-areas: "rail stream side";
-    max-width: 1180px;              <span class="tok-cmt" data-i18n="c4.p1.c5">/* 再宽也不拉长行宽 */</span>
-    margin-inline: auto;
-  }
-}
-</code></pre>
-        </figure>
-        <ul class="code-notes">
-          <li data-i18n-html="c4.p1.n1">每个断点都只做「增强」：加列、加间距、加区域。没有任何一档需要撤销上一档的设定 —— 这是移动优先最实际的收益。</li>
-          <li data-i18n-html="c4.p1.n2"><code>max-width: 1180px</code> 只出现在最后一档：版面在超宽屏上不再拉伸，行宽保持可读（回到 2.1 的约束）。</li>
-          <li data-i18n-html="c4.p1.n3">断点值写在 CSS 里，但要配一句说明「这一档解决了什么问题」—— 半年后你只会记得数字，不会记得理由。</li>
-        </ul>
-      </div>
-
-      <div class="block block--demo">
-        <p class="block__label" data-i18n="label.demo">动态演示</p>
-        <div class="demo" data-demo="viewport">
-          <div class="demo__stage">
-            <div class="vpsim">
-              <div class="vpsim__ruler" aria-hidden="true">
-                <span class="vpsim__band" data-bp="phone" style="flex:280">&lt;600</span>
-                <span class="vpsim__band" data-bp="tablet" style="flex:300">600–899</span>
-                <span class="vpsim__band" data-bp="laptop" style="flex:300">900–1199</span>
-                <span class="vpsim__band" data-bp="desktop" style="flex:240">≥1200</span>
-                <span class="vpsim__marker"></span>
-              </div>
-
-              <div class="vpsim__view">
-                <span class="vpsim__badge"></span>
-                <div class="vpsim__frame">
-                  <iframe data-frame="../assets/demo/frame-blog.html" title="案例首页预览" loading="lazy"></iframe>
-                </div>
-              </div>
-
-              <div class="vpsim__presets">
-                <button class="btn" type="button" data-w="375" data-i18n="d.vp.p375">手机 375</button>
-                <button class="btn" type="button" data-w="768" data-i18n="d.vp.p768">平板 768</button>
-                <button class="btn" type="button" data-w="1024" data-i18n="d.vp.p1024">笔记本 1024</button>
-                <button class="btn" type="button" data-w="1280" data-i18n="d.vp.p1280">桌面 1280</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="demo__controls demo__controls--two">
-            <label class="ctrl">
-              <span class="ctrl__label" data-i18n="d.vp.width">视口宽度</span>
-              <input type="range" min="320" max="1440" step="5" value="1024" data-name="width" data-unit="px">
-              <output class="ctrl__val">1024px</output>
-            </label>
-
-            <div class="ctrlgroup">
-              <span class="ctrlgroup__label" data-i18n="d.vp.bp">断点</span>
-              <div class="ctrlgroup__body">
-                <span class="tx-legend" data-i18n="d.vp.bpList">手机 320–599 / 平板 600–899 / 笔记本 900–1199 / 桌面 ≥1200</span>
-              </div>
-            </div>
-
-            <p class="demo__readout" id="dv-vp-out" aria-live="polite"></p>
-            <p class="demo__note" id="dv-vp-note"></p>
-          </div>
-
+        <p class="paneljump">
+          <button class="btn" type="button" data-jump="demo">
+            <span data-i18n="label.toDemo">看动态演示</span>
+            <span aria-hidden="true">▶</span>
+          </button>
+        </p>
+        </div>
+        <div class="point__panel" role="tabpanel" id="pan-p-breakpoint-code" aria-labelledby="tab-p-breakpoint-code" data-panel="code">
+  <div class="block block--code">
+          <p class="block__label" data-i18n="label.code">关键代码</p>
           <figure class="codeblock">
             <figcaption class="codeblock__bar">
-              <span class="codeblock__title" data-i18n="d.live">实时输出：上面每一步操作对应的 CSS</span>
+              <span class="codeblock__title" data-i18n="c4.p1.codeTitle">案例首页的三个断点（移动优先）</span>
               <span class="codeblock__lang">css</span>
               <button class="copybtn" type="button" data-i18n="ui.copy">复制</button>
             </figcaption>
-            <pre class="code code--live" data-lang="css"><code id="code-viewport"></code></pre>
+  <pre class="code" data-lang="css"><code>.blog {                            <span class="tok-cmt" data-i18n="c4.p1.c1">/* 默认 = 手机：单栏堆叠 */</span>
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "stream" "side";
+    gap: 24px;
+    padding-inline: 16px;
+  }
+
+  <span class="tok-cmt" data-i18n="c4.p1.c2">/* 600px：正文 + 侧栏。为什么是 600？因为 600 以下两栏都太窄 */</span>
+  @media (min-width: 600px) {
+    .blog {
+      grid-template-columns: minmax(0, 1fr) 220px;
+      grid-template-areas: "stream side";
+      gap: 32px;
+    }
+  }
+
+  <span class="tok-cmt" data-i18n="c4.p1.c3">/* 900px：版心变宽，文章流两列 */</span>
+  @media (min-width: 900px) {
+    .blog { padding-inline: 32px; gap: 48px; }
+    .posts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  <span class="tok-cmt" data-i18n="c4.p1.c4">/* 1200px：三栏 —— 左侧归档栏出现 */</span>
+  @media (min-width: 1200px) {
+    .blog {
+      grid-template-columns: 180px minmax(0, 1fr) 240px;
+      grid-template-areas: "rail stream side";
+      max-width: 1180px;              <span class="tok-cmt" data-i18n="c4.p1.c5">/* 再宽也不拉长行宽 */</span>
+      margin-inline: auto;
+    }
+  }
+  </code></pre>
           </figure>
+          <ul class="code-notes">
+            <li data-i18n-html="c4.p1.n1">每个断点都只做「增强」：加列、加间距、加区域。没有任何一档需要撤销上一档的设定 —— 这是移动优先最实际的收益。</li>
+            <li data-i18n-html="c4.p1.n2"><code>max-width: 1180px</code> 只出现在最后一档：版面在超宽屏上不再拉伸，行宽保持可读（回到 2.1 的约束）。</li>
+            <li data-i18n-html="c4.p1.n3">断点值写在 CSS 里，但要配一句说明「这一档解决了什么问题」—— 半年后你只会记得数字，不会记得理由。</li>
+          </ul>
         </div>
-        <p class="demo__note" data-i18n="c4.p1.demoNote">拖动滑块（或用下面的设备预设），注意三个地方：右侧标尺上当前档位的高亮、iframe 里首页的重排、以及实时输出里被命中的那条媒体查询。当视口比演示区还宽时，模拟器会整体等比缩小 —— 但 iframe 内部的真实宽度不变，媒体查询的判断因此不会失真。</p>
+        </div>
+        <div class="point__panel" role="tabpanel" id="pan-p-breakpoint-demo" aria-labelledby="tab-p-breakpoint-demo" data-panel="demo">
+  <div class="block block--demo">
+          <p class="block__label" data-i18n="label.demo">动态演示</p>
+          <div class="demo" data-demo="viewport">
+            <div class="demo__stage">
+              <div class="vpsim">
+                <div class="vpsim__ruler" aria-hidden="true">
+                  <span class="vpsim__band" data-bp="phone" style="flex:280">&lt;600</span>
+                  <span class="vpsim__band" data-bp="tablet" style="flex:300">600–899</span>
+                  <span class="vpsim__band" data-bp="laptop" style="flex:300">900–1199</span>
+                  <span class="vpsim__band" data-bp="desktop" style="flex:240">≥1200</span>
+                  <span class="vpsim__marker"></span>
+                </div>
+
+                <div class="vpsim__view">
+                  <span class="vpsim__badge"></span>
+                  <div class="vpsim__frame">
+                    <iframe data-frame="../assets/demo/frame-blog.html" title="案例首页预览" loading="lazy"></iframe>
+                  </div>
+                </div>
+
+                <div class="vpsim__presets">
+                  <button class="btn" type="button" data-w="375" data-i18n="d.vp.p375">手机 375</button>
+                  <button class="btn" type="button" data-w="768" data-i18n="d.vp.p768">平板 768</button>
+                  <button class="btn" type="button" data-w="1024" data-i18n="d.vp.p1024">笔记本 1024</button>
+                  <button class="btn" type="button" data-w="1280" data-i18n="d.vp.p1280">桌面 1280</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="demo__controls demo__controls--two">
+              <label class="ctrl">
+                <span class="ctrl__label" data-i18n="d.vp.width">视口宽度</span>
+                <input type="range" min="320" max="1440" step="5" value="1024" data-name="width" data-unit="px">
+                <output class="ctrl__val">1024px</output>
+              </label>
+
+              <div class="ctrlgroup">
+                <span class="ctrlgroup__label" data-i18n="d.vp.bp">断点</span>
+                <div class="ctrlgroup__body">
+                  <span class="tx-legend" data-i18n="d.vp.bpList">手机 320–599 / 平板 600–899 / 笔记本 900–1199 / 桌面 ≥1200</span>
+                </div>
+              </div>
+
+              <p class="demo__readout" id="dv-vp-out" aria-live="polite"></p>
+              <p class="demo__note" id="dv-vp-note"></p>
+            </div>
+
+            <figure class="codeblock">
+              <figcaption class="codeblock__bar">
+                <span class="codeblock__title" data-i18n="d.live">实时输出：上面每一步操作对应的 CSS</span>
+                <span class="codeblock__lang">css</span>
+                <button class="copybtn" type="button" data-i18n="ui.copy">复制</button>
+              </figcaption>
+              <pre class="code code--live" data-lang="css"><code id="code-viewport"></code></pre>
+            </figure>
+          </div>
+          <p class="demo__note" data-i18n="c4.p1.demoNote">拖动滑块（或用下面的设备预设），注意三个地方：右侧标尺上当前档位的高亮、iframe 里首页的重排、以及实时输出里被命中的那条媒体查询。当视口比演示区还宽时，模拟器会整体等比缩小 —— 但 iframe 内部的真实宽度不变，媒体查询的判断因此不会失真。</p>
+        </div>
+        </div>
       </div>
     </section>
 
@@ -243,128 +262,147 @@
         <p class="point__sub" data-i18n="c4.p2.sub">只有三个断点，就意味着在 599 → 600px 时所有值都会「跳一档」。clamp() 用来抹平这些台阶。</p>
       </header>
 
-      <div class="block block--theory">
-        <p class="block__label" data-i18n="label.theory">讲解</p>
-        <div class="prose">
-          <h4 data-i18n="c4.p2.h1">clamp(最小值, 首选值, 最大值)</h4>
-          <p data-i18n-html="c4.p2.t1"><code>clamp()</code> 的三个参数关系很直白：当首选值落在区间内时用它，超出上下限时被夹住。把 <code>vw</code> 放进首选值，字号就随视口<strong>连续</strong>变化：</p>
-          <pre class="code code--flat" data-lang="css"><code>font-size: clamp(1.5rem, 4vw + 0.5rem, 3.25rem);</code></pre>
-          <ul>
-            <li data-i18n-html="c4.p2.t1a"><strong>4vw 提供缩放</strong>：视口每宽 100px，字号涨 4px；</li>
-            <li data-i18n-html="c4.p2.t1b"><strong>+ 0.5rem 提供底座</strong>：纯 <code>vw</code> 会等比缩到不可读（视口 320px 时只剩 12.8px），加上一个不随视口缩放的常量，极小屏才有底线；</li>
-            <li data-i18n-html="c4.p2.t1c"><strong>上下限用 rem</strong> 而不是 px：尊重用户在浏览器里调大的默认字号，这是无障碍要求，也是用 <code>rem</code> 做排版单位的核心理由。</li>
-          </ul>
-
-          <h4 data-i18n="c4.p2.h2">一个容易被忽略的取舍：字号流体，间距离散</h4>
-          <p data-i18n-html="c4.p2.t2">既然字号能用流体，间距为什么不同样处理？因为两者关心的东西不同：<strong>字号需要视觉上的连续</strong>（台阶很显眼），而<strong>间距需要「可数的节奏」</strong>。把间距也做成连续流体值，1.2 节建立的刻度系统就失去意义了 —— 你无法再指着某个值说「这是组内间距」。</p>
-          <p data-i18n-html="c4.p2.t3">实践中更稳的分工是：<strong>间距用离散的几档（并在窄屏整体降一档），字号与行内细节用流体值</strong>。本站正是这么做的：<code>--s-1 … --s-9</code> 是固定的几档，字号刻度 <code>--step-*</code> 则全部是 <code>clamp()</code>。</p>
-
-          <div class="callout callout--warn">
-            <span class="callout__icon" aria-hidden="true">⚠</span>
-            <p data-i18n-html="c4.p2.warn"><strong>别把首选值写成「纯 vw」。</strong><code>clamp(1rem, 5vw, 3rem)</code> 在小屏上会缩到 16px 以下（因为 5vw 在 320px 视口只有 16px），而 <code>min</code> 恰恰是最不该被触发的那个值。写成 <code>clamp(1rem, 2vw + 1rem, 3rem)</code> 更稳：缩放的斜率小一些，底座大一些。</p>
-          </div>
-        </div>
+      <div class="point__tabs" role="tablist" data-i18n-attr="aria-label:label.tabs" aria-label="讲解 / 关键代码 / 动态演示">
+        <button class="ptab ptab--theory is-active" type="button" role="tab" aria-selected="true" data-tab="theory" id="tab-p-fluid-theory" aria-controls="pan-p-fluid-theory"><span data-i18n="label.theory">讲解</span></button>
+        <button class="ptab ptab--code" type="button" role="tab" aria-selected="false" data-tab="code" id="tab-p-fluid-code" aria-controls="pan-p-fluid-code"><span data-i18n="label.code">关键代码</span></button>
+        <button class="ptab ptab--demo" type="button" role="tab" aria-selected="false" data-tab="demo" id="tab-p-fluid-demo" aria-controls="pan-p-fluid-demo"><span data-i18n="label.demo">动态演示</span></button>
       </div>
 
-      <div class="block block--code">
-        <p class="block__label" data-i18n="label.code">关键代码</p>
-        <figure class="codeblock">
-          <figcaption class="codeblock__bar">
-            <span class="codeblock__title" data-i18n="c4.p2.codeTitle">流体字号刻度与配套的排版属性</span>
-            <span class="codeblock__lang">css</span>
-            <button class="copybtn" type="button" data-i18n="ui.copy">复制</button>
-          </figcaption>
-<pre class="code" data-lang="css"><code>:root {
-  <span class="tok-cmt" data-i18n="c4.p2.c1">/* 阶梯式：三档之间的过渡是连续的，不再是台阶 */</span>
-  --step--1: clamp(0.80rem, 0.78rem + 0.10vw, 0.875rem);
-  --step-0:  clamp(0.98rem, 0.95rem + 0.15vw, 1.0625rem);
-  --step-1:  clamp(1.12rem, 1.06rem + 0.30vw, 1.30rem);
-  --step-2:  clamp(1.30rem, 1.18rem + 0.55vw, 1.65rem);
-  --step-3:  clamp(1.55rem, 1.34rem + 0.95vw, 2.15rem);
-  --step-4:  clamp(1.90rem, 1.50rem + 1.80vw, 3.00rem);
-}
+      <div class="point__panels">
+        <div class="point__panel" role="tabpanel" id="pan-p-fluid-theory" aria-labelledby="tab-p-fluid-theory" data-panel="theory">
+  <div class="block block--theory">
+          <p class="block__label" data-i18n="label.theory">讲解</p>
+          <div class="prose">
+            <h4 data-i18n="c4.p2.h1">clamp(最小值, 首选值, 最大值)</h4>
+            <p data-i18n-html="c4.p2.t1"><code>clamp()</code> 的三个参数关系很直白：当首选值落在区间内时用它，超出上下限时被夹住。把 <code>vw</code> 放进首选值，字号就随视口<strong>连续</strong>变化：</p>
+            <pre class="code code--flat" data-lang="css"><code>font-size: clamp(1.5rem, 4vw + 0.5rem, 3.25rem);</code></pre>
+            <ul>
+              <li data-i18n-html="c4.p2.t1a"><strong>4vw 提供缩放</strong>：视口每宽 100px，字号涨 4px；</li>
+              <li data-i18n-html="c4.p2.t1b"><strong>+ 0.5rem 提供底座</strong>：纯 <code>vw</code> 会等比缩到不可读（视口 320px 时只剩 12.8px），加上一个不随视口缩放的常量，极小屏才有底线；</li>
+              <li data-i18n-html="c4.p2.t1c"><strong>上下限用 rem</strong> 而不是 px：尊重用户在浏览器里调大的默认字号，这是无障碍要求，也是用 <code>rem</code> 做排版单位的核心理由。</li>
+            </ul>
 
-.page-title {
-  font-size: var(--step-4);
-  line-height: 1.1;              <span class="tok-cmt" data-i18n="c4.p2.c2">/* 流体字号要配无单位行高 */</span>
-  letter-spacing: -0.02em;      <span class="tok-cmt" data-i18n="c4.p2.c3">/* 字号越大，字距越要收紧 */</span>
-  text-wrap: balance;           <span class="tok-cmt" data-i18n="c4.p2.c4">/* 标题断行自动均衡，避免末行只剩一个字 */</span>
-}
+            <h4 data-i18n="c4.p2.h2">一个容易被忽略的取舍：字号流体，间距离散</h4>
+            <p data-i18n-html="c4.p2.t2">既然字号能用流体，间距为什么不同样处理？因为两者关心的东西不同：<strong>字号需要视觉上的连续</strong>（台阶很显眼），而<strong>间距需要「可数的节奏」</strong>。把间距也做成连续流体值，1.2 节建立的刻度系统就失去意义了 —— 你无法再指着某个值说「这是组内间距」。</p>
+            <p data-i18n-html="c4.p2.t3">实践中更稳的分工是：<strong>间距用离散的几档（并在窄屏整体降一档），字号与行内细节用流体值</strong>。本站正是这么做的：<code>--s-1 … --s-9</code> 是固定的几档，字号刻度 <code>--step-*</code> 则全部是 <code>clamp()</code>。</p>
 
-<span class="tok-cmt" data-i18n="c4.p2.c5">/* 间距保持离散的几档：节奏可数，团队可沟通 */</span>
-:root {
-  --s-4: 1rem;
-  --s-5: 1.5rem;
-  --s-6: 2rem;
-}
-@media (max-width: 600px) {
-  <span class="tok-cmt" data-i18n="c4.p2.c6">/* 窄屏整体降一档，而不是把每个值都改成流体 */</span>
-  :root { --s-6: 1.5rem; --s-7: 2rem; }
-}
-</code></pre>
-        </figure>
-        <ul class="code-notes">
-          <li data-i18n-html="c4.p2.n1">注意每一档的 <code>vw</code> 系数不同：小字号几乎不缩放（<code>0.1vw</code>），大字号缩放明显（<code>1.8vw</code>）。这样层级差距在大屏上会自然拉开。</li>
-          <li data-i18n-html="c4.p2.n2">行高用无单位值：它随字号等比缩放，不需要为每一档单独定义。</li>
-          <li data-i18n-html="c4.p2.n3"><code>text-wrap: balance</code> 与 <code>pretty</code> 是较新的排版属性，能让断行更接近专业排版 —— 不支持时自动退化为默认行为，是安全的增强。</li>
-        </ul>
-      </div>
-
-      <div class="block block--demo">
-        <p class="block__label" data-i18n="label.demo">动态演示</p>
-        <div class="demo" data-demo="fluid">
-          <div class="demo__stage demo__stage--soft">
-            <div class="vpsim__view">
-              <div class="fluidframe">
-                <iframe data-frame="../assets/demo/frame-fluid.html" title="流体排版演示" loading="lazy"></iframe>
-              </div>
+            <div class="callout callout--warn">
+              <span class="callout__icon" aria-hidden="true">⚠</span>
+              <p data-i18n-html="c4.p2.warn"><strong>别把首选值写成「纯 vw」。</strong><code>clamp(1rem, 5vw, 3rem)</code> 在小屏上会缩到 16px 以下（因为 5vw 在 320px 视口只有 16px），而 <code>min</code> 恰恰是最不该被触发的那个值。写成 <code>clamp(1rem, 2vw + 1rem, 3rem)</code> 更稳：缩放的斜率小一些，底座大一些。</p>
             </div>
           </div>
+        </div>
 
-          <div class="demo__controls demo__controls--two">
-            <label class="ctrl">
-              <span class="ctrl__label" data-i18n="d.fluid.min">下限 min（rem）</span>
-              <input type="range" min="1" max="3" step="0.05" value="1.5" data-name="min">
-              <output class="ctrl__val">1.5rem</output>
-            </label>
-
-            <label class="ctrl">
-              <span class="ctrl__label" data-i18n="d.fluid.vw">缩放系数（vw）</span>
-              <input type="range" min="0" max="8" step="0.25" value="4" data-name="vw">
-              <output class="ctrl__val">4vw</output>
-            </label>
-
-            <label class="ctrl">
-              <span class="ctrl__label" data-i18n="d.fluid.rem">底座（rem）</span>
-              <input type="range" min="0" max="2" step="0.125" value="0.5" data-name="rem">
-              <output class="ctrl__val">0.5rem</output>
-            </label>
-
-            <label class="ctrl">
-              <span class="ctrl__label" data-i18n="d.fluid.max">上限 max（rem）</span>
-              <input type="range" min="1.5" max="6" step="0.25" value="3.25" data-name="max">
-              <output class="ctrl__val">3.25rem</output>
-            </label>
-
-            <label class="ctrl">
-              <span class="ctrl__label" data-i18n="d.fluid.width">容器宽度</span>
-              <input type="range" min="320" max="1200" step="10" value="720" data-name="width" data-unit="px">
-              <output class="ctrl__val">720px</output>
-            </label>
-
-            <p class="demo__readout" id="dv-fluid-out" aria-live="polite"></p>
-          </div>
-
+        <p class="paneljump">
+          <button class="btn" type="button" data-jump="demo">
+            <span data-i18n="label.toDemo">看动态演示</span>
+            <span aria-hidden="true">▶</span>
+          </button>
+        </p>
+        </div>
+        <div class="point__panel" role="tabpanel" id="pan-p-fluid-code" aria-labelledby="tab-p-fluid-code" data-panel="code">
+  <div class="block block--code">
+          <p class="block__label" data-i18n="label.code">关键代码</p>
           <figure class="codeblock">
             <figcaption class="codeblock__bar">
-              <span class="codeblock__title" data-i18n="d.live">实时输出：上面每一步操作对应的 CSS</span>
+              <span class="codeblock__title" data-i18n="c4.p2.codeTitle">流体字号刻度与配套的排版属性</span>
               <span class="codeblock__lang">css</span>
               <button class="copybtn" type="button" data-i18n="ui.copy">复制</button>
             </figcaption>
-            <pre class="code code--live" data-lang="css"><code id="code-fluid"></code></pre>
+  <pre class="code" data-lang="css"><code>:root {
+    <span class="tok-cmt" data-i18n="c4.p2.c1">/* 阶梯式：三档之间的过渡是连续的，不再是台阶 */</span>
+    --step--1: clamp(0.80rem, 0.78rem + 0.10vw, 0.875rem);
+    --step-0:  clamp(0.98rem, 0.95rem + 0.15vw, 1.0625rem);
+    --step-1:  clamp(1.12rem, 1.06rem + 0.30vw, 1.30rem);
+    --step-2:  clamp(1.30rem, 1.18rem + 0.55vw, 1.65rem);
+    --step-3:  clamp(1.55rem, 1.34rem + 0.95vw, 2.15rem);
+    --step-4:  clamp(1.90rem, 1.50rem + 1.80vw, 3.00rem);
+  }
+
+  .page-title {
+    font-size: var(--step-4);
+    line-height: 1.1;              <span class="tok-cmt" data-i18n="c4.p2.c2">/* 流体字号要配无单位行高 */</span>
+    letter-spacing: -0.02em;      <span class="tok-cmt" data-i18n="c4.p2.c3">/* 字号越大，字距越要收紧 */</span>
+    text-wrap: balance;           <span class="tok-cmt" data-i18n="c4.p2.c4">/* 标题断行自动均衡，避免末行只剩一个字 */</span>
+  }
+
+  <span class="tok-cmt" data-i18n="c4.p2.c5">/* 间距保持离散的几档：节奏可数，团队可沟通 */</span>
+  :root {
+    --s-4: 1rem;
+    --s-5: 1.5rem;
+    --s-6: 2rem;
+  }
+  @media (max-width: 600px) {
+    <span class="tok-cmt" data-i18n="c4.p2.c6">/* 窄屏整体降一档，而不是把每个值都改成流体 */</span>
+    :root { --s-6: 1.5rem; --s-7: 2rem; }
+  }
+  </code></pre>
           </figure>
+          <ul class="code-notes">
+            <li data-i18n-html="c4.p2.n1">注意每一档的 <code>vw</code> 系数不同：小字号几乎不缩放（<code>0.1vw</code>），大字号缩放明显（<code>1.8vw</code>）。这样层级差距在大屏上会自然拉开。</li>
+            <li data-i18n-html="c4.p2.n2">行高用无单位值：它随字号等比缩放，不需要为每一档单独定义。</li>
+            <li data-i18n-html="c4.p2.n3"><code>text-wrap: balance</code> 与 <code>pretty</code> 是较新的排版属性，能让断行更接近专业排版 —— 不支持时自动退化为默认行为，是安全的增强。</li>
+          </ul>
         </div>
-        <p class="demo__note" data-i18n="c4.p2.demoNote">这个 iframe 里的 <code>1vw</code> 等于 <code>iframe 宽度</code> 的 1%，所以你拖动宽度滑块时是真实触发 vw 变化，而不是模拟。把缩放系数设为 0，标题就完全固定；调到 8vw，小屏会迅速触到下限。</p>
+        </div>
+        <div class="point__panel" role="tabpanel" id="pan-p-fluid-demo" aria-labelledby="tab-p-fluid-demo" data-panel="demo">
+  <div class="block block--demo">
+          <p class="block__label" data-i18n="label.demo">动态演示</p>
+          <div class="demo" data-demo="fluid">
+            <div class="demo__stage demo__stage--soft">
+              <div class="vpsim__view">
+                <div class="fluidframe">
+                  <iframe data-frame="../assets/demo/frame-fluid.html" title="流体排版演示" loading="lazy"></iframe>
+                </div>
+              </div>
+            </div>
+
+            <div class="demo__controls demo__controls--two">
+              <label class="ctrl">
+                <span class="ctrl__label" data-i18n="d.fluid.min">下限 min（rem）</span>
+                <input type="range" min="1" max="3" step="0.05" value="1.5" data-name="min">
+                <output class="ctrl__val">1.5rem</output>
+              </label>
+
+              <label class="ctrl">
+                <span class="ctrl__label" data-i18n="d.fluid.vw">缩放系数（vw）</span>
+                <input type="range" min="0" max="8" step="0.25" value="4" data-name="vw">
+                <output class="ctrl__val">4vw</output>
+              </label>
+
+              <label class="ctrl">
+                <span class="ctrl__label" data-i18n="d.fluid.rem">底座（rem）</span>
+                <input type="range" min="0" max="2" step="0.125" value="0.5" data-name="rem">
+                <output class="ctrl__val">0.5rem</output>
+              </label>
+
+              <label class="ctrl">
+                <span class="ctrl__label" data-i18n="d.fluid.max">上限 max（rem）</span>
+                <input type="range" min="1.5" max="6" step="0.25" value="3.25" data-name="max">
+                <output class="ctrl__val">3.25rem</output>
+              </label>
+
+              <label class="ctrl">
+                <span class="ctrl__label" data-i18n="d.fluid.width">容器宽度</span>
+                <input type="range" min="320" max="1200" step="10" value="720" data-name="width" data-unit="px">
+                <output class="ctrl__val">720px</output>
+              </label>
+
+              <p class="demo__readout" id="dv-fluid-out" aria-live="polite"></p>
+            </div>
+
+            <figure class="codeblock">
+              <figcaption class="codeblock__bar">
+                <span class="codeblock__title" data-i18n="d.live">实时输出：上面每一步操作对应的 CSS</span>
+                <span class="codeblock__lang">css</span>
+                <button class="copybtn" type="button" data-i18n="ui.copy">复制</button>
+              </figcaption>
+              <pre class="code code--live" data-lang="css"><code id="code-fluid"></code></pre>
+            </figure>
+          </div>
+          <p class="demo__note" data-i18n="c4.p2.demoNote">这个 iframe 里的 <code>1vw</code> 等于 <code>iframe 宽度</code> 的 1%，所以你拖动宽度滑块时是真实触发 vw 变化，而不是模拟。把缩放系数设为 0，标题就完全固定；调到 8vw，小屏会迅速触到下限。</p>
+        </div>
+        </div>
       </div>
     </section>
 
@@ -378,170 +416,189 @@
         <p class="point__sub" data-i18n="c4.p3.sub">媒体查询只知道视口宽度。同一个卡片组件放在主栏和侧栏里，它无法区分 —— 这正是容器查询要解决的问题。</p>
       </header>
 
-      <div class="block block--theory">
-        <p class="block__label" data-i18n="label.theory">讲解</p>
-        <div class="prose">
-          <h4 data-i18n="c4.p3.h1">媒体查询的固有局限</h4>
-          <p data-i18n-html="c4.p3.t1">媒体查询查询的是<strong>视口</strong>。这意味着：同一个卡片组件，放进 700px 宽的主栏时应该「图左文右」，放进 240px 宽的侧栏时应该「上下堆叠」—— 但在视口 1200px 时这两种情况<em>同时存在</em>，媒体查询无法区分它们。过去的解决办法是给组件加变体类（<code>.card--compact</code>），由使用它的页面负责记得加对类名。</p>
+      <div class="point__tabs" role="tablist" data-i18n-attr="aria-label:label.tabs" aria-label="讲解 / 关键代码 / 动态演示">
+        <button class="ptab ptab--theory is-active" type="button" role="tab" aria-selected="true" data-tab="theory" id="tab-p-cq-theory" aria-controls="pan-p-cq-theory"><span data-i18n="label.theory">讲解</span></button>
+        <button class="ptab ptab--code" type="button" role="tab" aria-selected="false" data-tab="code" id="tab-p-cq-code" aria-controls="pan-p-cq-code"><span data-i18n="label.code">关键代码</span></button>
+        <button class="ptab ptab--demo" type="button" role="tab" aria-selected="false" data-tab="demo" id="tab-p-cq-demo" aria-controls="pan-p-cq-demo"><span data-i18n="label.demo">动态演示</span></button>
+      </div>
 
-          <h4 data-i18n="c4.p3.h2">容器查询的解法</h4>
-          <p data-i18n-html="c4.p3.t2">容器查询把「查询什么」从视口换成了<strong>祖先容器的宽度</strong>：父级声明 <code>container-type: inline-size</code>，组件内部用 <code>@container</code> 写规则。于是组件的行为由「它被放进的容器」决定，而不是「用户的屏幕」。这正好符合组件化的直觉 —— 组件成为一个真正自适应的独立单元。</p>
-          <ul>
-            <li data-i18n-html="c4.p3.t2a"><code>container-name</code> 给容器命名，便于在多层嵌套时精确指定查询对象（<code>@container card (min-width: 400px)</code>）；</li>
-            <li data-i18n-html="c4.p3.t2b">除了宽度，还能用容器查询单位：<code>cqw</code> / <code>cqi</code> 等，让字号也相对于<em>容器</em>而不是视口缩放；</li>
-            <li data-i18n-html="c4.p3.t2c">代价是调试时多一层推理：看到组件变形，你要先问「它的容器有多宽」。</li>
-          </ul>
+      <div class="point__panels">
+        <div class="point__panel" role="tabpanel" id="pan-p-cq-theory" aria-labelledby="tab-p-cq-theory" data-panel="theory">
+  <div class="block block--theory">
+          <p class="block__label" data-i18n="label.theory">讲解</p>
+          <div class="prose">
+            <h4 data-i18n="c4.p3.h1">媒体查询的固有局限</h4>
+            <p data-i18n-html="c4.p3.t1">媒体查询查询的是<strong>视口</strong>。这意味着：同一个卡片组件，放进 700px 宽的主栏时应该「图左文右」，放进 240px 宽的侧栏时应该「上下堆叠」—— 但在视口 1200px 时这两种情况<em>同时存在</em>，媒体查询无法区分它们。过去的解决办法是给组件加变体类（<code>.card--compact</code>），由使用它的页面负责记得加对类名。</p>
 
-          <div class="callout callout--warn">
-            <span class="callout__icon" aria-hidden="true">⚠</span>
-            <p data-i18n-html="c4.p3.warn"><strong>一个容易踩的坑：<code>container-type: inline-size</code> 会让容器自身的尺寸不再依赖内容。</strong>因此不要给「需要被内容撑开」的元素加它（例如一个自适应宽度的按钮）；它应该加在<em>负责提供宽度的布局容器</em>上，再由内部组件去查询。</p>
-          </div>
+            <h4 data-i18n="c4.p3.h2">容器查询的解法</h4>
+            <p data-i18n-html="c4.p3.t2">容器查询把「查询什么」从视口换成了<strong>祖先容器的宽度</strong>：父级声明 <code>container-type: inline-size</code>，组件内部用 <code>@container</code> 写规则。于是组件的行为由「它被放进的容器」决定，而不是「用户的屏幕」。这正好符合组件化的直觉 —— 组件成为一个真正自适应的独立单元。</p>
+            <ul>
+              <li data-i18n-html="c4.p3.t2a"><code>container-name</code> 给容器命名，便于在多层嵌套时精确指定查询对象（<code>@container card (min-width: 400px)</code>）；</li>
+              <li data-i18n-html="c4.p3.t2b">除了宽度，还能用容器查询单位：<code>cqw</code> / <code>cqi</code> 等，让字号也相对于<em>容器</em>而不是视口缩放；</li>
+              <li data-i18n-html="c4.p3.t2c">代价是调试时多一层推理：看到组件变形，你要先问「它的容器有多宽」。</li>
+            </ul>
 
-          <h4 data-i18n="c4.p3.h3">四类最常见的响应式陷阱</h4>
-          <div class="tablewrap">
-            <table class="data">
-              <thead>
-                <tr>
-                  <th data-i18n="c4.p3.th1">陷阱</th>
-                  <th data-i18n="c4.p3.th2">为什么会坏</th>
-                  <th data-i18n="c4.p3.th3">正确做法</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td data-i18n="c4.p3.r1c1">写死高度 + 绝对定位</td>
-                  <td data-i18n="c4.p3.r1c2">内容一旦换行或字号变大就溢出、重叠，且不会把容器撑开。</td>
-                  <td data-i18n="c4.p3.r1c3">用 <code>min-height</code> 与正常文档流；确实要覆盖时用 Grid 叠放两层。</td>
-                </tr>
-                <tr>
-                  <td data-i18n="c4.p3.r2c1">用 <code>100vh</code> 做满屏</td>
-                  <td data-i18n="c4.p3.r2c2">移动端地址栏收放会改变视口高度，导致首屏内容被裁掉或跳动。</td>
-                  <td data-i18n="c4.p3.r2c3">用 <code>100dvh</code>（动态）/ <code>100svh</code>（最小）/ <code>100lvh</code>（最大）。</td>
-                </tr>
-                <tr>
-                  <td data-i18n="c4.p3.r3c1">横向滚动条</td>
-                  <td data-i18n="c4.p3.r3c2">固定宽度、超长单词 / URL、负 margin、或 <code>width: 100%</code> 加 padding 而没设 <code>box-sizing</code>。</td>
-                  <td data-i18n="c4.p3.r3c3">全局 <code>box-sizing: border-box</code>；长文本 <code>overflow-wrap: anywhere</code>；用 <code>minmax(0, 1fr)</code>。</td>
-                </tr>
-                <tr>
-                  <td data-i18n="c4.p3.r4c1">图片与布局跳动</td>
-                  <td data-i18n="c4.p3.r4c2">图片加载完成后高度突变，把下方内容顶走（CLS 差的常见原因）。</td>
-                  <td data-i18n="c4.p3.r4c3"><code>max-width: 100%; height: auto</code> + <code>aspect-ratio</code> 预留空间 + <code>srcset</code>。</td>
-                </tr>
-              </tbody>
-            </table>
+            <div class="callout callout--warn">
+              <span class="callout__icon" aria-hidden="true">⚠</span>
+              <p data-i18n-html="c4.p3.warn"><strong>一个容易踩的坑：<code>container-type: inline-size</code> 会让容器自身的尺寸不再依赖内容。</strong>因此不要给「需要被内容撑开」的元素加它（例如一个自适应宽度的按钮）；它应该加在<em>负责提供宽度的布局容器</em>上，再由内部组件去查询。</p>
+            </div>
+
+            <h4 data-i18n="c4.p3.h3">四类最常见的响应式陷阱</h4>
+            <div class="tablewrap">
+              <table class="data">
+                <thead>
+                  <tr>
+                    <th data-i18n="c4.p3.th1">陷阱</th>
+                    <th data-i18n="c4.p3.th2">为什么会坏</th>
+                    <th data-i18n="c4.p3.th3">正确做法</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td data-i18n="c4.p3.r1c1">写死高度 + 绝对定位</td>
+                    <td data-i18n="c4.p3.r1c2">内容一旦换行或字号变大就溢出、重叠，且不会把容器撑开。</td>
+                    <td data-i18n="c4.p3.r1c3">用 <code>min-height</code> 与正常文档流；确实要覆盖时用 Grid 叠放两层。</td>
+                  </tr>
+                  <tr>
+                    <td data-i18n="c4.p3.r2c1">用 <code>100vh</code> 做满屏</td>
+                    <td data-i18n="c4.p3.r2c2">移动端地址栏收放会改变视口高度，导致首屏内容被裁掉或跳动。</td>
+                    <td data-i18n="c4.p3.r2c3">用 <code>100dvh</code>（动态）/ <code>100svh</code>（最小）/ <code>100lvh</code>（最大）。</td>
+                  </tr>
+                  <tr>
+                    <td data-i18n="c4.p3.r3c1">横向滚动条</td>
+                    <td data-i18n="c4.p3.r3c2">固定宽度、超长单词 / URL、负 margin、或 <code>width: 100%</code> 加 padding 而没设 <code>box-sizing</code>。</td>
+                    <td data-i18n="c4.p3.r3c3">全局 <code>box-sizing: border-box</code>；长文本 <code>overflow-wrap: anywhere</code>；用 <code>minmax(0, 1fr)</code>。</td>
+                  </tr>
+                  <tr>
+                    <td data-i18n="c4.p3.r4c1">图片与布局跳动</td>
+                    <td data-i18n="c4.p3.r4c2">图片加载完成后高度突变，把下方内容顶走（CLS 差的常见原因）。</td>
+                    <td data-i18n="c4.p3.r4c3"><code>max-width: 100%; height: auto</code> + <code>aspect-ratio</code> 预留空间 + <code>srcset</code>。</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="block block--code">
-        <p class="block__label" data-i18n="label.code">关键代码</p>
-        <figure class="codeblock">
-          <figcaption class="codeblock__bar">
-            <span class="codeblock__title" data-i18n="c4.p3.codeTitle">容器查询 + 陷阱对应的正确写法</span>
-            <span class="codeblock__lang">css</span>
-            <button class="copybtn" type="button" data-i18n="ui.copy">复制</button>
-          </figcaption>
-<pre class="code" data-lang="css"><code><span class="tok-cmt" data-i18n="c4.p3.c1">/* 1. 容器查询：父级提供宽度，组件自己适应 */</span>
-.card-slot {
-  container-type: inline-size;
-  container-name: card;
-}
-
-.card { display: grid; gap: 12px; }
-
-@container card (min-width: 400px) {
-  .card {
-    grid-template-columns: 96px minmax(0, 1fr);
-    align-items: center;
+        <p class="paneljump">
+          <button class="btn" type="button" data-jump="demo">
+            <span data-i18n="label.toDemo">看动态演示</span>
+            <span aria-hidden="true">▶</span>
+          </button>
+        </p>
+        </div>
+        <div class="point__panel" role="tabpanel" id="pan-p-cq-code" aria-labelledby="tab-p-cq-code" data-panel="code">
+  <div class="block block--code">
+          <p class="block__label" data-i18n="label.code">关键代码</p>
+          <figure class="codeblock">
+            <figcaption class="codeblock__bar">
+              <span class="codeblock__title" data-i18n="c4.p3.codeTitle">容器查询 + 陷阱对应的正确写法</span>
+              <span class="codeblock__lang">css</span>
+              <button class="copybtn" type="button" data-i18n="ui.copy">复制</button>
+            </figcaption>
+  <pre class="code" data-lang="css"><code><span class="tok-cmt" data-i18n="c4.p3.c1">/* 1. 容器查询：父级提供宽度，组件自己适应 */</span>
+  .card-slot {
+    container-type: inline-size;
+    container-name: card;
   }
-}
 
-<span class="tok-cmt" data-i18n="c4.p3.c2">/* 2. 满屏用 dvh，别用 vh */</span>
-.hero { min-height: 100dvh; }
+  .card { display: grid; gap: 12px; }
 
-<span class="tok-cmt" data-i18n="c4.p3.c3">/* 3. 长内容不再撑破容器 */</span>
-.card__title {
-  overflow-wrap: anywhere;    <span class="tok-cmt" data-i18n="c4.p3.c4">/* 超长单词 / URL 允许断行 */</span>
-}
-.grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }  <span class="tok-cmt" data-i18n="c4.p3.c5">/* 注意那个 0 */</span>
+  @container card (min-width: 400px) {
+    .card {
+      grid-template-columns: 96px minmax(0, 1fr);
+      align-items: center;
+    }
+  }
 
-<span class="tok-cmt" data-i18n="c4.p3.c6">/* 4. 图片：预留比例，加载完不跳动 */</span>
-.card__cover {
-  width: 100%;
-  height: auto;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
-}
+  <span class="tok-cmt" data-i18n="c4.p3.c2">/* 2. 满屏用 dvh，别用 vh */</span>
+  .hero { min-height: 100dvh; }
 
-<span class="tok-cmt" data-i18n="c4.p3.c7">/* 兜底：不支持容器查询的浏览器至少拿到可用的堆叠版 */</span>
-@supports not (container-type: inline-size) {
-  .card { grid-template-columns: minmax(0, 1fr); }
-}
-</code></pre>
-        </figure>
-        <ul class="code-notes">
-          <li data-i18n-html="c4.p3.n1">容器查询与媒体查询<strong>可以并存</strong>：用媒体查询决定页面分几栏，用容器查询决定组件在栏内怎么变 —— 两者层次不同，不冲突。</li>
-          <li data-i18n-html="c4.p3.n2"><code>object-fit: cover</code> 配合 <code>aspect-ratio</code>：图片永远填满预留区域且不变形。</li>
-          <li data-i18n-html="c4.p3.n3">本站的「卡片墙」用 <code>auto-fit</code> 解决列数，用容器查询解决组件内部形态 —— 两者结合基本可以做到「零媒体查询的自适应」。</li>
-        </ul>
-      </div>
+  <span class="tok-cmt" data-i18n="c4.p3.c3">/* 3. 长内容不再撑破容器 */</span>
+  .card__title {
+    overflow-wrap: anywhere;    <span class="tok-cmt" data-i18n="c4.p3.c4">/* 超长单词 / URL 允许断行 */</span>
+  }
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }  <span class="tok-cmt" data-i18n="c4.p3.c5">/* 注意那个 0 */</span>
 
-      <div class="block block--demo">
-        <p class="block__label" data-i18n="label.demo">动态演示</p>
-        <div class="demo" data-demo="cq">
-          <div class="demo__stage demo__stage--soft" id="dv-cq">
-            <div class="cq">
-              <div class="cq__panel">
-                <p class="cq__title">@container</p>
-                <p class="demo__note" data-i18n="d.cq.cqNote">查询自己的容器宽度，会跟着滑块变。</p>
-                <div class="cq__shell">
-                  <div class="cq__card cq__card--cq">
-                    <span class="cq__thumb" aria-hidden="true"></span>
-                    <div class="cq__cardtext">
-                      <h5 data-i18n="d.cq.cardTitle">容器查询版卡片</h5>
-                      <p data-i18n="d.cq.cardBody">容器够宽就变成图左文右，窄了就上下堆叠 —— 由它所在容器的宽度决定。</p>
+  <span class="tok-cmt" data-i18n="c4.p3.c6">/* 4. 图片：预留比例，加载完不跳动 */</span>
+  .card__cover {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+
+  <span class="tok-cmt" data-i18n="c4.p3.c7">/* 兜底：不支持容器查询的浏览器至少拿到可用的堆叠版 */</span>
+  @supports not (container-type: inline-size) {
+    .card { grid-template-columns: minmax(0, 1fr); }
+  }
+  </code></pre>
+          </figure>
+          <ul class="code-notes">
+            <li data-i18n-html="c4.p3.n1">容器查询与媒体查询<strong>可以并存</strong>：用媒体查询决定页面分几栏，用容器查询决定组件在栏内怎么变 —— 两者层次不同，不冲突。</li>
+            <li data-i18n-html="c4.p3.n2"><code>object-fit: cover</code> 配合 <code>aspect-ratio</code>：图片永远填满预留区域且不变形。</li>
+            <li data-i18n-html="c4.p3.n3">本站的「卡片墙」用 <code>auto-fit</code> 解决列数，用容器查询解决组件内部形态 —— 两者结合基本可以做到「零媒体查询的自适应」。</li>
+          </ul>
+        </div>
+        </div>
+        <div class="point__panel" role="tabpanel" id="pan-p-cq-demo" aria-labelledby="tab-p-cq-demo" data-panel="demo">
+  <div class="block block--demo">
+          <p class="block__label" data-i18n="label.demo">动态演示</p>
+          <div class="demo" data-demo="cq">
+            <div class="demo__stage demo__stage--soft" id="dv-cq">
+              <div class="cq">
+                <div class="cq__panel">
+                  <p class="cq__title">@container</p>
+                  <p class="demo__note" data-i18n="d.cq.cqNote">查询自己的容器宽度，会跟着滑块变。</p>
+                  <div class="cq__shell">
+                    <div class="cq__card cq__card--cq">
+                      <span class="cq__thumb" aria-hidden="true"></span>
+                      <div class="cq__cardtext">
+                        <h5 data-i18n="d.cq.cardTitle">容器查询版卡片</h5>
+                        <p data-i18n="d.cq.cardBody">容器够宽就变成图左文右，窄了就上下堆叠 —— 由它所在容器的宽度决定。</p>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <div class="cq__panel">
-                <p class="cq__title">@media</p>
-                <p class="demo__note" data-i18n="d.cq.mqNote">只认视口宽度，容器再窄也不会变。</p>
-                <div class="cq__shell">
-                  <div class="cq__card cq__card--mq">
-                    <span class="cq__thumb" aria-hidden="true"></span>
-                    <div class="cq__cardtext">
-                      <h5 data-i18n="d.cq.cardTitle2">媒体查询版卡片</h5>
-                      <p data-i18n="d.cq.cardBody2">同一份标记，同样的容器宽度，但它的形态只由浏览器窗口决定。</p>
+                <div class="cq__panel">
+                  <p class="cq__title">@media</p>
+                  <p class="demo__note" data-i18n="d.cq.mqNote">只认视口宽度，容器再窄也不会变。</p>
+                  <div class="cq__shell">
+                    <div class="cq__card cq__card--mq">
+                      <span class="cq__thumb" aria-hidden="true"></span>
+                      <div class="cq__cardtext">
+                        <h5 data-i18n="d.cq.cardTitle2">媒体查询版卡片</h5>
+                        <p data-i18n="d.cq.cardBody2">同一份标记，同样的容器宽度，但它的形态只由浏览器窗口决定。</p>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+
+            <div class="demo__controls demo__controls--two">
+              <label class="ctrl">
+                <span class="ctrl__label" data-i18n="d.cq.width">两个容器的宽度</span>
+                <input type="range" min="220" max="760" step="10" value="320" data-name="cqw" data-var="--cqw" data-unit="px" data-target="#dv-cq">
+                <output class="ctrl__val">320px</output>
+              </label>
+
+              <p class="demo__readout" id="dv-cq-out" aria-live="polite"></p>
+            </div>
+
+            <figure class="codeblock">
+              <figcaption class="codeblock__bar">
+                <span class="codeblock__title" data-i18n="d.live">实时输出：上面每一步操作对应的 CSS</span>
+                <span class="codeblock__lang">css</span>
+                <button class="copybtn" type="button" data-i18n="ui.copy">复制</button>
+              </figcaption>
+              <pre class="code code--live" data-lang="css"><code id="code-cq"></code></pre>
+            </figure>
           </div>
-
-          <div class="demo__controls demo__controls--two">
-            <label class="ctrl">
-              <span class="ctrl__label" data-i18n="d.cq.width">两个容器的宽度</span>
-              <input type="range" min="220" max="760" step="10" value="320" data-name="cqw" data-var="--cqw" data-unit="px" data-target="#dv-cq">
-              <output class="ctrl__val">320px</output>
-            </label>
-
-            <p class="demo__readout" id="dv-cq-out" aria-live="polite"></p>
-          </div>
-
-          <figure class="codeblock">
-            <figcaption class="codeblock__bar">
-              <span class="codeblock__title" data-i18n="d.live">实时输出：上面每一步操作对应的 CSS</span>
-              <span class="codeblock__lang">css</span>
-              <button class="copybtn" type="button" data-i18n="ui.copy">复制</button>
-            </figcaption>
-            <pre class="code code--live" data-lang="css"><code id="code-cq"></code></pre>
-          </figure>
+          <p class="demo__note" data-i18n="c4.p3.demoNote">把宽度滑块从 220 拖到 760：左侧卡片在 400px 处自动变成「图左文右」，右侧那张纹丝不动。这就是「组件不知道自己在哪」与「组件知道自己在哪」的差别。</p>
         </div>
-        <p class="demo__note" data-i18n="c4.p3.demoNote">把宽度滑块从 220 拖到 760：左侧卡片在 400px 处自动变成「图左文右」，右侧那张纹丝不动。这就是「组件不知道自己在哪」与「组件知道自己在哪」的差别。</p>
+        </div>
       </div>
     </section>
 

@@ -160,6 +160,77 @@
     }
   }
 
+  /* ------------------------------------------- 知识点三栏切换 / Point tabs --- */
+  /* 三个板块（讲解 / 关键代码 / 动态演示）做成三栏切换器。
+     · 只有 JS 就绪才加 .is-tabbed —— 无 JS 时三个板块照旧堆叠，内容不会丢
+     · 切换后派发 resize 与 lab:show：面板刚从 display:none 变可见，
+       按容器宽度计算的演示（视口模拟、流体排版）需要重新量一次，
+       眼动路径这类动画也需要重播。 */
+  function initPointTabs(scope = document) {
+    let remembered = null; // 记住读者上一次选的板块，后面的知识点自动跟随
+
+    $$(".point__tabs", scope).forEach((bar) => {
+      const point = bar.closest(".point");
+      const panels = $$(".point__panel", point);
+      const buttons = $$(".ptab", bar);
+      if (!point || !panels.length || !buttons.length) return;
+
+      point.classList.add("is-tabbed");
+
+      const show = (name, opts) => {
+        const { focus = false, silent = false } = opts || {};
+        buttons.forEach((btn) => {
+          const on = btn.dataset.tab === name;
+          btn.setAttribute("aria-selected", on ? "true" : "false");
+          btn.tabIndex = on ? 0 : -1;
+          if (on && focus) btn.focus();
+        });
+        panels.forEach((panel) =>
+          panel.classList.toggle("is-active", panel.dataset.panel === name)
+        );
+        remembered = name;
+        if (silent) return;
+        window.dispatchEvent(new Event("resize"));
+        $$("[data-demo]", point).forEach((demo) => {
+          if (demo.__labDemo) fire(demo, "lab:show", { tab: name });
+        });
+      };
+
+      buttons.forEach((btn) =>
+        btn.addEventListener("click", () => show(btn.dataset.tab))
+      );
+
+      /* 方向键在三栏之间移动 —— tablist 的键盘约定 */
+      bar.addEventListener("keydown", (e) => {
+        const step = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+        if (!step && e.key !== "Home" && e.key !== "End") return;
+        e.preventDefault();
+        const current = buttons.findIndex((b) => b.getAttribute("aria-selected") === "true");
+        const next =
+          e.key === "Home"
+            ? 0
+            : e.key === "End"
+              ? buttons.length - 1
+              : (current + step + buttons.length) % buttons.length;
+        show(buttons[next].dataset.tab, { focus: true });
+      });
+
+      /* 面板里的「跳到动态演示」 */
+      $$("[data-jump]", point).forEach((btn) =>
+        btn.addEventListener("click", () => {
+          show(btn.dataset.jump);
+          const target = panels.find((p) => p.dataset.panel === btn.dataset.jump);
+          if (target) target.scrollIntoView({ block: "nearest", behavior: "smooth" });
+        })
+      );
+
+      const initial = buttons.some((b) => b.dataset.tab === remembered)
+        ? remembered
+        : buttons[0].dataset.tab;
+      show(initial, { silent: true });
+    });
+  }
+
   /* -------------------------------------------------------- 控件 / Controls --- */
   const fire = (el, type, detail) =>
     el.dispatchEvent(new CustomEvent(type, { bubbles: true, detail }));
@@ -392,6 +463,7 @@
     initSwitches,
     initTabs,
     initCopy,
+    initPointTabs,
     register,
     initDemos,
     fire,
