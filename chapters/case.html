@@ -469,7 +469,14 @@
               <li data-i18n-html="c5.p3.t1d"><strong>断点层</strong>：三个 <code>min-width</code> 媒体查询，全部集中在文件末尾。</li>
             </ol>
 
-            <h4 data-i18n="c5.p3.h2">几处值得单独说明的决定</h4>
+            
+          <div class="callout callout--tip">
+            <span class="callout__icon" aria-hidden="true">◆</span>
+            <div>
+              <p data-i18n-html="c5.p3.tip"><strong>读这份样式表的顺序：</strong>只想改版式，先看<strong>断点层</strong>（三档结构）；只想换配色或间距，只看<strong>令牌层</strong>。中间两层通常不用动 —— 这正是四层顺序带来的好处。</p>
+            </div>
+          </div>
+<h4 data-i18n="c5.p3.h2">几处值得单独说明的决定</h4>
             <ul>
               <li data-i18n-html="c5.p3.t2a"><strong>缩略图用 CSS 渐变</strong>而不是图片：<code>aspect-ratio</code> 固定比例 → 加载零等待、不产生布局跳动（CLS），而且不用维护素材。缺点是同质化，但博客列表页的缩略图本来就是「节奏点」而非内容。</li>
               <li data-i18n-html="c5.p3.t2b"><strong>用边框分组，而不是阴影</strong>：列表里十几张卡片，如果每张都带阴影，页面会变得很吵；1px 边框在密集列表里安静得多。</li>

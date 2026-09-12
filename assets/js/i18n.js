@@ -1115,6 +1115,8 @@
     "c5.p3.t1c": "<strong>Components</strong>: cards, header, sidebar modules; Flex inside, sizes from tokens;",
     "c5.p3.t1d": "<strong>Breakpoints</strong>: three <code>min-width</code> media queries, all at the end of the file.",
     "c5.p3.h2": "A few decisions worth calling out",
+    "c5.p3.tip":
+      "<strong>How to read this stylesheet:</strong> to change the layout, start with the <strong>breakpoint layer</strong> (three tiers). To change colours or spacing, read the <strong>tokens layer</strong> alone. The two middle layers usually need no edits at all — which is exactly what the four-layer order buys you.",
     "c5.p3.t2a":
       "<strong>CSS gradients for thumbnails</strong> instead of images: <code>aspect-ratio</code> fixes the proportion, so there is zero loading wait and no layout shift (CLS), and no assets to maintain. The cost is sameness — but a list thumbnail is a rhythm marker, not content.",
     "c5.p3.t2b":
@@ -1294,6 +1296,7 @@
       "ui.sub": "副标题",
       "ui.bodySize": "正文",
       "ui.meta": "注释",
+      "ui.railTitle": "提示与权衡",
       "ui.step": "比例",
       "ui.columns": "列数",
       "ui.main": "主内容",
@@ -1387,6 +1390,7 @@
       "ui.sub": "Deck",
       "ui.bodySize": "Body",
       "ui.meta": "Meta",
+      "ui.railTitle": "Notes & trade-offs",
       "ui.step": "Step ratio",
       "ui.columns": "columns",
       "ui.main": "main",

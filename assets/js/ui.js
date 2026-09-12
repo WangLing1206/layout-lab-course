@@ -160,6 +160,38 @@
     }
   }
 
+  /* --------------------------------------------- 讲解旁注栏 / Theory note rail --- */
+  /* 讲解正文受行宽上限（--measure，68ch）约束，因此宽面板里右侧会空出一块。
+     与其把正文拉长（那会破坏可读性），不如把「提示」与「设计权衡」挪到右侧，
+     形成正文列 + 旁注栏的编辑型双栏。
+     窄容器下旁注栏落到正文之后、以一条细线分隔 —— 内容永远不丢。 */
+  function initTheoryRails(scope = document) {
+    $$('.point__panel[data-panel="theory"]', scope).forEach((panel) => {
+      const prose = panel.querySelector(".prose");
+      const block = panel.querySelector(".block--theory");
+      if (!prose || !block || block.querySelector(".theory-rail")) return;
+
+      const movable = $$(":scope > .callout, :scope > dl.tradeoff", prose);
+      if (!movable.length) return; // 没有旁注素材就不建栏
+
+      const rail = document.createElement("aside");
+      rail.className = "theory-rail";
+
+      const title = document.createElement("p");
+      title.className = "theory-rail__title";
+      rail.appendChild(title);
+
+      movable.forEach((node) => rail.appendChild(node));
+      block.appendChild(rail);
+
+      const paintTitle = () => {
+        title.textContent = window.Lang.t("ui.railTitle");
+      };
+      paintTitle();
+      window.Lang.onChange(paintTitle);
+    });
+  }
+
   /* ------------------------------------------- 知识点三栏切换 / Point tabs --- */
   /* 三个板块（讲解 / 关键代码 / 动态演示）做成三栏切换器。
      · 只有 JS 就绪才加 .is-tabbed —— 无 JS 时三个板块照旧堆叠，内容不会丢
@@ -464,6 +496,7 @@
     initTabs,
     initCopy,
     initPointTabs,
+    initTheoryRails,
     register,
     initDemos,
     fire,

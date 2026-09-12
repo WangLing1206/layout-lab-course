@@ -137,6 +137,7 @@
     initTheme();
     window.Lang.init();          // 先翻译，避免语言闪烁
     window.Lab.initPointTabs();  // 三栏切换器先就位，演示才知道自己是否可见
+    window.Lab.initTheoryRails(); // 讲解面板：把提示与权衡挪进右侧旁注栏
     window.Lab.initDemos();      // 再初始化演示（演示里的动态文案依赖当前语言）
     window.Lab.highlight(document);
     initProgress();

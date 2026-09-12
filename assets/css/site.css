@@ -481,6 +481,65 @@
   content: "▶ drag the sliders / click the buttons — the code below rewrites itself";
 }
 
+/* ---------- 讲解面板：正文列 + 旁注栏 / Editorial two-column theory ----------
+   行宽上限由 2.1 决定，不能为了填满而拉长正文；
+   于是把「提示」与「设计权衡」安置到右侧，形成旁注栏。
+   用容器查询而不是媒体查询：这里要问的是「这个面板有多宽」，
+   与视口无关（见 4.3）。 */
+.point.is-tabbed .point__panel[data-panel="theory"] {
+  container-type: inline-size;
+  container-name: theory;
+}
+
+.theory-rail {
+  /* 窄容器：作为正文之后的一小节，细线分隔 —— 内容不丢，只是换位置 */
+  display: grid;
+  gap: var(--s-4);
+  align-content: start;
+  min-width: 0;
+  margin-top: var(--s-5);
+  padding-top: var(--s-5);
+  border-top: 1px solid var(--line);
+}
+
+.theory-rail__title {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* 宽容器：正文与旁注并排，靠一条竖线与更大的间隔把两者分开 */
+@container theory (min-width: 860px) {
+  .point.is-tabbed .point__panel[data-panel="theory"] .block--theory {
+    display: grid;
+    /* 正文列优先拿到完整行宽，旁注栏固定 260px；
+       容器再宽时多出来的空间给间距（justify-content: space-between） */
+    grid-template-columns: minmax(0, var(--measure)) 260px;
+    justify-content: space-between;
+    gap: var(--s-6);
+    align-items: start;
+  }
+
+  .theory-rail {
+    margin-top: 0;
+    padding-top: 0;
+    padding-inline-start: var(--s-5);
+    border-top: none;
+    border-inline-start: 1px solid var(--line);
+  }
+
+  /* 窄栏里「权衡对比」改为纵向排列，并收紧内边距给文字让位 */
+  .theory-rail .tradeoff {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .theory-rail .tradeoff > div {
+    padding: var(--s-3);
+  }
+}
+
 /* 面板底部的「跳到动态演示」 */
 .paneljump {
   display: flex;
