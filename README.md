@@ -12,8 +12,8 @@
 
 | 项目 | 地址 |
 | --- | --- |
-| 在线访问 | https://wangling1206.github.io/layout-lab/ |
-| 仓库地址 | https://github.com/WangLing1206/layout-lab |
+| 在线访问 | https://wangling1206.github.io/layout-lab-course/ |
+| 仓库地址 | https://github.com/WangLing1206/layout-lab-course |
 
 发布方式：仓库 Settings → Pages → Source 选择 `Deploy from a branch` → 分支 `master`、目录 `/ (root)` → Save。
 （页脚里的「GitHub 仓库」链接已指向上面这个仓库。）
