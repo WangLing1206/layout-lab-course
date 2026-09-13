@@ -12,3 +12,8 @@ submission/*.pdf
 
 # 编辑器/工具内部目录
 .zcode/
+
+# 视频成片（体积大，不入库；时间轴与字幕文本入库）
+submission/video/*.mp4
+submission/video/*.webm
+submission/video/_*
