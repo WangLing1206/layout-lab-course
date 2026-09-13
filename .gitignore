@@ -9,3 +9,6 @@ Thumbs.db
 submission/*.zip
 submission/*.docx
 submission/*.pdf
+
+# 编辑器/工具内部目录
+.zcode/
