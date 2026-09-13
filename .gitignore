@@ -4,3 +4,8 @@ Thumbs.db
 .idea/
 .vscode/
 *.log
+
+# 提交产物（文档源文件入库，二进制与压缩包不入库）
+submission/*.zip
+submission/*.docx
+submission/*.pdf
