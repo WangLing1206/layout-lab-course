@@ -8,7 +8,7 @@
 (function () {
   "use strict";
   const { register } = window.Lab;
-  const t = (k) => window.Lang.t(k);
+  const t = (k, vars) => window.Lang.t(k, vars);
 
   /* ======================================================================
      1.1 对齐 / Alignment
@@ -49,19 +49,20 @@
 
       api.code(
         "#code-align",
-        `/* 对齐的第一层：让每个元素的边缘落在同一条线上 */
+        `/* ${t("c.align.lead")} */
 .post-header {
   display: flex;
   align-items: ${aligned ? ITEMS[items] : "flex-start"};
-  gap: ${aligned ? "12px" : "11px"};          /* 间距也要成体系，别用 11px */
+  gap: ${aligned ? "12px" : "11px"};          /* ${t("c.align.gap")} */
 }
 
-.post-title { text-align: ${TEXT[text]}; }   /* 文本对齐：段内一致即可 */
+.post-title { text-align: ${TEXT[text]}; }   /* ${t("c.align.text")} */
 
-.post-tag   { margin-left: auto; }          /* 用 auto margin 推到最右，
-                                               不必额外套一层容器 */
+.post-tag   { margin-left: auto; }   /* ${t("c.align.auto")} */
 
-/* 演示开关：${aligned ? "已对齐（所有边缘落在同一条线上）" : "关闭对齐（出现 3–9px 的随机偏移）"} */`,
+/* ${t("c.align.switch", {
+          state: aligned ? t("c.align.on") : t("c.align.off"),
+        })} */`,
         "css"
       );
     };
@@ -98,26 +99,24 @@
       api.code(
         "#code-space",
         `:root {
-  /* 用一条刻度代替随手写的数值：所有间距都是它的倍数 */
+  /* ${t("c.space.lead")} */
   --space: ${v}px;
 }
 
 .card-list {
   display: grid;
-  gap: calc(var(--space) * ${group ? "1.9" : "1.1"});   /* 组与组之间 ${outer.toFixed(0)}px */
+  gap: calc(var(--space) * ${group ? "1.9" : "1.1"});   /* ${t("c.space.outer", { n: outer.toFixed(0) })} */
 }
 
 .card {
-  padding: var(--space);                  /* 卡片内边距 ${inner.toFixed(0)}px */
+  padding: var(--space);                  /* ${t("c.space.pad", { n: inner.toFixed(0) })} */
   display: grid;
-  gap: calc(var(--space) * ${group ? "1" : "1.6"});     /* 卡片内部 ${inner.toFixed(0)}px */
+  gap: calc(var(--space) * ${group ? "1" : "1.6"});     /* ${t("c.space.inner", { n: inner.toFixed(0) })} */
 }
 
-${group
-  ? `/* ✓ 组间 ${outer.toFixed(0)}px > 组内 ${inner.toFixed(0)}px：
-     读者会自然地把卡片内部的元素看成一「组」 */`
-  : `/* ✗ 组间 ${outer.toFixed(0)}px < 组内 ${inner.toFixed(0)}px：
-     分不清哪些内容属于一起，视觉上糊成一片 */`}`,
+/* ${group
+  ? t("c.space.ok", { o: outer.toFixed(0), i: inner.toFixed(0) })
+  : t("c.space.bad", { o: outer.toFixed(0), i: inner.toFixed(0) })} */`,
         "css"
       );
     };
@@ -170,32 +169,35 @@ ${group
       api.code(
         "#code-hier",
         `:root {
-  /* 一个比例尺推出一整套字号：改动一处，层级关系整体同步 */
+  /* ${t("c.hier.lead")} */
   --base: ${BASE}px;
   --ratio: ${ratio.toFixed(2)};
 
-  --step-0: var(--base);                               /* ${BASE}px   正文 */
-  --step-1: calc(var(--base) * ${ratio.toFixed(2)});              /* ${sub.toFixed(1)}px  副标题 */
-  --step-2: calc(var(--base) * ${(ratio * ratio).toFixed(4)});          /* ${title.toFixed(1)}px  标题 */
-  --step--1: calc(var(--base) / ${ratio.toFixed(2)});             /* ${meta.toFixed(1)}px  注释 */
+  --step-0: var(--base);                               /* ${t("c.hier.body", { n: BASE })} */
+  --step-1: calc(var(--base) * ${ratio.toFixed(2)});              /* ${t("c.hier.sub", { n: sub.toFixed(1) })} */
+  --step-2: calc(var(--base) * ${(ratio * ratio).toFixed(4)});          /* ${t("c.hier.title", { n: title.toFixed(1) })} */
+  --step--1: calc(var(--base) / ${ratio.toFixed(2)});             /* ${t("c.hier.meta", { n: meta.toFixed(1) })} */
 }
 
 .post-title {
   font-size: var(--step-2);
-  font-weight: ${weight};           /* 字号之外，字重是最省力的强调手段 */
+  font-weight: ${weight};           /* ${t("c.hier.weight")} */
 }
 
 .post-meta {
   font-size: var(--step--1);
   color: var(--muted);
-  opacity: ${mute.toFixed(2)};     /* 降低对比度 = 主动把信息往后放 */
+  opacity: ${mute.toFixed(2)};     /* ${t("c.hier.mute")} */
 }
 
-/* 提示：${ratio < 1.15
-          ? "比例太接近，层次模糊，读者找不到重点"
-          : ratio > 1.45
-            ? "比例拉得很开，戏剧性强，但正文容易被压得过于寒酸"
-            : "1.2–1.33 附近通常最稳：层次看得见，又不至于喧宾夺主"} */`,
+/* ${t("c.hier.tip", {
+          t:
+            ratio < 1.15
+              ? t("c.hier.tip.narrow")
+              : ratio > 1.45
+                ? t("c.hier.tip.wide")
+                : t("c.hier.tip.ok"),
+        })} */`,
         "css"
       );
     };
@@ -244,21 +246,21 @@ ${group
 
       api.code(
         "#code-gridsys",
-        `/* 12 栅格：列数越多，可组合的版式越多（2/3/4/6 都能整除） */
+        `/* ${t("c.grid.lead")} */
 .layout {
   display: grid;
   grid-template-columns: repeat(${cols}, minmax(0, 1fr));
   gap: var(--gutter);
   max-width: var(--container);
-  margin-inline: auto;          /* 内容区居中 */
+  margin-inline: auto;          /* ${t("c.grid.center")} */
 }
 
-.layout > .hero    { grid-column: span ${cols}; }   /* 通栏 */
-.layout > .article { grid-column: span ${wide}; }   /* 正文 ${wide}/${cols} */
-.layout > .aside   { grid-column: span ${narrow}; }   /* 侧栏 ${narrow}/${cols} */
-.layout > .card    { grid-column: span ${card}; }   /* 一行 ${cols / card >= 1 ? Math.floor(cols / card) : 1} 张卡片 */
+.layout > .hero    { grid-column: span ${cols}; }   /* ${t("c.grid.full")} */
+.layout > .article { grid-column: span ${wide}; }   /* ${t("c.grid.article", { a: wide, b: cols })} */
+.layout > .aside   { grid-column: span ${narrow}; }   /* ${t("c.grid.aside", { a: narrow, b: cols })} */
+.layout > .card    { grid-column: span ${card}; }   /* ${t("c.grid.cards", { n: cols / card >= 1 ? Math.floor(cols / card) : 1 })} */
 
-/* minmax(0, 1fr) 而不是 1fr：防止长单词/长代码把列撑破 */`,
+/* ${t("c.grid.minmax")} */`,
         "css"
       );
     };

@@ -4,7 +4,7 @@
 (function () {
   "use strict";
   const { register } = window.Lab;
-  const t = (k) => window.Lang.t(k);
+  const t = (k, vars) => window.Lang.t(k, vars);
 
   /* ======================================================================
      5.1 线框图：删掉一个区域，版式会怎么变
@@ -42,20 +42,18 @@
 
       api.code(
         "#code-wire",
-        `/* 首页骨架：${label} */
+        `/* ${t("c.wire.head", { label })} */
 .blog {
   display: grid;
   gap: ${state.hero || state.foot ? "32px" : "24px"};
   grid-template-columns: ${cols};
-${state.hero || state.foot ? "  /* 通栏区域靠 grid-column: 1 / -1 跨满所有列 */\n" : ""}  max-width: 1180px;
+${state.hero || state.foot ? `  /* ${t("c.wire.bleed")} */\n` : ""}  max-width: 1180px;
   margin-inline: auto;
   padding-inline: 16px;
 }
 
 ${state.hero ? ".hero    { grid-column: 1 / -1; }\n" : ""}${state.stream ? ".stream  { grid-column: span 1; }\n" : ""}${state.side ? ".sidebar { grid-column: span 1; align-self: start; }\n" : ""}${state.foot ? ".footer  { grid-column: 1 / -1; }\n" : ""}
-/* 取舍：${state.side
-          ? "保留侧栏 → 首页能承载「关于我 / 标签云 / 订阅」，但正文变窄、单屏信息量下降"
-          : "去掉侧栏 → 正文获得满宽，阅读更沉浸，但次级入口需要另找位置（比如收进页脚）"} */`,
+/* ${state.side ? t("c.wire.keepSide") : t("c.wire.dropSide")} */`,
         "css"
       );
     };

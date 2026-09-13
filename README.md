@@ -12,13 +12,11 @@
 
 | 项目 | 地址 |
 | --- | --- |
-| 在线访问 | `https://<你的用户名>.github.io/<仓库名>/` |
-| 仓库地址 | `https://github.com/<你的用户名>/<仓库名>` |
+| 在线访问 | https://wangling1206.github.io/layout-lab/ |
+| 仓库地址 | https://github.com/WangLing1206/layout-lab |
 
-> ⚠️ **发布前请替换上面两处地址**，并同步修改页面页脚里的 `GitHub 仓库` 链接
-> （在 `index.html` 与 `chapters/*.html` 中搜索 `https://github.com/`）。
-
-发布步骤：仓库 Settings → Pages → Source 选择 `Deploy from a branch` → 分支 `main`、目录 `/ (root)` → Save。
+发布方式：仓库 Settings → Pages → Source 选择 `Deploy from a branch` → 分支 `master`、目录 `/ (root)` → Save。
+（页脚里的「GitHub 仓库」链接已指向上面这个仓库。）
 
 ---
 
@@ -161,8 +159,9 @@ node tools/check-i18n.mjs --list   # 列出全部词条与中文原文，便于�
 
 ### 4.6 已知边界
 
-- 演示区「实时输出」里由 JS 拼接生成的 CSS 注释为中文（它是操作的即时镜像，随参数重写）；
-  页面正文的关键代码块注释**会随语言同步切换**。
+- 演示区「实时输出」里的 CSS 注释同样走词条表（`UI` 里的 `c.*`），因此**也会随语言同步切换**；
+  注释里嵌着动态数值（间距 px、断点名、列数……），中英语序不同，所以整句作为词条并用 `{n}` 占位符取值，
+  而不是在 JS 里拼接字符串。
 - 案例成品 iframe 用的是自成一体的小字典（内联在 `frame-blog.html` 里），以便这份成品可以
   被单独打开、单独复制使用，不依赖主站脚本。
 - 容器查询、`text-wrap: balance/pretty`、`dvh` 等较新特性在不支持的浏览器里会优雅退化为默认行为。

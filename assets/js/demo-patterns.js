@@ -4,7 +4,7 @@
 (function () {
   "use strict";
   const { register } = window.Lab;
-  const t = (k) => window.Lang.t(k);
+  const t = (k, vars) => window.Lang.t(k, vars);
 
   /* ======================================================================
      2.1 单栏与行宽 / Single column & measure
@@ -29,21 +29,21 @@
 
       api.code(
         "#code-measure",
-        `/* 容器宽度 → 行宽 → 阅读体验 */
+        `/* ${t("c.measure.lead")} */
 .prose {
-  max-width: ${w}px;        /* 当前约 ${han} 个汉字 / ${latin} 个西文字符一行 */
-  margin-inline: auto;     /* 单栏布局的关键：容器居中，而不是文字居中 */
+  max-width: ${w}px;        /* ${t("c.measure.width", { han, latin })} */
+  margin-inline: auto;     /* ${t("c.measure.center")} */
 }
 
 .prose p {
   font-size: ${FS}px;
-  line-height: 1.7;        /* 中文行高通常取 1.7–1.8，比英文更松一点 */
+  line-height: 1.7;        /* ${t("c.measure.lh")} */
 }
 /* ${inRange
-          ? "✓ 落在 45–75 字符的可读区间内：眼睛回扫距离舒适，不容易跳行"
+          ? t("c.measure.ok")
           : latin < 45
-            ? "✗ 行太短：换行过于频繁，节奏被打断，句子读起来一顿一顿"
-            : "✗ 行太长：回扫距离变长，容易读到下一行或丢行"} */`,
+            ? t("c.measure.short")
+            : t("c.measure.long")} */`,
         "css"
       );
     };
@@ -104,13 +104,13 @@
 
       const hidden = g.hide.length
         ? g.hide.map((h) => `.body > .${h}`).join(", ") + " { display: none; }"
-        : "/* 三个区域全部参与排布 */";
+        : `/* ${t("c.pattern.allRegions")} */`;
 
       out.innerHTML =
         `<b>${LABEL[pattern]}</b> · ${t("ui.impl")}: <b>${impl}</b>` +
         ` · ${t("ui.domOrder")}: <b>main → nav → aside</b>`;
 
-      const gridCode = `/* ---- Grid：二维摆放，视觉顺序与 DOM 顺序解耦 ---- */
+      const gridCode = `/* ${t("c.pattern.gridHead")} */
 .page { display: grid; gap: 8px; }
 
 .body {
@@ -125,18 +125,17 @@
 .body > .aside { grid-area: right; }
 
 ${hidden}
-/* 页面通栏的页头/页脚只需要「不在 .body 里」，天生的满宽 */
-${pattern === "holy" ? "/* 圣杯布局的本质：三栏 + 通栏头尾 + 主内容在 DOM 里排最前 */" : ""}`;
+/* ${t("c.pattern.bleed")} */
+${pattern === "holy" ? `/* ${t("c.pattern.holy")} */` : ""}`;
 
-      const flexCode = `/* ---- Flex：一维排布，用 order 调整视觉顺序 ---- */
+      const flexCode = `/* ${t("c.pattern.flexHead")} */
 .body { display: flex; gap: 8px; }
 
 .body > .nav   { order: 1; flex: 0 0 140px; }
 .body > .main  { order: 2; flex: 1 1 0; min-width: 0; }
 .body > .aside { order: 3; flex: 0 0 140px; }
 
-/* ⚠️ order 只改变「看上去」的顺序，键盘 Tab 与屏幕阅读器仍按 DOM 走。
-   视觉顺序与 DOM 顺序不一致时，键盘用户会遇到焦点乱跳 —— 这是无障碍的常见坑。 */
+/* ${t("c.pattern.order")} */
 
 ${hidden}`;
 

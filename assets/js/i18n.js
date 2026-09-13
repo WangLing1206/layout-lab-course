@@ -1374,7 +1374,121 @@
       "ui.case.before":
         "改造前：没有版心，行宽随窗口无限拉长；三栏写死，窄屏挤成一团；标题与正文同级，层次消失；间距随手给，看不出分组。",
       "ui.case.after":
-        "改造后：1180px 版心 + 四档断点；字号比例尺建立层级；间距来自统一的刻度；卡片内部用 Grid 对齐，侧栏在窄屏自然下移。"
+        "改造后：1180px 版心 + 四档断点；字号比例尺建立层级；间距来自统一的刻度；卡片内部用 Grid 对齐，侧栏在窄屏自然下移。",
+
+      /* 「实时输出」代码块的注释 / comments inside the live-output code blocks
+         —— 这些字符串由 JS 拼出，含 {n} 之类的动态值，因此必须整句走词条，
+            不能再用拼接（中英语序不同）。 */
+      "c.align.lead": "对齐的第一层：让每个元素的边缘落在同一条线上",
+      "c.align.gap": "间距也要成体系，别用 11px",
+      "c.align.text": "文本对齐：段内一致即可",
+      "c.align.auto": "用 auto margin 推到最右，不必额外套一层容器",
+      "c.align.switch": "演示开关：{state}",
+      "c.align.on": "已对齐（所有边缘落在同一条线上）",
+      "c.align.off": "关闭对齐（出现 3–9px 的随机偏移）",
+
+      "c.space.lead": "用一条刻度代替随手写的数值：所有间距都是它的倍数",
+      "c.space.outer": "组与组之间 {n}px",
+      "c.space.pad": "卡片内边距 {n}px",
+      "c.space.inner": "卡片内部 {n}px",
+      "c.space.ok": "✓ 组间 {o}px > 组内 {i}px：读者会自然地把卡片内部的元素看成一「组」",
+      "c.space.bad": "✗ 组间 {o}px < 组内 {i}px：分不清哪些内容属于一起，视觉上糊成一片",
+
+      "c.hier.lead": "一个比例尺推出一整套字号：改动一处，层级关系整体同步",
+      "c.hier.body": "{n}px   正文",
+      "c.hier.sub": "{n}px  副标题",
+      "c.hier.title": "{n}px  标题",
+      "c.hier.meta": "{n}px  注释",
+      "c.hier.weight": "字号之外，字重是最省力的强调手段",
+      "c.hier.mute": "降低对比度 = 主动把信息往后放",
+      "c.hier.tip": "提示：{t}",
+      "c.hier.tip.narrow": "比例太接近，层次模糊，读者找不到重点",
+      "c.hier.tip.wide": "比例拉得很开，戏剧性强，但正文容易被压得过于寒酸",
+      "c.hier.tip.ok": "1.2–1.33 附近通常最稳：层次看得见，又不至于喧宾夺主",
+
+      "c.grid.lead": "12 栅格：列数越多，可组合的版式越多（2/3/4/6 都能整除）",
+      "c.grid.center": "内容区居中",
+      "c.grid.full": "通栏",
+      "c.grid.article": "正文 {a}/{b}",
+      "c.grid.aside": "侧栏 {a}/{b}",
+      "c.grid.cards": "一行 {n} 张卡片",
+      "c.grid.minmax": "minmax(0, 1fr) 而不是 1fr：防止长单词/长代码把列撑破",
+
+      "c.measure.lead": "容器宽度 → 行宽 → 阅读体验",
+      "c.measure.width": "当前约 {han} 个汉字 / {latin} 个西文字符一行",
+      "c.measure.center": "单栏布局的关键：容器居中，而不是文字居中",
+      "c.measure.lh": "中文行高通常取 1.7–1.8，比英文更松一点",
+      "c.measure.ok": "✓ 落在 45–75 字符的可读区间内：眼睛回扫距离舒适，不容易跳行",
+      "c.measure.short": "✗ 行太短：换行过于频繁，节奏被打断，句子读起来一顿一顿",
+      "c.measure.long": "✗ 行太长：回扫距离变长，容易读到下一行或丢行",
+
+      "c.pattern.allRegions": "三个区域全部参与排布",
+      "c.pattern.gridHead": "---- Grid：二维摆放，视觉顺序与 DOM 顺序解耦 ----",
+      "c.pattern.flexHead": "---- Flex：一维排布，用 order 调整视觉顺序 ----",
+      "c.pattern.bleed": "页面通栏的页头/页脚只需要「不在 .body 里」，天生的满宽",
+      "c.pattern.holy": "圣杯布局的本质：三栏 + 通栏头尾 + 主内容在 DOM 里排最前",
+      "c.pattern.order":
+        "⚠️ order 只改变「看上去」的顺序，键盘 Tab 与屏幕阅读器仍按 DOM 走。\n   视觉顺序与 DOM 顺序不一致时，键盘用户会遇到焦点乱跳 —— 这是无障碍的常见坑。",
+
+      "c.flex.lead": "容器决定「怎么排」，项目决定「占多少」 —— 这是 Flex 的核心分工",
+      "c.flex.dir": "主轴方向：{v}",
+      "c.flex.vertical": "垂直",
+      "c.flex.horizontal": "水平",
+      "c.flex.nowrap": "不换行：项目会被压缩",
+      "c.flex.wrapYes": "允许换行：一行放不下就折到下一行",
+      "c.flex.justify": "主轴上的分布",
+      "c.flex.align": "单行内项目的交叉轴对齐",
+      "c.flex.contentOff": "⚠️ nowrap 时 align-content 不起作用（只有一行）",
+      "c.flex.contentOn": "多行之间在交叉轴上的分布",
+      "c.flex.gap": "用 gap 代替 margin：不用处理首尾元素",
+      "c.flex.noneGrown": "目前没有项目吸收剩余空间，所有项目按内容宽度排列",
+      "c.flex.memo":
+        "记忆顺序：flex-direction → flex-wrap → justify-content → align-items\n   先定「方向」，再定「换不换行」，最后才是两个轴上的对齐。",
+
+      "c.gx.lead": "容器决定「轨道」，项目决定「落在哪条轨道上」",
+      "c.gx.gap": "行间距 列间距",
+      "c.gx.justify": "项目在格子内：水平方向",
+      "c.gx.align": "项目在格子内：垂直方向",
+      "c.gx.auto":
+        "auto-fill + minmax：容器越宽，自动塞进越多列 —— \n   不写一行媒体查询就得到响应式网格。这是 Grid 最常用的「自适应卡片墙」写法。",
+      "c.gx.side": "混用固定与弹性轨道：侧栏恒为 200px，主内容吃掉剩下的空间",
+      "c.gx.fr": "1fr = 剩余空间的一份。fr 之间比较的是「份数」，不是绝对值",
+      "c.gx.explicit": "显式放置（把某个项目按到指定轨道上）：",
+      "c.gx.span2": "跨两列",
+
+      "c.area.claim": "每个区域用一个选择器「认领」",
+      "c.area.none": "还没有画出任何区域",
+      "c.area.bad":
+        "⚠️ 无效：区域 {names} 不是矩形。\n   CSS 规定同名单元格必须拼成一块完整矩形，否则整条 grid-template-areas 会被丢弃，\n   所有项目退回到自动放置 —— 这就是右边预览「散架」的原因。",
+      "c.area.good": "✓ 每个区域都是矩形，声明有效",
+
+      "c.vp.lead": "移动优先：先写「窄屏默认样式」，再用 min-width 逐级增强",
+      "c.vp.default": "默认（手机）：单列堆叠",
+      "c.vp.tablet": "平板：正文 + 侧栏",
+      "c.vp.laptop": "笔记本：更大的间距与版心",
+      "c.vp.desktop": "桌面：三栏，卡片一行三张",
+      "c.vp.hit": "当前视口 {w}px → 命中「{bp}」这一档",
+      "c.vp.memo":
+        "⚠️ 用 min-width 从小到大写（移动优先）：\n   额外的样式是「叠加」的，覆盖关系单向、可预测；\n   用 max-width 从大到小写，越写越要小心覆盖顺序。",
+
+      "c.fl.clamp": "clamp(最小值, 首选值, 最大值)",
+      "c.fl.preferred": "首选值里的 vw 让字号随视口平滑变化，两端由 min/max 兜住",
+      "c.fl.follow": "字号变了，行高与间距的「比例」也要跟着走：用无单位行高与 em/rem 间距，而不是写死的 px",
+      "c.fl.now": "当前容器宽度 {w}px → 实际字号约 {a}px",
+      "c.fl.zero": "vw 系数为 0：字号在区间内固定不变，只有换成不同的容器宽度才会看到差异",
+      "c.fl.rate": "vw 系数 {v}：每宽 100px，字号大约涨 {v}px",
+
+      "c.cq.parent": "父级声明：这块区域可以被「查询」",
+      "c.cq.self": "组件自己关心「我被放进多宽的容器」，而不是「视口有多宽」",
+      "c.cq.compare": "对比：媒体查询只知道视口宽度，同一个组件放在窄容器里也不会变",
+      "c.cq.stateWide": "变成「图左文右」",
+      "c.cq.stateNarrow": "保持上下堆叠",
+      "c.cq.now": "当前容器宽度 {w}px → 卡片{s}；右侧媒体查询版本始终由视口（{vw}px）决定，不受上面的滑块影响",
+
+      "c.wire.head": "首页骨架：{label}",
+      "c.wire.bleed": "通栏区域靠 grid-column: 1 / -1 跨满所有列",
+      "c.wire.keepSide": "保留侧栏 → 首页能承载「关于我 / 标签云 / 订阅」，但正文变窄、单屏信息量下降",
+      "c.wire.dropSide": "去掉侧栏 → 正文获得满宽，阅读更沉浸，但次级入口需要另找位置（比如收进页脚）"
     },
 
     en: {
@@ -1460,7 +1574,119 @@
       "ui.case.before":
         "Before: no measure, so lines stretch with the window; three columns hard-coded, packed tight on narrow screens; headings and body at the same level; spacing given at random so nothing groups.",
       "ui.case.after":
-        "After: a 1180px measure with four breakpoints; a type scale that builds hierarchy; spacing drawn from one scale; cards aligned with Grid and a sidebar that drops below on narrow screens."
+        "After: a 1180px measure with four breakpoints; a type scale that builds hierarchy; spacing drawn from one scale; cards aligned with Grid and a sidebar that drops below on narrow screens.",
+
+      /* Comments inside the live-output code blocks (see the zh table above). */
+      "c.align.lead": "Alignment, layer one: get every edge onto the same line",
+      "c.align.gap": "spacing must come from a scale — never 11px",
+      "c.align.text": "text alignment: just be consistent inside the block",
+      "c.align.auto": "an auto margin pushes it right — no extra wrapper needed",
+      "c.align.switch": "demo switch: {state}",
+      "c.align.on": "aligned (every edge sits on the same line)",
+      "c.align.off": "alignment off (random 3–9px offsets appear)",
+
+      "c.space.lead": "one scale instead of hand-picked numbers: every gap is a multiple of it",
+      "c.space.outer": "{n}px between groups",
+      "c.space.pad": "card padding {n}px",
+      "c.space.inner": "{n}px inside a card",
+      "c.space.ok": "✓ {o}px between groups > {i}px inside them: readers read a card's contents as one group",
+      "c.space.bad": "✗ {o}px between groups < {i}px inside them: nothing groups, so everything blurs together",
+
+      "c.hier.lead": "one ratio yields the whole type scale: change it once and every level moves together",
+      "c.hier.body": "{n}px   body",
+      "c.hier.sub": "{n}px  deck",
+      "c.hier.title": "{n}px  title",
+      "c.hier.meta": "{n}px  meta",
+      "c.hier.weight": "beyond size, weight is the cheapest way to emphasise",
+      "c.hier.mute": "lower contrast = deliberately pushing information back",
+      "c.hier.tip": "note: {t}",
+      "c.hier.tip.narrow": "the steps sit too close; hierarchy blurs and the eye finds no focus",
+      "c.hier.tip.wide": "the steps are far apart; dramatic, but body text ends up looking starved",
+      "c.hier.tip.ok": "around 1.2–1.33 is usually safest: visible hierarchy without shouting",
+
+      "c.grid.lead": "12 columns: more tracks means more layouts divide evenly (2/3/4/6 all divide 12)",
+      "c.grid.center": "centre the content area",
+      "c.grid.full": "full width",
+      "c.grid.article": "stream {a}/{b}",
+      "c.grid.aside": "aside {a}/{b}",
+      "c.grid.cards": "{n} cards per row",
+      "c.grid.minmax": "minmax(0, 1fr) rather than 1fr: stops long words or code from bursting the track",
+
+      "c.measure.lead": "container width → measure → reading experience",
+      "c.measure.width": "currently about {han} Han chars / {latin} Latin chars per line",
+      "c.measure.center": "the key to a single column: centre the container, not the text",
+      "c.measure.lh": "Chinese body text usually takes 1.7–1.8 — a little looser than English",
+      "c.measure.ok": "✓ inside the readable 45–75 character range: the return sweep is comfortable and lines are not lost",
+      "c.measure.short": "✗ too short: breaks come too often and the rhythm stumbles",
+      "c.measure.long": "✗ too long: the return sweep grows and the eye skips or repeats lines",
+
+      "c.pattern.allRegions": "all three regions take part in the layout",
+      "c.pattern.gridHead": "---- Grid: two-dimensional placement, visual order decoupled from the DOM ----",
+      "c.pattern.flexHead": "---- Flex: one-dimensional layout, using order to rearrange visually ----",
+      "c.pattern.bleed": "a full-bleed header or footer only has to sit outside .body — full width by nature",
+      "c.pattern.holy": "the holy grail in essence: three tracks + full-bleed header and footer + main content first in the DOM",
+      "c.pattern.order":
+        "⚠️ order only changes the visual sequence; Tab and screen readers still follow the DOM.\n   When visual and DOM order disagree, keyboard users get jumping focus — a common accessibility trap.",
+
+      "c.flex.lead": "the container decides how items line up; the items decide how much they take — the core split in Flex",
+      "c.flex.dir": "main axis: {v}",
+      "c.flex.vertical": "vertical",
+      "c.flex.horizontal": "horizontal",
+      "c.flex.nowrap": "no wrap: items get squeezed",
+      "c.flex.wrapYes": "wrapping on: what does not fit folds onto the next line",
+      "c.flex.justify": "distribution along the main axis",
+      "c.flex.align": "cross-axis alignment inside one line",
+      "c.flex.contentOff": "⚠️ with nowrap, align-content does nothing (there is only one line)",
+      "c.flex.contentOn": "cross-axis distribution between multiple lines",
+      "c.flex.gap": "use gap instead of margins: no first or last child to handle",
+      "c.flex.noneGrown": "no item is absorbing the leftover space, so every item sits at its content width",
+      "c.flex.memo":
+        "remember the order: flex-direction → flex-wrap → justify-content → align-items\n   direction first, then whether it wraps, and only then the two axes of alignment.",
+
+      "c.gx.lead": "the container decides the tracks; the items decide which track they land on",
+      "c.gx.gap": "row gap, column gap",
+      "c.gx.justify": "items inside their cell: horizontal",
+      "c.gx.align": "items inside their cell: vertical",
+      "c.gx.auto":
+        "auto-fill + minmax: the wider the container, the more columns fit — \n   a responsive grid with no media query at all. The usual Grid recipe for a self-fitting card wall.",
+      "c.gx.side": "mixing a fixed and a flexible track: the sidebar stays 200px and the main content eats the rest",
+      "c.gx.fr": "1fr = one share of the leftover space; fr compares shares, not absolute widths",
+      "c.gx.explicit": "explicit placement (pinning an item to a chosen track):",
+      "c.gx.span2": "spans two columns",
+
+      "c.area.claim": "every region is claimed by one selector",
+      "c.area.none": "no region painted yet",
+      "c.area.bad":
+        "⚠️ invalid: region {names} is not a rectangle.\n   CSS requires same-named cells to form one solid rectangle, otherwise the whole grid-template-areas line is dropped\n   and every item falls back to auto-placement — which is why the preview on the right falls apart.",
+      "c.area.good": "✓ every region is a rectangle, so the declaration is valid",
+
+      "c.vp.lead": "mobile first: write the narrow default, then enhance upwards with min-width",
+      "c.vp.default": "default (phone): one column, stacked",
+      "c.vp.tablet": "tablet: stream + sidebar",
+      "c.vp.laptop": "laptop: a wider gap and measure",
+      "c.vp.desktop": "desktop: three columns, three cards per row",
+      "c.vp.hit": "viewport {w}px → hits the “{bp}” tier",
+      "c.vp.memo":
+        "⚠️ write min-width from small to large (mobile first):\n   extra styles stack, so the override chain is one-way and predictable;\n   writing max-width from large to small means watching override order every time.",
+
+      "c.fl.clamp": "clamp(minimum, preferred, maximum)",
+      "c.fl.preferred": "the vw in the preferred value moves the size smoothly, with min and max catching both ends",
+      "c.fl.follow": "when the size changes, the ratio of line height and spacing must follow: unitless line height and em/rem spacing, never hard-coded px",
+      "c.fl.now": "container {w}px → computed size about {a}px",
+      "c.fl.zero": "vw coefficient 0: the size is constant across the range; only a different container width reveals a difference",
+      "c.fl.rate": "vw coefficient {v}: every extra 100px of width adds roughly {v}px",
+
+      "c.cq.parent": "on the parent: this area can be queried",
+      "c.cq.self": "the component cares how wide its container is, not how wide the viewport is",
+      "c.cq.compare": "for contrast: a media query only knows the viewport, so the same component never changes inside a narrow container",
+      "c.cq.stateWide": "turns into image-left / text-right",
+      "c.cq.stateNarrow": "stays stacked",
+      "c.cq.now": "container {w}px → the card {s}; the media-query version on the right always follows the viewport ({vw}px) and ignores the slider above",
+
+      "c.wire.head": "homepage skeleton: {label}",
+      "c.wire.bleed": "a full-bleed zone spans every column with grid-column: 1 / -1",
+      "c.wire.keepSide": "keep the sidebar → the homepage can host about / tag cloud / subscribe, but the stream narrows and each screen shows less",
+      "c.wire.dropSide": "drop the sidebar → the stream gets the full width and reads better, but secondary links need a new home (the footer, say)"
     }
   };
 
@@ -1471,7 +1697,16 @@
   const listeners = [];
   let current = "zh";
 
-  const t = (key) => (UI[current] && UI[current][key]) || UI.zh[key] || key;
+  /* t(key) 取词条；t(key, {n}) 顺带把 {n} 占位符换掉。
+     「实时输出」里的注释含动态数值（间距 px、断点名、列数…），
+     中英语序不同，所以不能靠字符串拼接，必须让整句交给词条。 */
+  const t = (key, vars) => {
+    let s = (UI[current] && UI[current][key]) || UI.zh[key] || key;
+    if (vars) {
+      s = s.replace(/\{(\w+)\}/g, (m, k) => (vars[k] === undefined ? m : vars[k]));
+    }
+    return s;
+  };
 
   /* 首次加载时把中文原文抓下来，之后切回中文只需还原 */
   function capture() {

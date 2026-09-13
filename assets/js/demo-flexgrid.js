@@ -4,7 +4,7 @@
 (function () {
   "use strict";
   const { register } = window.Lab;
-  const t = (k) => window.Lang.t(k);
+  const t = (k, vars) => window.Lang.t(k, vars);
 
   /* ======================================================================
      3.1 Flexbox 试验台 / Flexbox playground
@@ -65,22 +65,21 @@
 
       api.code(
         "#code-flex",
-        `/* 容器决定「怎么排」，项目决定「占多少」 —— 这是 Flex 的核心分工 */
+        `/* ${t("c.flex.lead")} */
 .box {
   display: flex;
-  flex-direction: ${dir};      /* 主轴方向：${vertical ? "垂直" : "水平"} */
-  flex-wrap: ${wrap};          /* ${wrap === "nowrap" ? "不换行：项目会被压缩" : "允许换行：一行放不下就折到下一行"} */
-  justify-content: ${justify};  /* 主轴上的分布 */
-  align-items: ${align};        /* 单行内项目的交叉轴对齐 */
-  align-content: ${content};    /* ${wrap === "nowrap" ? "⚠️ nowrap 时 align-content 不起作用（只有一行）" : "多行之间在交叉轴上的分布"} */
-  gap: ${gap}px;                 /* 用 gap 代替 margin：不用处理首尾元素 */
+  flex-direction: ${dir};      /* ${t("c.flex.dir", { v: vertical ? t("c.flex.vertical") : t("c.flex.horizontal") })} */
+  flex-wrap: ${wrap};          /* ${wrap === "nowrap" ? t("c.flex.nowrap") : t("c.flex.wrapYes")} */
+  justify-content: ${justify};  /* ${t("c.flex.justify")} */
+  align-items: ${align};        /* ${t("c.flex.align")} */
+  align-content: ${content};    /* ${wrap === "nowrap" ? t("c.flex.contentOff") : t("c.flex.contentOn")} */
+  gap: ${gap}px;                 /* ${t("c.flex.gap")} */
   min-height: ${height === 0 ? "auto" : height + "px"};
 }
 
-${grow.slice(0, count).map((g, i) => g ? `.item-${i + 1} { flex: 1 1 0; }` : null).filter(Boolean).join("\n") || "/* 目前没有项目吸收剩余空间，所有项目按内容宽度排列 */"}
+${grow.slice(0, count).map((g, i) => g ? `.item-${i + 1} { flex: 1 1 0; }` : null).filter(Boolean).join("\n") || `/* ${t("c.flex.noneGrown")} */`}
 
-/* 记忆顺序：flex-direction → flex-wrap → justify-content → align-items
-   先定「方向」，再定「换不换行」，最后才是两个轴上的对齐。 */`,
+/* ${t("c.flex.memo")} */`,
         "css"
       );
     };
@@ -155,25 +154,24 @@ ${grow.slice(0, count).map((g, i) => g ? `.item-${i + 1} { flex: 1 1 0; }` : nul
 
       api.code(
         "#code-grid",
-        `/* 容器决定「轨道」，项目决定「落在哪条轨道上」 */
+        `/* ${t("c.gx.lead")} */
 .grid {
   display: grid;
   grid-template-columns: ${COLS[cols]};
   grid-template-rows: ${ROWS[rows]};
-  gap: ${gap}px ${gap}px;              /* 行间距 列间距 */
-  justify-items: ${justify};        /* 项目在格子内：水平方向 */
-  align-items: ${align};          /* 项目在格子内：垂直方向 */
+  gap: ${gap}px ${gap}px;              /* ${t("c.gx.gap")} */
+  justify-items: ${justify};        /* ${t("c.gx.justify")} */
+  align-items: ${align};          /* ${t("c.gx.align")} */
 }
 
 ${cols === "auto"
-  ? `/* auto-fill + minmax：容器越宽，自动塞进越多列 —— 
-   不写一行媒体查询就得到响应式网格。这是 Grid 最常用的「自适应卡片墙」写法。 */`
+  ? `/* ${t("c.gx.auto")} */`
   : cols === "side"
-    ? `/* 混用固定与弹性轨道：侧栏恒为 200px，主内容吃掉剩下的空间 */`
-    : `/* 1fr = 剩余空间的一份。fr 之间比较的是「份数」，不是绝对值 */`}
+    ? `/* ${t("c.gx.side")} */`
+    : `/* ${t("c.gx.fr")} */`}
 
-/* 显式放置（把某个项目按到指定轨道上）：
-   .item-featured { grid-column: 1 / 3; grid-row: 1; }   /* 跨两列 */`,
+/* ${t("c.gx.explicit")}
+   .item-featured { grid-column: 1 / 3; grid-row: 1; }   /* ${t("c.gx.span2")} */`,
         "css"
       );
     };
@@ -273,14 +271,12 @@ ${cols === "auto"
     ${rs.map((r) => `"${r.join(" ")}"`).join("\n    ")};
 }
 
-/* 每个区域用一个选择器「认领」 */
-${used.map((name) => `.${name === "a" ? "header" : name === "b" ? "content" : "aside"} { grid-area: ${name}; }`).join("\n") || "/* 还没有画出任何区域 */"}
+/* ${t("c.area.claim")} */
+${used.map((name) => `.${name === "a" ? "header" : name === "b" ? "content" : "aside"} { grid-area: ${name}; }`).join("\n") || `/* ${t("c.area.none")} */`}
 
 /* ${bad.length
-          ? `⚠️ 无效：区域 ${bad.join(", ")} 不是矩形。
-   CSS 规定同名单元格必须拼成一块完整矩形，否则整条 grid-template-areas 会被丢弃，
-   所有项目退回到自动放置 —— 这就是右边预览「散架」的原因。`
-          : "✓ 每个区域都是矩形，声明有效" } */`,
+          ? t("c.area.bad", { names: bad.join(", ") })
+          : t("c.area.good")} */`,
         "css"
       );
     };

@@ -4,7 +4,7 @@
 (function () {
   "use strict";
   const { register } = window.Lab;
-  const t = (k) => window.Lang.t(k);
+  const t = (k, vars) => window.Lang.t(k, vars);
 
   const MIN = 320;
   const MAX = 1440;
@@ -63,26 +63,26 @@
 
       api.code(
         "#code-viewport",
-        `/* 移动优先：先写「窄屏默认样式」，再用 min-width 逐级增强 */
-.blog {                       /* 默认（手机）：单列堆叠 */
+        `/* ${t("c.vp.lead")} */
+.blog {                       /* ${t("c.vp.default")} */
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 24px;
   padding-inline: 16px;
 }
 
-@media (min-width: 600px) {   /* 平板：正文 + 侧栏 */
+@media (min-width: 600px) {   /* ${t("c.vp.tablet")} */
   .blog {
     grid-template-columns: minmax(0, 1fr) 220px;
     gap: 32px;
   }
 }
 
-@media (min-width: 900px) {   /* 笔记本：更大的间距与版心 */
+@media (min-width: 900px) {   /* ${t("c.vp.laptop")} */
   .blog { padding-inline: 32px; gap: 40px; }
 }
 
-@media (min-width: 1200px) {  /* 桌面：三栏，卡片一行三张 */
+@media (min-width: 1200px) {  /* ${t("c.vp.desktop")} */
   .blog {
     grid-template-columns: 200px minmax(0, 1fr) 260px;
     max-width: 1180px;
@@ -90,11 +90,9 @@
   }
 }
 
-/* 当前视口 ${w}px → 命中「${t(bp.label)}」这一档 */
+/* ${t("c.vp.hit", { w, bp: t(bp.label) })} */
 
-/* ⚠️ 用 min-width 从小到大写（移动优先）：
-   额外的样式是「叠加」的，覆盖关系单向、可预测；
-   用 max-width 从大到小写，越写越要小心覆盖顺序。 */`,
+/* ${t("c.vp.memo")} */`,
         "css"
       );
     };
@@ -153,23 +151,22 @@
       api.code(
         "#code-fluid",
         `:root {
-  /* clamp(最小值, 首选值, 最大值)
-     首选值里的 vw 让字号随视口平滑变化，两端由 min/max 兜住 */
+  /* ${t("c.fl.clamp")}
+     ${t("c.fl.preferred")} */
   --fluid-title: ${clamp};
 }
 
 .post-title {
   font-size: var(--fluid-title);
-  /* 字号变了，行高与间距的「比例」也要跟着走：
-     用无单位行高与 em/rem 间距，而不是写死的 px */
+  /* ${t("c.fl.follow")} */
   line-height: 1.15;
   letter-spacing: -0.015em;
 }
 
-/* 当前容器宽度 ${width}px → 实际字号约 ${actual.toFixed(1)}px */
+/* ${t("c.fl.now", { w: width, a: actual.toFixed(1) })} */
 /* ${vw === 0
-          ? "vw 系数为 0：字号在区间内固定不变，只有换成不同的容器宽度才会看到差异"
-          : `vw 系数 ${vw}：每宽 100px，字号大约涨 ${vw}px`} */`,
+          ? t("c.fl.zero")
+          : t("c.fl.rate", { v: vw })} */`,
         "css"
       );
     };
@@ -205,13 +202,13 @@
 
       api.code(
         "#code-cq",
-        `/* 父级声明：这块区域可以被「查询」 */
+        `/* ${t("c.cq.parent")} */
 .card-slot {
   container-type: inline-size;
   container-name: card;
 }
 
-/* 组件自己关心「我被放进多宽的容器」，而不是「视口有多宽」 */
+/* ${t("c.cq.self")} */
 .card { display: grid; gap: 12px; }
 
 @container card (min-width: 400px) {
@@ -221,13 +218,16 @@
   }
 }
 
-/* 对比：媒体查询只知道视口宽度，同一个组件放在窄容器里也不会变 */
+/* ${t("c.cq.compare")} */
 @media (min-width: 1500px) {
   .card { grid-template-columns: 96px minmax(0, 1fr); align-items: center; }
 }
 
-/* 当前容器宽度 ${w}px → 卡片${w >= 400 ? "变成「图左文右」" : "保持上下堆叠"}；
-   右侧媒体查询版本始终由视口（${window.innerWidth}px）决定，不受上面的滑块影响 */`,
+/* ${t("c.cq.now", {
+          w,
+          s: w >= 400 ? t("c.cq.stateWide") : t("c.cq.stateNarrow"),
+          vw: window.innerWidth,
+        })} */`,
         "css"
       );
     };
