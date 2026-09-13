@@ -144,7 +144,7 @@
 @media (min-width: 1040px) {
   .shell {
     grid-template-columns: var(--toc-w) minmax(0, 1fr);
-    gap: var(--s-8);
+    gap: var(--s-7);
   }
 
   .toc {
@@ -156,11 +156,12 @@
   }
 }
 
+/* 目录是导航文本，字号与正文同级（此前用最小档 --step--1，比正文小两档，读起来吃力） */
 .toc__title {
-  font-size: var(--step--1);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--muted);
+  font-size: var(--step-0);
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  color: var(--ink-2);
   margin-bottom: var(--s-3);
 }
 
@@ -169,38 +170,43 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 4px;
   border-left: 2px solid var(--line);
 }
 
 .toc__link {
   display: flex;
   gap: var(--s-2);
-  padding: var(--s-1) var(--s-3);
+  align-items: baseline;
+  padding: var(--s-2) var(--s-3);
   margin-left: -2px;
   border-left: 2px solid transparent;
-  color: var(--muted);
-  font-size: var(--step--1);
-  line-height: 1.45;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  color: var(--ink-2);
+  font-size: var(--step-0);
+  line-height: 1.4;
   text-decoration: none;
-  transition: color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease);
+  transition: color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease),
+    background-color var(--t-fast) var(--ease);
 }
 
 .toc__link:hover {
   color: var(--ink);
+  background: var(--bg-soft);
 }
 
 .toc__link.is-active {
   color: var(--accent);
   border-left-color: var(--accent);
+  background: var(--accent-soft);
   font-weight: 600;
 }
 
 .toc__num {
   color: var(--muted);
   font-family: var(--font-mono);
-  font-size: 0.9em;
-  opacity: 0.8;
+  font-size: 0.86em;
+  opacity: 0.85;
 }
 
 .toc--mobile {
@@ -220,7 +226,10 @@
   .toc--mobile { display: none; }
 }
 
-@media (max-width: 1039px) {
+/* 上界写成 1039.98px 而不是 1039px：两条断点之间不能留缝。
+   若写 1039 / 1040，在分数宽度（如 1039.3，高分屏缩放时很常见）下两条媒体查询
+   都不匹配，桌面版与移动版目录会同时显示 —— 页面上出现两个「本章目录」。 */
+@media (max-width: 1039.98px) {
   .toc--desktop { display: none; }
 }
 
@@ -553,42 +562,108 @@
 
 /* ==========================================================================
    5. 正文排版 / Prose
+   --------------------------------------------------------------------------
+   这里的核心是**间距要有层级**，而不是所有子元素共用一个 gap。
+   早先用 flex + 统一 gap: --s-4（16px）时，段落间隙比行高（约 28px）还小，
+   段落糊成一堵墙；小标题又只比正文大一档、字重与 <strong> 相同，
+   于是整块读起来像把 Markdown 直接贴在页面上。
+   现在改成：块与块 24px；标题前拉开一大段并压一条细线另起一节；
+   标题后只留 12px，让它紧贴自己所属的内容。
    ========================================================================== */
 .prose {
   max-width: var(--measure);
-  display: flex;
-  flex-direction: column;
-  gap: var(--s-4);
+}
+
+.prose > * + * {
+  margin-top: var(--s-5);   /* 24px，明显大于行高，段落之间读得出断句 */
 }
 
 .prose > h4 {
-  font-size: var(--step-1);
-  margin-top: var(--s-2);
+  font-size: var(--step-2);
+  margin-top: var(--s-6);
+  padding-top: var(--s-5);
+  border-top: 1px solid var(--line);
 }
 
-.prose > h4:first-child {
+/* 首个小节是面板的开头，不需要分割线，也不要额外的上边距 */
+.prose > :first-child {
   margin-top: 0;
+  padding-top: 0;
+  border-top: none;
 }
 
+/* 标题要紧贴它管辖的内容，所以标题之后反而收紧 */
+.prose > h4 + * {
+  margin-top: var(--s-3);
+}
+
+/* 列表：自定义标记 + 悬挂缩进，不再用浏览器默认圆点 */
 .prose ul,
 .prose ol {
-  display: flex;
-  flex-direction: column;
-  gap: var(--s-2);
-  padding-left: 1.25em;
+  list-style: none;
+  padding-left: 0;
 }
 
-.prose li::marker {
+.prose li {
+  position: relative;
+  padding-left: 1.4em;
+}
+
+.prose li + li {
+  margin-top: var(--s-2);
+}
+
+.prose li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.72em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.prose ol {
+  counter-reset: prose-ol;
+}
+
+.prose ol > li::before {
+  content: counter(prose-ol);
+  counter-increment: prose-ol;
+  top: 0;
+  width: auto;
+  height: auto;
+  background: none;
+  border-radius: 0;
   color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+  line-height: 1.9;
 }
 
-.prose strong {
-  font-weight: 650;
-  color: var(--ink);
-}
-
+/* 二级列表换弱色，避免和一级抢注意力 */
 .prose ul ul {
   margin-top: var(--s-2);
+}
+
+.prose ul ul > li::before {
+  background: var(--line-2);
+}
+
+/* 验收清单自带复选框，不是一个圆点能代替的 —— 排除掉 */
+.prose .checklist li {
+  padding-left: 0;
+}
+
+.prose .checklist li::before {
+  content: none;
+}
+
+/* 强调比小标题低一档，避免两者抢同一个视觉层级 */
+.prose strong {
+  font-weight: 600;
+  color: var(--ink);
 }
 
 /* 要点清单：用于「设计权衡」这类对照内容 */
@@ -1134,9 +1209,9 @@ a.card:hover {
   display: flex;
   align-items: center;
   gap: var(--s-2);
-  font-size: var(--step--1);
-  color: var(--muted);
-  padding: 2px var(--s-3) 2px 2px;
+  font-size: var(--step-0);
+  color: var(--ink-2);
+  padding: 3px var(--s-3) 3px 3px;
   border-radius: var(--radius-pill);
   border: 1px solid transparent;
 }
@@ -1146,12 +1221,12 @@ a.card:hover {
   content: counter(step);
   display: grid;
   place-items: center;
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
   background: var(--bg-soft);
   border: 1px solid var(--line-2);
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   font-family: var(--font-mono);
 }
 

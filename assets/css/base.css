@@ -129,7 +129,9 @@ mark {
   border-radius: var(--radius-sm);
   padding: 0.1em 0.35em;
   color: var(--ink-2);
-  white-space: nowrap;
+  /* 不用 nowrap：grid-template-columns: repeat(12, minmax(0, 1fr)) 这类长 token
+     不换行会被顶到行外，把段落右边缘顶得参差不齐。允许在空格处折行即可。 */
+  overflow-wrap: break-word;
 }
 
 kbd {
