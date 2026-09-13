@@ -17,3 +17,7 @@ submission/*.pdf
 submission/video/*.mp4
 submission/video/*.webm
 submission/video/_*
+
+# Python 缓存
+__pycache__/
+*.pyc
